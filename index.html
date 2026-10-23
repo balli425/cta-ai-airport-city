@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#edf0e7">
+  <meta name="description" content="走進築匠 AI 空港城，探索 AI 基礎、AI 動畫與 AI 代理人三大實作課程。">
+  <title>築匠 AI 空港城｜建築人的三大 AI 實作航線</title>
+  <link rel="icon" href="./assets/cta-logo-original.jpg">
+  <link rel="stylesheet" href="./style.css?v=20261023-5">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head>
+<body class="panel-hidden">
+  <a class="skip" href="#course-panel">跳至課程內容</a>
+  <header class="masthead">
+    <a class="brand" href="#about" data-modal="about" aria-label="築匠 AI 空港城首頁">
+      <img src="./assets/cta-logo-original.jpg" alt="CTArch 築匠原版 LOGO" width="54" height="54">
+      <span><strong>築匠建築師事務所</strong><small>CTArch · AI AIRPORT CITY</small></span>
+    </a>
+    <nav aria-label="主要導覽">
+      <button class="nav-item active" data-view="explore">探索空港城</button>
+      <button class="nav-item" data-modal="courses">課程一覽</button>
+      <button class="nav-item" data-modal="about">關於築匠</button>
+      <button class="nav-item" data-modal="history">學習紀錄</button>
+    </nav>
+    <label class="text-size-control" for="text-size">字級 <select id="text-size" aria-label="選擇文字大小"><option value="1">標準</option><option value="1.15" selected>大字</option><option value="1.3">特大</option></select></label>
+    <button class="header-cta" data-modal="schedule">課程與班次 <span>↗</span></button>
+  </header>
+  <main class="experience">
+    <section class="map-area" aria-label="一座城市島內的三個 AI 課程分區">
+      <div class="edition"><span>THE LEARNING ARCHIPELAGO</span><b>01 — 03</b><small>三個主題，一起走進實務。</small></div>
+      <div class="scene" id="scene">
+        <div class="loading" id="loading"><span class="spinner"></span><p>正在搭建你的空港城…</p></div>
+        <div class="labels" id="labels" aria-label="地圖課程選擇"></div>
+        <div class="scene-error" id="scene-error" hidden>目前無法顯示 3D 場景，仍可由右方或下方清單探索全部課程。</div>
+      </div>
+      <div class="map-credit">CTArch 原創互動場景 <span>✦</span> 建築 × 創作 × 工作流程</div>
+      <div class="explore-footer"><span>LEARN BY MAKING.</span><p>讓 AI 進入你的日常，讓專業走得更遠。</p><button data-modal="courses">找到適合你的課程 <span>↗</span></button></div>
+
+      <div class="city-hud"><div class="city-hud-main">
+      <div class="map-tools" aria-label="場景操作">
+        <button id="reset" title="返回城市全景" aria-label="返回城市全景">⌂ <span>全景</span></button>
+        <span class="tool-separator"></span>
+        <button id="daynight" aria-pressed="false">☼ <span>日間</span></button>
+        <button id="motion" aria-pressed="false">Ⅱ <span>暫停</span></button>
+        <button id="roam" aria-pressed="false">⌖ <span>自由漫遊</span></button>
+        <button id="sound" title="顯示操作說明" aria-label="操作說明">?</button>
+      </div>
+      <div class="map-hint"><span class="mouse-icon"></span> 左鍵平移 · 中鍵旋轉 · 滾輪縮放</div>
+      <div class="intro">
+        <div class="eyebrow"><i></i> 建築人的三大 AI 實作航線</div>
+        <h1>築匠 <span>AI 空港城</span></h1>
+        <p>從圖像、影片，到真正能用的工具。<br>選一棟建築，閱讀上課摘要。</p>
+      </div>
+      </div>
+      <div class="experience-toolbar" aria-label="內容探索"><button id="panel-toggle" aria-expanded="false">課程導航</button><button data-modal="schedule">上課資訊 ↗</button><button data-modal="history">學習紀錄</button></div>
+      </div>
+    </section>
+    <aside class="course-panel" id="course-panel" aria-label="課程探索與詳細內容">
+      <div class="panel-top"><div class="eyebrow">CHOOSE YOUR NEXT STEP</div><h2>你想先學什麼？</h2><p>點選課程，看看可以做出什麼。</p></div>
+      <div class="course-tabs" id="course-tabs" role="tablist" aria-label="三大課程">
+        <button id="tab-foundation" data-course="foundation" role="tab" aria-controls="course-detail" aria-selected="true"><span class="course-num">01</span><span><b>AI 基礎班</b><small>讓靈感有了形狀</small></span><span class="course-arrow">↗</span></button>
+        <button id="tab-animation" data-course="animation" role="tab" aria-controls="course-detail" aria-selected="false"><span class="course-num">02</span><span><b>AI 動畫班</b><small>讓空間開始說故事</small></span><span class="course-arrow">↗</span></button>
+        <button id="tab-agent" data-course="agent" role="tab" aria-controls="course-detail" aria-selected="false"><span class="course-num">03</span><span><b>AI 代理人班</b><small>讓想法成為工作流</small></span><span class="course-arrow">↗</span></button>
+      </div>
+      <section id="course-detail" class="course-detail" role="tabpanel" aria-labelledby="tab-foundation" tabindex="0"></section>
+      <div class="panel-bottom"><span class="status-dot"></span> 真實案例帶練 <span>／</span> 從自己的題目開始</div>
+    </aside>
+  </main>
+  <dialog id="modal" aria-labelledby="modal-title">
+    <div class="dialog-head"><div><div class="eyebrow" id="modal-eyebrow"></div><h2 id="modal-title"></h2></div><button class="close" aria-label="關閉視窗">×</button></div>
+    <div id="modal-body"></div>
+  </dialog>
+  <div class="toast" role="status" id="toast"></div>
+  <script type="module" src="./app.js?v=20261023-5"></script>
+</body>
+</html>

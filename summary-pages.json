@@ -1,0 +1,132 @@
+{
+  "foundation": {
+    "pages": [
+      {
+        "src": "assets/summaries/foundation/page-01.png",
+        "title": "課程封面",
+        "sourcePage": 1,
+        "width": 1200,
+        "height": 1699
+      },
+      {
+        "src": "assets/summaries/foundation/page-02.png",
+        "title": "圖片與文書主題",
+        "sourcePage": 2,
+        "width": 1200,
+        "height": 1699
+      },
+      {
+        "src": "assets/summaries/foundation/page-03.png",
+        "title": "工具實作與問答",
+        "sourcePage": 3,
+        "width": 1200,
+        "height": 1699
+      },
+      {
+        "src": "assets/summaries/foundation/page-04.png",
+        "title": "課前準備與安排",
+        "sourcePage": 4,
+        "width": 1200,
+        "height": 1699
+      }
+    ],
+    "initialPage": 1,
+    "sourceLabel": "AI 基礎課程教學手冊 · 摘要"
+  },
+  "animation": {
+    "pages": [
+      {
+        "src": "assets/summaries/animation/page-01.png",
+        "title": "課程封面",
+        "sourcePage": 1,
+        "width": 1200,
+        "height": 1698
+      },
+      {
+        "src": "assets/summaries/animation/page-02.png",
+        "title": "六步流程目錄",
+        "sourcePage": 2,
+        "width": 1200,
+        "height": 1698
+      },
+      {
+        "src": "assets/summaries/animation/page-03.png",
+        "title": "影片製作總覽",
+        "sourcePage": 3,
+        "width": 1200,
+        "height": 1698
+      },
+      {
+        "src": "assets/summaries/animation/page-04.png",
+        "title": "素材與環境準備",
+        "sourcePage": 4,
+        "width": 1200,
+        "height": 1698
+      }
+    ],
+    "initialPage": 2,
+    "sourceLabel": "築匠 AI 影片製作工作流程 · 摘要"
+  },
+  "agent": {
+    "pages": [
+      {
+        "src": "assets/summaries/agent/page-01.png",
+        "title": "課程封面",
+        "sourcePage": 1,
+        "width": 1200,
+        "height": 1698
+      },
+      {
+        "src": "assets/summaries/agent/page-02.png",
+        "title": "全課地圖",
+        "sourcePage": 2,
+        "width": 1200,
+        "height": 794
+      },
+      {
+        "src": "assets/summaries/agent/page-03.png",
+        "title": "課程章節",
+        "sourcePage": 3,
+        "width": 1200,
+        "height": 1698
+      },
+      {
+        "src": "assets/summaries/agent/page-04.png",
+        "title": "實作題目與成果",
+        "sourcePage": 4,
+        "width": 1200,
+        "height": 1698
+      },
+      {
+        "src": "assets/summaries/agent/page-05.png",
+        "title": "工具成果示例",
+        "sourcePage": 5,
+        "width": 1200,
+        "height": 1698
+      },
+      {
+        "src": "assets/summaries/agent/page-06.png",
+        "title": "案例流程節錄",
+        "sourcePage": 6,
+        "width": 1200,
+        "height": 851
+      },
+      {
+        "src": "assets/summaries/agent/page-07.png",
+        "title": "依據與需求",
+        "sourcePage": 7,
+        "width": 1200,
+        "height": 1698
+      },
+      {
+        "src": "assets/summaries/agent/page-08.png",
+        "title": "驗收與版本",
+        "sourcePage": 8,
+        "width": 1200,
+        "height": 1698
+      }
+    ],
+    "initialPage": 1,
+    "sourceLabel": "AI 代理人實戰課程 · 摘要"
+  }
+}
