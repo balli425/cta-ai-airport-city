@@ -1,3 +1,4 @@
+import { gaitSegments } from './pedestrian-gait.js?v=20261023-6';
 import * as T from './vendor/three.module.js';
 
 // All motion uses the world's simulation time: pause and reduced motion apply together.
@@ -25,10 +26,10 @@ export function createCityLife(scene, palette) {
     {name:'body',geometry:box,color:palette.blue},
     {name:'head',geometry:ball,color:0xe5be96},
     {name:'hair',geometry:ball,color:0x3b3a35},
-    {name:'leftLeg',geometry:box,color:palette.dark},
-    {name:'rightLeg',geometry:box,color:palette.dark},
-    {name:'leftArm',geometry:box,color:0xe5be96},
-    {name:'rightArm',geometry:box,color:0xe5be96}
+    ...['left','right'].flatMap(side=>[
+      ...['Thigh','Shin','Foot'].map(part=>({name:side+part,geometry:box,color:part==='Foot'?0x293544:palette.dark})),
+      ...['UpperArm','Forearm'].map(part=>({name:side+part,geometry:box,color:0xe5be96}))
+    ])
   ];
   specs.forEach(spec=>{
     spec.mesh=new T.InstancedMesh(spec.geometry,material(spec.color),count);
@@ -36,6 +37,7 @@ export function createCityLife(scene, palette) {
     spec.mesh.frustumCulled=false;spec.mesh.name='city-pedestrians-'+spec.name;scene.add(spec.mesh);
     if(spec.name==='body')for(let i=0;i<count;i++)spec.mesh.setColorAt(i,new T.Color(shirts[i%shirts.length]));
   });
+  const byName=Object.fromEntries(specs.map(s=>[s.name,s]));
   const root=new T.Object3D(),limb=new T.Object3D();
   function stamp(spec,i,x,y,z,sx,sy,sz,rx=0){
     limb.position.set(x,y,z);limb.rotation.set(rx,0,0);limb.scale.set(sx,sy,sz);limb.updateMatrix();
@@ -87,14 +89,12 @@ export function createCityLife(scene, palette) {
   function update(time){
     time=Math.max(0,Number.isFinite(time)?time:0);
     for(let i=0;i<count;i++){
-      const route=walkingRoutes[i%walkingRoutes.length],u=(i*.61803398875+time*(.19+(i%4)*.025)/route.length)%1;
-      const p=route.curve.getPointAt(u),t=route.curve.getTangentAt(u),stride=Math.sin(time*6.5+i)*.58;
-      root.position.set(p.x,.54,p.z);root.rotation.set(0,Math.atan2(t.x,t.z),0);root.scale.setScalar(1.1+(i%3)*.06);root.updateMatrix();
-      stamp(specs[0],i,0,.3,0,.15,.24,.11);stamp(specs[1],i,0,.51,0,.15,.17,.15);stamp(specs[2],i,0,.565,-.015,.155,.08,.15);
-      stamp(specs[3],i,-.045,.12,Math.sin(stride)*.04,.05,.22,.065,stride);
-      stamp(specs[4],i,.045,.12,-Math.sin(stride)*.04,.05,.22,.065,-stride);
-      stamp(specs[5],i,-.105,.3,-Math.sin(stride)*.045,.045,.22,.05,-stride);
-      stamp(specs[6],i,.105,.3,Math.sin(stride)*.045,.045,.22,.05,stride);
+      const route=walkingRoutes[i%walkingRoutes.length],speed=.19+(i%4)*.025,size=1.1+(i%3)*.06;
+      const u=(i*.61803398875+time*speed/route.length)%1;
+      const p=route.curve.getPointAt(u),t=route.curve.getTangentAt(u),phase=time*speed/(.30*size)*Math.PI*2+i*.9;
+      root.position.set(p.x,.54,p.z);root.rotation.set(0,Math.atan2(t.x,t.z),0);root.scale.setScalar(size);root.updateMatrix();
+      stamp(specs[0],i,0,.39,0,.16,.24,.12);stamp(specs[1],i,0,.595,0,.16,.17,.16);stamp(specs[2],i,0,.65,-.012,.163,.07,.16);
+      for(const segment of gaitSegments(phase))stamp(byName[segment.name],i,segment.x,segment.y,segment.z,segment.width,segment.length,segment.depth,segment.angle);
     }
     specs.forEach(s=>{s.mesh.instanceMatrix.needsUpdate=true;});
     cars.forEach(car=>{

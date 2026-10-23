@@ -1,7 +1,7 @@
-import { createNightLighting } from './night-lighting.js?v=20261023-5';
-import { createFlightNavigation } from './navigation.js?v=20261023-5';
+import { createNightLighting } from './night-lighting.js?v=20261023-6';
+import { createFlightNavigation } from './navigation.js?v=20261023-6';
 import * as T from 'three';
-import { createCityLife } from './city-life.js?v=20261023-5';
+import { createCityLife } from './city-life.js?v=20261023-6';
 import { OrbitControls } from './vendor/OrbitControls.js';
 
 export function createWorld(container, labelLayer, courses, onSelect) {

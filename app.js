@@ -1,4 +1,4 @@
-import { scheduleMarkup } from './schedule.js?v=20261023-5';
+import { scheduleMarkup } from './schedule.js?v=20261023-6';
 const $ = s => document.querySelector(s);
 const modal = $('#modal'), toastEl = $('#toast');
 let data, summaries, pageManifest, world, current = 'foundation', toastTimer;
@@ -92,9 +92,9 @@ motionLabel();
 $('#daynight').addEventListener('click',()=>{night=!night;document.body.classList.toggle('night',night);$('#daynight').setAttribute('aria-pressed',String(night));$('#daynight').innerHTML=night?'☾ <span>夜間</span>':'☼ <span>日間</span>';world?.setNight(night);});
 $('#motion').addEventListener('click',()=>{paused=!paused;motionLabel();world?.setPaused(paused);});
 try{
-  const resources=await Promise.all(['./courses.json?v=20261023-5','./summaries.json','./summary-pages.json'].map(async url=>{const response=await fetch(url);if(!response.ok)throw Error('課程資料載入失敗');return response.json()}));
+  const resources=await Promise.all(['./courses.json?v=20261023-6','./summaries.json','./summary-pages.json'].map(async url=>{const response=await fetch(url);if(!response.ok)throw Error('課程資料載入失敗');return response.json()}));
   [data,summaries,pageManifest]=resources;select('foundation');
-  const {createWorld}=await import('./world.js?v=20261023-5');
+  const {createWorld}=await import('./world.js?v=20261023-6');
   world=createWorld($('#scene'),$('#labels'),data.courses,id=>openSummary(id,false));
   world.setPaused(paused);$('#loading').hidden=true;
 }catch(error){
