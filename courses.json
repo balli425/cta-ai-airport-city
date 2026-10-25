@@ -105,29 +105,21 @@
     }
   ],
   "enrollment": {
-    "formUrl": "https://forms.gle/G44cXsXnMfBo91dKA",
+    "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLScYwKprUM-gYW0zJ_1xGKyzUwx7KmYgn1WCjlYLc_wKqNzMUQ/viewform?usp=header",
     "sessions": [
       {
-        "date": "2026-10-18",
-        "title": "AI 代理人實戰課程 · 台北假日班",
+        "date": "2026-11-15",
+        "title": "AI 代理人實戰課程 · 第五梯台北銘傳班",
         "time": "10:00–17:00",
         "location": "銘傳大學基河校區 J313",
-        "status": "已結束",
-        "type": "past",
-        "courseId": "agent",
-        "venueId": "taipei",
-        "registrationStatus": "ended"
-      },
-      {
-        "date": "2026-10-25",
-        "title": "AI 代理人實戰課程 · 台北假日班",
-        "time": "10:00–17:00",
-        "location": "銘傳大學基河校區 J313",
-        "status": "報名截止 · 已確定開班",
+        "status": "開放報名 · 滿10人開課",
         "type": "upcoming",
         "courseId": "agent",
         "venueId": "taipei",
-        "registrationStatus": "closed"
+        "registrationStatus": "open",
+        "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLScYwKprUM-gYW0zJ_1xGKyzUwx7KmYgn1WCjlYLc_wKqNzMUQ/viewform?usp=header",
+        "registrationNote": "滿10人開課，最多20人；核款及錄取確認後完成報名。",
+        "feeNote": "一般學費5,000元（含稅）；符合表單優惠資格者4,500元，須附有效證明。"
       },
       {
         "date": "2026-11-05",
@@ -139,6 +131,28 @@
         "courseId": "agent",
         "venueId": "hsinchu",
         "registrationStatus": "private"
+      },
+      {
+        "date": "2026-10-25",
+        "title": "AI 代理人實戰課程 · 台北假日班",
+        "time": "10:00–17:00",
+        "location": "銘傳大學基河校區 J313",
+        "status": "已結束",
+        "type": "past",
+        "courseId": "agent",
+        "venueId": "taipei",
+        "registrationStatus": "ended"
+      },
+      {
+        "date": "2026-10-18",
+        "title": "AI 代理人實戰課程 · 台北假日班",
+        "time": "10:00–17:00",
+        "location": "銘傳大學基河校區 J313",
+        "status": "已結束",
+        "type": "past",
+        "courseId": "agent",
+        "venueId": "taipei",
+        "registrationStatus": "ended"
       }
     ],
     "location": {
@@ -161,7 +175,13 @@
         "10人以上，基隆至雲林部分區域免交通費。",
         "教學內容、日期、指定地點與交通費適用範圍，依個別洽談確認。"
       ]
-    }
+    },
+    "registrationSteps": [
+      "請先閱讀表單中的課程、費用與退費規則。",
+      "確定報名並完成匯款後，備妥成功截圖再填表。",
+      "申請優惠者須備妥有效資格證明；上傳檔案需登入Google帳戶。",
+      "核款、優惠資格及名額確認後，才正式完成報名。"
+    ]
   },
   "statistics": [
     {
