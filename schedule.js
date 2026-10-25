@@ -1,4 +1,12 @@
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function availabilityMarkup(session) {
+  const a=session.availability;
+  if(!a||!Number.isInteger(a.capacity)||!Number.isInteger(a.responses)||a.capacity<0||a.responses<0)return {badge:'',note:''};
+  const remaining=Math.max(0,a.capacity-a.responses);
+  const time=new Date(a.checkedAt);
+  const updated=Number.isNaN(time.getTime())?'':new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(time);
+  return {badge:`<span class="registration-seats" aria-label="剩餘${remaining}個名額">剩餘 <strong>${remaining}</strong> 個名額</span>`,note:`<p class="registration-count">已收到 ${a.responses} 份報名表${updated?' · 更新時間 '+esc(updated):''}<br>名額依報名表回覆數計算，錄取以確認通知為準。</p>`};
+}
 export function scheduleMarkup(data, filter='all') {
   const e=data.enrollment,course=data.courses.find(c=>c.id===filter);
   const sessions=e.sessions.filter(s=>filter==='all'||s.courseId===filter);
@@ -7,7 +15,7 @@ export function scheduleMarkup(data, filter='all') {
   const cards=sessions.map(s=>`<article class="session session--${s.registrationStatus||'closed'}"><div class="session-date">${s.date.slice(5).replace('-','/')}<small>${s.date.slice(0,4)}</small></div><div class="session-info"><h3>${esc(s.title)}</h3><p>${s.time?esc(s.time)+' · ':''}${esc(s.location)}</p><span class="badge">${esc(s.status)}</span>${s.registrationNote?`<p class="session-note">${esc(s.registrationNote)}</p>`:''}${s.type==='private'?'<p class="session-note">此為特約班，參加方式與場地依個別通知。</p>':''}</div></article>`).join('');
   const venue=sessions.some(s=>s.venueId==='taipei')?`<section class="venue-details"><h3>台北假日班 · ${e.location.name}</h3><p>${e.location.address}<br>台北假日班費用：${e.location.fee}</p><a href="${e.location.mapUrl}" target="_blank" rel="noopener noreferrer">開啟台北上課地圖 ↗</a><p>以上地點與費用適用台北假日班；新竹特約班依個別通知。</p></section><div class="venue-grid"><figure><a href="./assets/venue-route.jpg" target="_blank" rel="noopener noreferrer"><img src="./assets/venue-route.jpg" alt="台北假日班：銘傳基河校區交通指引" loading="lazy"></a><figcaption>台北假日班交通指引：點圖放大。</figcaption></figure><figure><a href="./assets/venue-floor.jpg" target="_blank" rel="noopener noreferrer"><img src="./assets/venue-floor.jpg" alt="台北假日班：3樓J313教室示意" loading="lazy"></a><figcaption>台北教室位置示意；請依當期上課通知前往。</figcaption></figure></div>`:'';
   const openSessions=sessions.filter(s=>s.registrationStatus==='open');
-  const registration=openSessions.length?`<section class="registration-open"><h3>目前開放報名</h3>${openSessions.map(s=>`<h4>${esc(s.date.replaceAll('-','/'))} · ${esc(s.title)}</h4><p>${esc(s.feeNote||'')}</p><a class="primary" href="${esc(s.formUrl||e.formUrl)}" target="_blank" rel="noopener noreferrer">查看報名須知與填表 ↗</a>`).join('')}<ol>${(e.registrationSteps||[]).map(step=>`<li>${esc(step)}</li>`).join('')}</ol></section>`:`<section class="registration-closed"><h3>目前沒有開放報名的班次</h3><p>敬請留意新班公告；也歡迎參考下方的團體客製教學方式。</p></section>`;
+  const registration=openSessions.length?`<section class="registration-open"><h3>目前開放報名</h3>${openSessions.map(s=>{const availability=availabilityMarkup(s);return `<h4>${esc(s.date.replaceAll('-','/'))} · ${esc(s.title)}</h4><p>${esc(s.feeNote||'')}</p><a class="primary" href="${esc(s.formUrl||e.formUrl)}" target="_blank" rel="noopener noreferrer"><span>查看報名須知與填表 ↗</span>${availability.badge}</a>${availability.note}`}).join('')}<ol>${(e.registrationSteps||[]).map(step=>`<li>${esc(step)}</li>`).join('')}</ol></section>`:`<section class="registration-closed"><h3>目前沒有開放報名的班次</h3><p>敬請留意新班公告；也歡迎參考下方的團體客製教學方式。</p></section>`;
   const preparation=sessions.length?`<section class="summary-prep"><h3>已報名學員・課前準備</h3><ul>${e.location.preparation.map(t=>`<li>${esc(t)}</li>`).join('')}</ul><p>準備事項依各班上課通知；午餐與飲食請自理。</p></section>`:'';
   const custom=e.customTeaching;
   return `<div class="dialog-copy"><p>${course?`您正在查看${esc(course.name)}的班次與地點。`:'查看各課程已公告的班次，依需求選擇適合的時間與地點。'}</p></div>${tabs}${registration}${sessions.length?cards:empty}${venue}${preparation}<section class="custom-teaching"><span class="eyebrow">CUSTOM WORKSHOP / 到點教學</span><h3>${esc(custom.title)}</h3><p>${esc(custom.description)}</p><ul>${custom.terms.map(t=>`<li>${esc(t)}</li>`).join('')}</ul></section>`;

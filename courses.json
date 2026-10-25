@@ -119,7 +119,12 @@
         "registrationStatus": "open",
         "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLScYwKprUM-gYW0zJ_1xGKyzUwx7KmYgn1WCjlYLc_wKqNzMUQ/viewform?usp=header",
         "registrationNote": "滿10人開課，最多20人；核款及錄取確認後完成報名。",
-        "feeNote": "一般學費5,000元（含稅）；符合表單優惠資格者4,500元，須附有效證明。"
+        "feeNote": "一般學費5,000元（含稅）；符合表單優惠資格者4,500元，須附有效證明。",
+        "availability": {
+          "capacity": 20,
+          "responses": 0,
+          "checkedAt": "2026-10-25T21:54:03+08:00"
+        }
       },
       {
         "date": "2026-11-05",

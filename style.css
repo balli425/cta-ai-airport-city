@@ -59,3 +59,5 @@ body .masthead .nav-item.active,body.night .masthead .nav-item.active{color:#174
 
 /* Enrollment action: a distinct orange button with readable white text. */
 .registration-open a.primary{background:#bd4b0b;color:#fff;font-weight:800;border:2px solid #a73b00;box-shadow:0 3px 0 #7f2e00}.registration-open a.primary:hover,.registration-open a.primary:focus-visible{background:#9f3b07;color:#fff;filter:none}
+
+.registration-open a.primary{gap:14px;flex-wrap:wrap}.registration-seats{display:inline-flex;align-items:baseline;gap:5px;background:#fff2d4;color:#7a2d00;border:1px solid #fff;padding:5px 12px;border-radius:5px;white-space:nowrap}.registration-seats strong{font-size:1.35em;font-weight:800}.registration-count{font-size:calc(14px * var(--ui-scale));line-height:1.8;color:#194b41;margin:15px 0}.registration-open ol{padding-left:25px}
