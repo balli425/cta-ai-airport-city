@@ -56,3 +56,6 @@ body.night{--ink:#edf5f6;background:#132b40}.night .map-area{background:radial-g
 
 /* Selected navigation remains legible on the light header in both themes. */
 body .masthead .nav-item.active,body.night .masthead .nav-item.active{color:#174e75;font-weight:800;opacity:1}body .masthead .nav-item.active::after,body.night .masthead .nav-item.active::after{background:#174e75;height:3px}
+
+/* Enrollment action: a distinct orange button with readable white text. */
+.registration-open a.primary{background:#bd4b0b;color:#fff;font-weight:800;border:2px solid #a73b00;box-shadow:0 3px 0 #7f2e00}.registration-open a.primary:hover,.registration-open a.primary:focus-visible{background:#9f3b07;color:#fff;filter:none}
