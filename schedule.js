@@ -2,10 +2,11 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 function availabilityMarkup(session) {
   const a=session.availability;
   if(!a||!Number.isInteger(a.capacity)||!Number.isInteger(a.responses)||a.capacity<0||a.responses<0)return {badge:'',note:''};
-  const remaining=Math.max(0,a.capacity-a.responses);
+  const reserved=Number.isInteger(a.reservedSeats)&&a.reservedSeats>=0?a.reservedSeats:0;
+  const remaining=Math.max(0,a.capacity-a.responses-reserved);
   const time=new Date(a.checkedAt);
   const updated=Number.isNaN(time.getTime())?'':new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(time);
-  return {badge:`<span class="registration-seats" aria-label="剩餘${remaining}個名額">剩餘 <strong>${remaining}</strong> 個名額</span>`,note:`<p class="registration-count">已收到 ${a.responses} 份報名表${updated?' · 更新時間 '+esc(updated):''}<br>名額依報名表回覆數計算，錄取以確認通知為準。</p>`};
+  return {badge:`<span class="registration-seats" aria-label="剩餘${remaining}個名額">剩餘 <strong>${remaining}</strong> 個名額</span>`,note:`<p class="registration-count">已收到 ${a.responses} 份報名表${updated?' · 更新時間 '+esc(updated):''}<br>另含 ${reserved} 位保留名額；錄取以確認通知為準。</p>`};
 }
 export function scheduleMarkup(data, filter='all') {
   const e=data.enrollment,course=data.courses.find(c=>c.id===filter);
