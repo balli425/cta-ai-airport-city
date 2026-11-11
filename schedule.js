@@ -10,7 +10,7 @@ function availabilityMarkup(session) {
 }
 export function scheduleMarkup(data, filter='all') {
   const e=data.enrollment,course=data.courses.find(c=>c.id===filter);
-  const sessions=e.sessions.filter(s=>filter==='all'||s.courseId===filter);
+  const sessions=e.sessions.filter(s=>s.registrationStatus==='open'&&(filter==='all'||s.courseId===filter));
   const tabs=`<div class="schedule-filters" aria-label="依課程查看班次">${[{id:'all',name:'所有開設班級'},...data.courses].map(c=>`<button data-schedule-filter="${c.id}" aria-pressed="${filter===c.id}">${c.name}</button>`).join('')}</div>`;
   const empty=`<section class="schedule-empty"><h3>目前尚無${esc(course?.name||'此課程')}開課資訊</h3><p>新班日期待公告。您是否要選擇其他課程，或查看目前所有開設的班級？</p><button class="primary" data-schedule-filter="all">查看所有開設班級 ↗</button></section>`;
   const cards=sessions.map(s=>`<article class="session session--${s.registrationStatus||'closed'}"><div class="session-date">${s.date.slice(5).replace('-','/')}<small>${s.date.slice(0,4)}</small></div><div class="session-info"><h3>${esc(s.title)}</h3><p>${s.time?esc(s.time)+' · ':''}${esc(s.location)}</p><span class="badge">${esc(s.status)}</span>${s.registrationNote?`<p class="session-note">${esc(s.registrationNote)}</p>`:''}${s.type==='private'?'<p class="session-note">此為特約班，參加方式與場地依個別通知。</p>':''}</div></article>`).join('');
