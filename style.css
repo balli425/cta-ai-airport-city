@@ -61,3 +61,23 @@ body .masthead .nav-item.active,body.night .masthead .nav-item.active{color:#174
 .registration-open a.primary{background:#bd4b0b;color:#fff;font-weight:800;border:2px solid #a73b00;box-shadow:0 3px 0 #7f2e00}.registration-open a.primary:hover,.registration-open a.primary:focus-visible{background:#9f3b07;color:#fff;filter:none}
 
 .registration-open a.primary{gap:14px;flex-wrap:wrap}.registration-seats{display:inline-flex;align-items:baseline;gap:5px;background:#fff2d4;color:#7a2d00;border:1px solid #fff;padding:5px 12px;border-radius:5px;white-space:nowrap}.registration-seats strong{font-size:1.35em;font-weight:800}.registration-count{font-size:calc(14px * var(--ui-scale));line-height:1.8;color:#194b41;margin:15px 0}.registration-open ol{padding-left:25px}
+
+/* 2026-11-14 課程介紹影片 */
+.intro-video,.video-banner{display:inline-flex;align-items:center;gap:12px;pointer-events:auto;cursor:pointer;background:#fff;border:1.5px solid #00A1E9;border-radius:8px;color:#172d3d;text-align:left;font-family:inherit;box-shadow:0 4px 14px #00a1e922;transition:background .2s,box-shadow .2s}
+.intro-video{margin-top:14px;padding:9px 16px 9px 10px}
+.intro-video:hover,.intro-video:focus-visible,.video-banner:hover,.video-banner:focus-visible{background:#EAF6FD;box-shadow:0 6px 20px #00a1e938}
+.intro-video i,.video-banner i{flex:none;width:38px;height:38px;border-radius:50%;background:#00A1E9;position:relative}
+.intro-video i:after,.video-banner i:after{content:"";position:absolute;left:15px;top:11px;border-left:13px solid #fff;border-top:8px solid transparent;border-bottom:8px solid transparent}
+.intro-video span,.video-banner span{display:flex;flex-direction:column;gap:2px}
+.intro-video b,.video-banner b{font-size:calc(16px * var(--ui-scale));font-weight:800;color:#174e75;letter-spacing:1px}
+.intro-video small,.video-banner small{font-size:calc(12.5px * var(--ui-scale));color:#233e50;font-weight:600}
+.video-banner{display:flex;width:100%;padding:12px 18px 12px 12px;margin-bottom:20px}
+.video-banner em{margin-left:auto;font-style:normal;font-weight:800;color:#0088C8;font-size:calc(14px * var(--ui-scale));white-space:nowrap}
+body.night .intro-video{background:#f4fbff}
+#modal[data-kind="video"]{max-width:min(1240px,calc(100% - 20px))}
+.video-frame{position:relative;width:100%;max-width:calc((90dvh - 230px) * 16 / 9);margin:0 auto;box-sizing:content-box;aspect-ratio:16/9;padding-bottom:60px;background:#EDF4F8;border:1px solid #BFE3F5;border-radius:6px;overflow:hidden}
+.video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+.video-note{font-size:calc(14px * var(--ui-scale));line-height:1.8;color:#233e50;margin:12px 0 8px;text-align:center}
+.video-chapters{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:6px}
+.video-chapters span{font-size:calc(13px * var(--ui-scale));font-weight:700;color:#174e75;background:#EAF6FD;border:1px solid #BFE3F5;border-radius:20px;padding:4px 12px}
+@media(max-width:760px){.intro-video{margin-top:10px;padding:7px 12px 7px 8px}.intro-video i,.video-banner i{width:32px;height:32px}.intro-video i:after,.video-banner i:after{left:12px;top:9px;border-left-width:11px;border-top-width:7px;border-bottom-width:7px}.video-frame{max-width:none}.video-banner em{display:none}}

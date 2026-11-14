@@ -24,7 +24,7 @@
   <meta name="twitter:description" content="探索三大 AI 實作課程，查看上課摘要、班次與報名名額。">
   <meta name="twitter:image" content="https://balli425.github.io/cta-ai-airport-city/assets/cta-airport-share-20261025.jpg">
   <link rel="icon" href="./assets/cta-logo-original.jpg">
-  <link rel="stylesheet" href="./style.css?v=20261025-7b">
+  <link rel="stylesheet" href="./style.css?v=20261114-video">
   <script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
 </head>
 <body class="panel-hidden">
@@ -36,6 +36,7 @@
     </a>
     <nav aria-label="主要導覽">
       <button class="nav-item active" data-view="explore">探索空港城</button>
+      <button class="nav-item" data-modal="video">課程影片</button>
       <button class="nav-item" data-modal="courses">課程一覽</button>
       <button class="nav-item" data-modal="about">關於築匠</button>
       <button class="nav-item" data-modal="history">學習紀錄</button>
@@ -68,9 +69,10 @@
         <div class="eyebrow"><i></i> 建築人的三大 AI 實作航線</div>
         <h1>築匠 <span>AI 空港城</span></h1>
         <p>從圖像、影片，到真正能用的工具。<br>選一棟建築，閱讀上課摘要。</p>
+        <button class="intro-video" data-modal="video"><i aria-hidden="true"></i><span><b>4 分鐘看懂三堂課</b><small>課程介紹影片・有旁白</small></span></button>
       </div>
       </div>
-      <div class="experience-toolbar" aria-label="內容探索"><button id="panel-toggle" aria-expanded="false">課程導航</button><button data-modal="schedule">上課資訊 ↗</button><button data-modal="history">學習紀錄</button></div>
+      <div class="experience-toolbar" aria-label="內容探索"><button id="panel-toggle" aria-expanded="false">課程導航</button><button data-modal="video">▶ 課程影片</button><button data-modal="schedule">上課資訊 ↗</button><button data-modal="history">學習紀錄</button></div>
       </div>
     </section>
     <aside class="course-panel" id="course-panel" aria-label="課程探索與詳細內容">
@@ -89,6 +91,6 @@
     <div id="modal-body"></div>
   </dialog>
   <div class="toast" role="status" id="toast"></div>
-  <script type="module" src="./app.js?v=20261114-closed"></script>
+  <script type="module" src="./app.js?v=20261114-video"></script>
 </body>
 </html>

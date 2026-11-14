@@ -43,10 +43,12 @@ function showModal(type) {
   if(type==='detail')type='summary';
   modal.dataset.kind=type;
   const c=data.courses.find(c=>c.id===current), body=$('#modal-body');
-  $('#modal-eyebrow').textContent={courses:'THREE WAYS TO BEGIN',schedule:'COURSES & REGISTRATION',about:'ABOUT CTARCH',summary:c.english+' / CLASS NOTES',detail:c.english,history:'LEARNING RECORDS',help:'HOW TO EXPLORE'}[type]||'';
-  $('#modal-title').textContent={courses:'選一棟建築，開始你的課程。',schedule:'下一堂，一起動手做。',about:'把專業，帶進 AI 的可能。',summary:c.name+' · 上課摘要',detail:c.name+' · 課程介紹',history:'一路動手做，一起累積。',help:'用自己的步調，探索空港城。'}[type]||'';
-  if(type==='courses'){
-    body.innerHTML=`<div class="course-grid">${data.courses.map(c=>`<article class="course-card" style="--card-color:${c.color}"><span class="big-num">${c.number}</span><h3>${c.name}</h3><p>${c.description}</p><button data-select="${c.id}">閱讀上課摘要 ↗</button></article>`).join('')}</div><div class="course-outcomes"><article><h3>一張圖，打開設計方向</h3><p>帶手繪或模型截圖，練習描述與修改，把想像變成可以討論的畫面。</p></article><article><h3>一個空間，說成一段故事</h3><p>用分鏡、運鏡、配樂與剪接，讓設計的情境與節奏被看見。</p></article><article><h3>一件工作，做成自己的工具</h3><p>帶真實題目來，練習整理依據、交代需求和逐項驗收。</p></article></div><p class="source-note">三大課程可依需求選擇；每次開班的範圍、時數與自備設備，以該班招生說明為準。</p>`;
+  $('#modal-eyebrow').textContent={video:'COURSE FILM · 約 4 分鐘',courses:'THREE WAYS TO BEGIN',schedule:'COURSES & REGISTRATION',about:'ABOUT CTARCH',summary:c.english+' / CLASS NOTES',detail:c.english,history:'LEARNING RECORDS',help:'HOW TO EXPLORE'}[type]||'';
+  $('#modal-title').textContent={video:'4 分鐘，看懂三堂課在學什麼。',courses:'選一棟建築，開始你的課程。',schedule:'下一堂，一起動手做。',about:'把專業，帶進 AI 的可能。',summary:c.name+' · 上課摘要',detail:c.name+' · 課程介紹',history:'一路動手做，一起累積。',help:'用自己的步調，探索空港城。'}[type]||'';
+  if(type==='video'){
+    body.innerHTML=`<div class="video-frame"><iframe src="./assets/course-intro-film.html?v=20261114" title="築匠 AI 課程介紹影片：基礎班、動畫班、AI 代理人班與三個實務案例" allow="autoplay; fullscreen" allowfullscreen loading="eager"></iframe></div><p class="video-note">點畫面開始播放（有旁白，請開聲音）。下方可暫停、跳段、全螢幕；鍵盤空白鍵播放／暫停、左右鍵換段。</p><div class="video-chapters"><span>基礎班 · 會用 AI</span><span>動畫班 · 做出作品</span><span>AI 代理人班 · 完成工作</span><span>三個建築實務案例</span></div><div class="schedule-action"><button class="primary" data-modal="courses">看三堂課的內容 <span>↗</span></button><button class="secondary" data-modal="schedule">查看班次與地點</button></div>`;
+  }else if(type==='courses'){
+    body.innerHTML=`<button class="video-banner" data-modal="video"><i aria-hidden="true"></i><span><b>先看 4 分鐘課程影片</b><small>三堂課學什麼、可以帶走什麼、三個實務案例</small></span><em>播放 ↗</em></button><div class="course-grid">${data.courses.map(c=>`<article class="course-card" style="--card-color:${c.color}"><span class="big-num">${c.number}</span><h3>${c.name}</h3><p>${c.description}</p><button data-select="${c.id}">閱讀上課摘要 ↗</button></article>`).join('')}</div><div class="course-outcomes"><article><h3>一張圖，打開設計方向</h3><p>帶手繪或模型截圖，練習描述與修改，把想像變成可以討論的畫面。</p></article><article><h3>一個空間，說成一段故事</h3><p>用分鏡、運鏡、配樂與剪接，讓設計的情境與節奏被看見。</p></article><article><h3>一件工作，做成自己的工具</h3><p>帶真實題目來，練習整理依據、交代需求和逐項驗收。</p></article></div><p class="source-note">三大課程可依需求選擇；每次開班的範圍、時數與自備設備，以該班招生說明為準。</p>`;
   }else if(type==='summary'){
     renderSummary();
   }else if(type==='schedule'){
@@ -56,7 +58,7 @@ function showModal(type) {
   }else if(type==='about'){
     body.innerHTML=`<img class="about-cover" src="./assets/cta-core-value.jpg" alt="築匠AI：為建築師打造的專業助推器，將人工智慧從概念轉化為建築實務的產能"><div class="about-brand"><img src="./assets/cta-logo-original.jpg" alt="CTArch LOGO"><div><h3>築匠建築師事務所</h3><p class="dialog-copy">建築 × AI × 實務協作</p></div></div><div class="dialog-copy"><p>從建築與設計工作的真實題目出發，把 AI 帶進圖像、空間敘事與日常工作流程。</p><p>我們希望課堂留下的，不只是工具名稱，而是能拿來做事的方法：整理依據、說清楚需求、親手練習、逐項驗收。</p><h3>三棟建築，三種實作方式</h3><p>AI 基礎班探索圖片、文書與小工具；AI 動畫班串起概念圖、分鏡與影片；AI 代理人班把規則、資料與驗收連成可重複使用的工作流。</p></div><p class="source-note">築匠 AI 空港城 · 建築 × AI × 實務協作</p>`;
   }else if(type==='help'){
-    body.innerHTML='<div class="dialog-copy"><h3>看見全貌</h3><p>一般導覽以左鍵拖曳平移、中鍵拖曳旋轉、滾輪縮放；觸控可用手勢操作。「全景」會回到整座城市的總覽。</p><h3>像遊戲一樣自由漫遊</h3><p>點「自由漫遊」進入城市。W/S 前後、A/D 左右，按住滑鼠左鍵拖曳轉向；Q/E 降低或升高，Shift 加速。按 Esc 或「全景」返回總覽。輸入欄與課程視窗不會接收移動按鍵。</p><h3>走進一棟建築</h3><p>點選城市內的課程建築、標籤或課程清單，直接閱讀上課摘要；可切換重點導讀和教材頁面。使用鍵盤時，可按 Tab 移至課程清單，再用左右或上下方向鍵切換。</p><h3>換一種氛圍</h3><p>切換日間與夜間，或暫停場景動畫。減少動態效果的系統偏好會自動套用。</p><h3>準備上課</h3><p>「課程與報名」會列出已有的班次資訊，並提供開放班次的報名入口。</p></div>';
+    body.innerHTML='<div class="dialog-copy"><h3>看見全貌</h3><p>一般導覽以左鍵拖曳平移、中鍵拖曳旋轉、滾輪縮放；觸控可用手勢操作。「全景」會回到整座城市的總覽。</p><h3>像遊戲一樣自由漫遊</h3><p>點「自由漫遊」進入城市。W/S 前後、A/D 左右，按住滑鼠左鍵拖曳轉向；Q/E 降低或升高，Shift 加速。按 Esc 或「全景」返回總覽。輸入欄與課程視窗不會接收移動按鍵。</p><h3>走進一棟建築</h3><p>點選城市內的課程建築、標籤或課程清單，直接閱讀上課摘要；可切換重點導讀和教材頁面。使用鍵盤時，可按 Tab 移至課程清單，再用左右或上下方向鍵切換。</p><h3>換一種氛圍</h3><p>切換日間與夜間，或暫停場景動畫。減少動態效果的系統偏好會自動套用。</p><h3>先看課程影片</h3><p>「課程影片」約 4 分鐘，有旁白，快速了解三堂課的內容與實務案例。</p><h3>準備上課</h3><p>「課程與報名」會列出已有的班次資訊，並提供開放班次的報名入口。</p></div>';
   }
   if(!modal.open) modal.showModal();
   modal.scrollTop=0;
@@ -82,6 +84,7 @@ $('#course-tabs').addEventListener('keydown',e=>{
   n=e.key==='Home'?0:e.key==='End'?2:(n+(['ArrowRight','ArrowDown'].includes(e.key)?1:2))%3;
   select(list[n].id,true);$('#tab-'+list[n].id).focus();
 });
+modal.addEventListener('close',()=>{modal.querySelector('.video-frame iframe')?.remove();});
 modal.addEventListener('click',e=>{if(e.target===modal){const r=modal.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)modal.close();}});
 $('#sound').addEventListener('click',()=>showModal('help'));
 $('#reset').addEventListener('click',()=>{world?.reset();$('#roam').setAttribute('aria-pressed','false');});
