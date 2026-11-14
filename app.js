@@ -15,7 +15,7 @@ function select(id, focus=false) {
   current=id;
   document.documentElement.style.setProperty('--accent',c.color);
   document.querySelectorAll('[data-course]').forEach(el=>{if(el.getAttribute('role')==='tab')el.setAttribute('aria-selected',String(el.dataset.course===id));});
-  document.querySelectorAll('.island-label').forEach(el=>{el.classList.toggle('selected',el.dataset.island===id);el.setAttribute('aria-pressed',String(el.dataset.island===id));});
+  document.querySelectorAll('.island-label[data-island]').forEach(el=>{el.classList.toggle('selected',el.dataset.island===id);el.setAttribute('aria-pressed',String(el.dataset.island===id));});
   const panel=$('#course-detail');
   panel.setAttribute('aria-labelledby','tab-'+id);
   panel.innerHTML=`<div class="detail-eyebrow">${c.english}</div><h3>${c.tagline}</h3><p class="detail-desc">${c.description}</p><ul class="topic-list">${c.topics.map(t=>`<li>${t}</li>`).join('')}</ul><div class="outcome"><span>在這棟建築，你會學到</span><p>${c.outcome}</p></div><div class="detail-actions"><button class="primary" data-modal="schedule" data-schedule-course="${c.id}">查看班次與地點 <span>↗</span></button><button class="secondary" data-modal="summary">上課摘要</button></div>`;
@@ -97,8 +97,8 @@ $('#motion').addEventListener('click',()=>{paused=!paused;motionLabel();world?.s
 try{
   const resources=await Promise.all(['./courses.json?v=20261114-closed','./summaries.json','./summary-pages.json'].map(async url=>{const response=await fetch(url);if(!response.ok)throw Error('課程資料載入失敗');return response.json()}));
   [data,summaries,pageManifest]=resources;select('foundation');
-  const {createWorld}=await import('./world.js?v=20261023-6');
-  world=createWorld($('#scene'),$('#labels'),data.courses,id=>openSummary(id,false));
+  const {createWorld}=await import('./world.js?v=20261114-film2');
+  world=createWorld($('#scene'),$('#labels'),data.courses,id=>openSummary(id,false),()=>showModal('video'));
   world.setPaused(paused);$('#loading').hidden=true;
 }catch(error){
   console.error('空港城初始化失敗',error);$('#loading').hidden=true;$('#scene-error').hidden=false;

@@ -4,7 +4,7 @@ import * as T from 'three';
 import { createCityLife } from './city-life.js?v=20261023-6';
 import { OrbitControls } from './vendor/OrbitControls.js';
 
-export function createWorld(container, labelLayer, courses, onSelect) {
+export function createWorld(container, labelLayer, courses, onSelect, onFilm) {
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobile=innerWidth<761;
   const scene=new T.Scene();
@@ -382,6 +382,82 @@ export function createWorld(container, labelLayer, courses, onSelect) {
     l.computeLineDistances();scene.add(l);
     const dot=new T.Mesh(new T.SphereGeometry(.055,8,6),new T.MeshBasicMaterial({color:[0x789966,0xcf9a75,0x8a9fab][i]}));scene.add(dot);connections.push({path,dot,offset:i/3});
   });
+  // Open-air course-film cinema on the southern waterfront: a pilotis screen, tiered seats and a timber deck.
+  const BRAND=0x00a1e9,film={x:2.5,z:6.9};
+  const filmFont='"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif';
+  const filmCanvas=document.createElement('canvas');filmCanvas.width=1024;filmCanvas.height=576;
+  const filmTexture=new T.CanvasTexture(filmCanvas);filmTexture.colorSpace=T.SRGBColorSpace;filmTexture.anisotropy=4;
+  const filmSlides=4;let filmSlide=0,filmClock=0;
+  function drawFilm(i){
+    const ctx=filmCanvas.getContext('2d'),w=1024,h=576,blue='#00A1E9',deep='#0088C8',ink='#1F3442';
+    ctx.fillStyle='#FDFEFF';ctx.fillRect(0,0,w,h);
+    ctx.strokeStyle='rgba(0,161,233,.09)';ctx.lineWidth=1;
+    for(let gx=0;gx<w;gx+=32){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,h);ctx.stroke();}
+    for(let gy=0;gy<h;gy+=32){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(w,gy);ctx.stroke();}
+    ctx.strokeStyle=blue;ctx.lineWidth=6;ctx.strokeRect(16,16,w-32,h-32);
+    ctx.strokeStyle='#BFE3F5';ctx.lineWidth=2;ctx.strokeRect(30,30,w-60,h-60);
+    ctx.fillStyle='#FDFEFF';ctx.fillRect(32,470,w-64,74);
+    ctx.strokeStyle=blue;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(32,470);ctx.lineTo(w-32,470);ctx.stroke();
+    ctx.fillStyle=deep;ctx.font='700 26px '+filmFont;ctx.textBaseline='middle';ctx.textAlign='left';ctx.fillText('築匠建築師事務所　CTArch',58,508);
+    ctx.textAlign='right';ctx.fillStyle=ink;ctx.fillText('課程介紹影片・約 4 分鐘',w-58,508);
+    for(let k=0;k<filmSlides;k++){ctx.fillStyle=k===i?blue:'#DDF0FA';ctx.fillRect(w/2-150+k*78,456,66,8);}
+    ctx.textAlign='center';
+    const line=(text,y,size,color,weight=300)=>{ctx.fillStyle=color;ctx.font=weight+' '+size+'px '+filmFont;ctx.fillText(text,w/2,y);};
+    if(i===0){
+      line('COURSE FILM',96,26,deep,700);
+      line('4 分鐘看懂',196,92,ink);
+      line('三堂課',318,112,blue,400);
+      ctx.strokeStyle=blue;ctx.lineWidth=5;ctx.beginPath();ctx.arc(w-170,250,62,0,Math.PI*2);ctx.stroke();
+      ctx.fillStyle=blue;ctx.beginPath();ctx.moveTo(w-190,216);ctx.lineTo(w-190,284);ctx.lineTo(w-130,250);ctx.closePath();ctx.fill();
+      line('點這座螢幕播放（有旁白）',414,30,ink,700);
+    }else if(i===1){
+      line('學了，',170,96,ink);
+      line('真的用得上嗎？',300,104,blue,400);
+      line('把事務所每天在用的 AI 做法，帶進課堂',408,30,deep,700);
+    }else if(i===2){
+      [['3F','AI 代理人班','完成工作'],['2F','動畫班','做出作品'],['1F','基礎班','會用 AI']].forEach(([f,name,goal],k)=>{
+        const y=92+k*118;
+        ctx.strokeStyle=blue;ctx.lineWidth=4;ctx.fillStyle='#FDFEFF';ctx.fillRect(150,y,520,100);ctx.strokeRect(150,y,520,100);
+        ctx.textAlign='left';ctx.fillStyle=blue;ctx.font='300 56px '+filmFont;ctx.fillText(f,180,y+52);
+        ctx.fillStyle=ink;ctx.font='700 46px '+filmFont;ctx.fillText(name,290,y+52);
+        ctx.fillStyle=deep;ctx.font='700 38px '+filmFont;ctx.fillText('▼ '+goal,700,y+52);
+      });
+      ctx.textAlign='center';
+    }else{
+      line('帶自己的題目來',130,40,deep,700);
+      line('做到能用',272,128,blue,300);
+      line('三個建築實務案例・從手稿到全套圖說',396,30,ink,700);
+    }
+    filmTexture.needsUpdate=true;
+  }
+  drawFilm(0);
+  if(document.fonts?.ready)document.fonts.ready.then(()=>drawFilm(filmSlide));
+  {
+    const {x,z}=film,fw=3.9,fh=2.35,fy=2.3,bottom=fy-fh/2;
+    box(x,.5,z+.95,4.6,.1,2.1,palette.wood);
+    for(let i=0;i<10;i++)box(x-2.07+i*.46,.56,z+.95,.03,.02,2.08,palette.sand);
+    for(let r=0;r<3;r++){
+      const hgt=.08+r*.11,zr=z+.85+r*.5,top=.55+hgt;
+      box(x,.55+hgt/2,zr,3.7,hgt,.48,palette.cream);
+      for(let s=0;s<5;s++){const sx=x-1.44+s*.72;box(sx,top+.05,zr-.02,.44,.08,.34,palette.blue);box(sx,top+.2,zr+.15,.44,.3,.05,palette.blue);}
+    }
+    for(const dx of [-1.55,1.55])cylinder(x+dx,(.55+bottom)/2,z,.07,bottom-.55,palette.white);
+    box(x,fy,z,fw,fh,.16,palette.white);
+    box(x,fy,z+.06,fw-.22,fh-.22,.08,palette.dark);
+    picture(x,fy,z+.104,fw-.34,(fw-.34)*9/16,filmTexture).material.toneMapped=false;
+    box(x,bottom-.03,z+.06,fw,.08,.14,BRAND);
+    box(x,fy+fh/2+.1,z+.12,fw+.34,.1,.58,palette.white);
+    box(x+fw/2+.16,fy+.28,z-.08,.2,fh+.95,.42,BRAND);
+    box(x-fw/2-.1,1.2,z-.02,.08,1.4,.08,palette.gold);
+    for(const dx of [-2.15,2.15])cylinder(x+dx,.38,z+1.95,.04,.5,palette.dark);
+    const hit=new T.Mesh(new T.BoxGeometry(fw+.4,fh+1.7,1.2),new T.MeshBasicMaterial({visible:false}));
+    hit.position.set(x,fy-.5,z+.3);hit.userData.film=true;scene.add(hit);colliders.push(hit);
+    nightLighting.pool(x,z+1.2,1.7);
+    const b=document.createElement('button');b.className='island-label film-label';b.dataset.modal='video';
+    b.style.setProperty('--island-color','#00A1E9');b.setAttribute('aria-label','播放課程介紹影片，約 4 分鐘，有旁白');
+    b.innerHTML='<span class="number">▶</span><span class="label-name">課程影片・4 分鐘</span>';
+    labelLayer.append(b);labels.push({element:b,at:new T.Vector3(x,fy+fh/2+.55,z),id:'film'});
+  }
   const cityLife=createCityLife(scene,palette);
   // A few off-shore islets, reed beds and small boats complete the waterfront.
   for(const [x,z,r] of []){
@@ -417,6 +493,7 @@ export function createWorld(container, labelLayer, courses, onSelect) {
     if(start.distanceTo(new T.Vector2(e.clientX,e.clientY))>6)return;
     const r=renderer.domElement.getBoundingClientRect();mouse.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);
     ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(colliders,false)[0];
+    if(hit?.object.userData.film){onFilm?.();return;}
     if(hit){const id=hit.object.userData.course;selected=id;onSelect(id);focus(id);}
   });
   renderer.domElement.addEventListener('pointermove',e=>{
@@ -466,6 +543,7 @@ export function createWorld(container, labelLayer, courses, onSelect) {
     lights.forEach((m,i)=>{if(i%2)m.material.opacity=nightBlend*.4;else m.visible=nightBlend>.25;});
     nightLighting.update(nightBlend);
     cityLife.update(time);
+    if(!paused){filmClock+=delta;if(filmClock>3.4){filmClock=0;filmSlide=(filmSlide+1)%filmSlides;drawFilm(filmSlide);}}
     boats.forEach(b=>{b.group.position.y=-.45+Math.sin(time*1.5+b.phase)*.025;b.group.rotation.y=b.phase+Math.sin(time*.1)*.2;b.group.position.x=b.x+Math.sin(time*.12+b.phase)*.3;});
     connections.forEach(c=>c.dot.position.copy(c.path.getPoint((time*.08+c.offset)%1)));
     const w=container.clientWidth,h=container.clientHeight;
@@ -475,16 +553,17 @@ export function createWorld(container, labelLayer, courses, onSelect) {
     const placed=[];
     labels.forEach(l=>{
       const p=l.at.clone().project(camera),lw=l.element.offsetWidth||170,lh=l.element.offsetHeight||50;
-      let x=(p.x*.5+.5)*w,y=(-p.y*.5+.5)*h;
+      let x=(p.x*.5+.5)*w,y=(-p.y*.5+.5)*h,blocked=false;
       x=Math.max(lw/2+8,Math.min(w-lw/2-8,x));
       for(const rect of [...obstacles,...placed]){
         const left=rect.left-sceneRect.left,right=rect.right-sceneRect.left,top=rect.top-sceneRect.top,bottom=rect.bottom-sceneRect.top;
         if(x+lw/2>left-8&&x-lw/2<right+8&&y+lh/2>top-8&&y-lh/2<bottom+8){
-          y=rect===obstacles[2]?bottom+lh/2+12:top-lh/2-12;
+          blocked=true;y=rect===obstacles[2]?bottom+lh/2+12:top-lh/2-12;
         }
       }
       l.element.style.left=x+'px';l.element.style.top=y+'px';
-      l.element.hidden=p.z>1||p.x<-1.1||p.x>1.1||p.y<-1.1||p.y>1.1;
+      // The film label only makes sense beside its screen; when the HUD covers it, the HUD buttons take over.
+      l.element.hidden=p.z>1||p.x<-1.1||p.x>1.1||p.y<-1.1||p.y>1.1||(l.id==='film'&&blocked);
       if(!l.element.hidden)placed.push({left:sceneRect.left+x-lw/2,right:sceneRect.left+x+lw/2,top:sceneRect.top+y-lh/2,bottom:sceneRect.top+y+lh/2});
     });
     renderer.render(scene,camera);

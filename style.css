@@ -81,3 +81,7 @@ body.night .intro-video{background:#f4fbff}
 .video-chapters{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-bottom:6px}
 .video-chapters span{font-size:calc(13px * var(--ui-scale));font-weight:700;color:#174e75;background:#EAF6FD;border:1px solid #BFE3F5;border-radius:20px;padding:4px 12px}
 @media(max-width:760px){.intro-video{margin-top:10px;padding:7px 12px 7px 8px}.intro-video i,.video-banner i{width:32px;height:32px}.intro-video i:after,.video-banner i:after{left:12px;top:9px;border-left-width:11px;border-top-width:7px;border-bottom-width:7px}.video-frame{max-width:none}.video-banner em{display:none}}
+.film-label{border:2px solid #00A1E9}
+.film-label .number{font-size:calc(12px * var(--ui-scale));padding-left:2px}
+.film-label .label-name{color:#0088C8;font-weight:800}
+.film-label:after{content:"▶"}
