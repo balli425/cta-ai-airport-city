@@ -112,19 +112,19 @@
         "title": "AI 代理人實戰課程 · 第五梯台北銘傳班",
         "time": "10:00–17:00",
         "location": "銘傳大學基河校區 J313",
-        "status": "開放報名 · 確定開課",
+        "status": "報名已截止 · 確定開課",
         "type": "upcoming",
         "courseId": "agent",
         "venueId": "taipei",
-        "registrationStatus": "open",
+        "registrationStatus": "closed",
         "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLScYwKprUM-gYW0zJ_1xGKyzUwx7KmYgn1WCjlYLc_wKqNzMUQ/viewform?usp=header",
-        "registrationNote": "本梯確定開課，最多20人；核款及錄取確認後完成報名。",
+        "registrationNote": "本梯報名已截止，已報名學員請依課程通知準備。",
         "feeNote": "一般學費5,000元（含稅）；符合表單優惠資格者4,500元，須附有效證明。",
         "availability": {
           "capacity": 20,
-          "responses": 8,
-          "checkedAt": "2026-11-11T22:01:17+08:00",
-          "reservedSeats": 1
+          "responses": 9,
+          "checkedAt": "2026-11-14T11:19:16+08:00",
+          "reservedSeats": 2
         }
       },
       {
