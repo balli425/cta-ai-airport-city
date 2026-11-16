@@ -75,7 +75,7 @@ export const works=[
      '圖文並茂版：110～114 年',
      '兩種介面共用同一份題庫'
    ]},
-  {id:'permit',thumb:'permit-fee',tag:'試算工具',title:'建照申請掛件費用計算系統',url:null,
+  {id:'permit',thumb:'permit-fee',tag:'試算工具',title:'建照申請掛件費用計算系統',url:'https://balli425.github.io/hsinchu-building-permit-calculator/',disclaimer:'研究用，非正式掛件使用',
    summary:'依建築師酬金標準表、法定工程造價與協檢作業收費標準，自動計算建照掛件與領照應繳的各項費用，並輸出 PDF 明細。',
    period:'2026-05-18～2026-08-05（V1～V4.4）',
    need:'建築師掛件、領照時，一次算出應繳的各項費用並輸出明細，本縣與外縣市建築師都能使用。',
