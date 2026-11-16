@@ -1,4 +1,4 @@
-import { scheduleMarkup } from './schedule.js?v=20261116-seats';
+import { scheduleMarkup } from './schedule.js?v=20261116-contact';
 import { featured, works, decks, categories } from './works.js?v=20261116-stage5';
 import { recordVisit, recordUse } from './counter.js?v=20261116-count';
 const $ = s => document.querySelector(s);
@@ -91,8 +91,8 @@ function showModal(type) {
   if(type==='detail')type='summary';
   modal.dataset.kind=type;recordUse(type);
   const c=data.courses.find(c=>c.id===current), body=$('#modal-body');
-  $('#modal-eyebrow').textContent={works:'AI AGENT LAB · 研究成果',deck:'RESEARCH DECK · '+deckOf().pages+' 頁',video:'COURSE FILM · 約 4 分鐘',courses:'THREE WAYS TO BEGIN',schedule:'COURSES & REGISTRATION',about:'ABOUT CTARCH',summary:c.english+' / CLASS NOTES',detail:c.english,history:'LEARNING RECORDS',help:'HOW TO EXPLORE'}[type]||'';
-  $('#modal-title').textContent={works:'用 AI 代理人做出來的研究成果。',deck:deckOf().title,video:'4 分鐘，看懂三堂課在學什麼。',courses:'選一棟建築，開始你的課程。',schedule:'下一堂，一起動手做。',about:'把專業，帶進 AI 的可能。',summary:c.name+' · 上課摘要',detail:c.name+' · 課程介紹',history:'一路動手做，一起累積。',help:'用自己的步調，探索空港城。'}[type]||'';
+  $('#modal-eyebrow').textContent={works:'AI AGENT LAB · 研究成果',deck:'RESEARCH DECK · '+deckOf().pages+' 頁',video:'COURSE FILM · 約 4 分鐘',courses:'THREE WAYS TO BEGIN',schedule:'COURSES & REGISTRATION',about:'ABOUT CTARCH',contact:'CONTACT CTARCH',summary:c.english+' / CLASS NOTES',detail:c.english,history:'LEARNING RECORDS',help:'HOW TO EXPLORE'}[type]||'';
+  $('#modal-title').textContent={works:'用 AI 代理人做出來的研究成果。',deck:deckOf().title,video:'4 分鐘，看懂三堂課在學什麼。',courses:'選一棟建築，開始你的課程。',schedule:'下一堂，一起動手做。',about:'把專業，帶進 AI 的可能。',contact:'聯絡築匠建築師事務所',summary:c.name+' · 上課摘要',detail:c.name+' · 課程介紹',history:'一路動手做，一起累積。',help:'用自己的步調，探索空港城。'}[type]||'';
   if(type==='works'){
     body.innerHTML=worksMarkup();
   }else if(type==='deck'){
@@ -109,6 +109,8 @@ function showModal(type) {
     body.innerHTML=`<div class="dialog-copy"><p>從設計圖像、空間影片，到日常工具，課程隨著真實工作題目持續前進。</p></div><div class="stats-grid">${data.statistics.map(s=>`<article class="stat-card"><b>${s.value}<small>${s.unit}</small></b><h3>${s.label}</h3><p>${s.basis}</p></article>`).join('')}</div>${data.history.map(h=>`<article class="history-item"><span class="badge">${h.date} · ${h.value}</span><h3>${h.name}</h3><p>${h.note}</p></article>`).join('')}<details class="dialog-copy"><summary>統計口徑說明</summary><p>課程與演講以人次累計，同一人參加不同課程會分別計入。報名人數與實際出席人數分別計算。</p></details><div class="schedule-action"><button class="primary" data-modal="courses">找到適合你的課程 <span>↗</span></button></div>`;
   }else if(type==='about'){
     body.innerHTML=`<img class="about-cover" src="./assets/cta-core-value.jpg" alt="築匠AI：為建築師打造的專業助推器，將人工智慧從概念轉化為建築實務的產能"><div class="about-brand"><img src="./assets/cta-logo-original.jpg" alt="CTArch LOGO"><div><h3>築匠建築師事務所</h3><p class="dialog-copy">建築 × AI × 實務協作</p></div></div><div class="dialog-copy"><p>從建築與設計工作的真實題目出發，把 AI 帶進圖像、空間敘事與日常工作流程。</p><p>我們希望課堂留下的，不只是工具名稱，而是能拿來做事的方法：整理依據、說清楚需求、親手練習、逐項驗收。</p><h3>三棟建築，三種實作方式</h3><p>AI 基礎班探索圖片、文書與小工具；AI 動畫班串起概念圖、分鏡與影片；AI 代理人班把規則、資料與驗收連成可重複使用的工作流。</p></div><p class="source-note">築匠 AI 空港城 · 建築 × AI × 實務協作</p>`;
+  }else if(type==='contact'){
+    body.innerHTML=`<div class="about-brand"><img src="./assets/cta-logo-original.jpg" alt="築匠 LOGO"><div><h3>築匠建築師事務所</h3><p>CTArch Architects</p></div></div><div class="contact-details"><p><b>地址</b><br><a href="https://maps.google.com/?q=新竹市東區國華街12號4樓" target="_blank" rel="noopener noreferrer">300080 新竹市東區國華街 12 號 4 樓</a></p><p><b>電話</b><br><a href="tel:036211196">03-6211-196</a></p><p><b>Email</b><br><a href="mailto:ctarch2014@gmail.com">ctarch2014@gmail.com</a></p></div>`;
   }else if(type==='help'){
     body.innerHTML='<div class="dialog-copy"><h3>看見全貌</h3><p>一般導覽以左鍵拖曳平移、中鍵拖曳旋轉、滾輪縮放；觸控可用手勢操作。「全景」會回到整座城市的總覽。</p><h3>像遊戲一樣自由漫遊</h3><p>點「自由漫遊」進入城市。W/S 前後、A/D 左右，按住滑鼠左鍵拖曳轉向；Q/E 降低或升高，Shift 加速。按 Esc 或「全景」返回總覽。輸入欄與課程視窗不會接收移動按鍵。</p><h3>走進一棟建築</h3><p>點選城市內的課程建築、標籤或課程清單，直接閱讀上課摘要；可切換重點導讀和教材頁面。使用鍵盤時，可按 Tab 移至課程清單，再用左右或上下方向鍵切換。</p><h3>換一種氛圍</h3><p>切換日間與夜間，或暫停場景動畫。減少動態效果的系統偏好會自動套用。</p><h3>先看課程影片</h3><p>「課程影片」約 4 分鐘，有旁白，快速了解三堂課的內容與實務案例。</p><h3>準備上課</h3><p>「課程與報名」會列出已有的班次資訊，並提供開放班次的報名入口。</p></div>';
   }
@@ -158,8 +160,8 @@ $('#motion').addEventListener('click',()=>{paused=!paused;motionLabel();world?.s
 try{
   const resources=await Promise.all(['./courses.json?v=20261116-seats','./summaries.json','./summary-pages.json'].map(async url=>{const response=await fetch(url);if(!response.ok)throw Error('課程資料載入失敗');return response.json()}));
   [data,summaries,pageManifest]=resources;select('foundation');
-  const {createWorld}=await import('./world.js?v=20261116-label-fix');
-  world=createWorld($('#scene'),$('#labels'),data.courses,id=>openSummary(id,false),()=>showModal('video'),()=>showModal('works'),allWorks().map(w=>[w.thumb,w.title.split('｜')[0],w.tag]));
+  const {createWorld}=await import('./world.js?v=20261116-contact');
+  world=createWorld($('#scene'),$('#labels'),data.courses,id=>openSummary(id,false),()=>showModal('video'),()=>showModal('works'),allWorks().map(w=>[w.thumb,w.title.split('｜')[0],w.tag]),()=>showModal('contact'));
   world.setPaused(paused);$('#loading').hidden=true;
 }catch(error){
   console.error('空港城初始化失敗',error);$('#loading').hidden=true;$('#scene-error').hidden=false;

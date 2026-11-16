@@ -4,7 +4,7 @@ import * as T from 'three';
 import { createCityLife } from './city-life.js?v=20261023-6';
 import { OrbitControls } from './vendor/OrbitControls.js';
 
-export function createWorld(container, labelLayer, courses, onSelect, onFilm, onWorks, worksList) {
+export function createWorld(container, labelLayer, courses, onSelect, onFilm, onWorks, worksList, onContact) {
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobile=innerWidth<761;
   const scene=new T.Scene();
@@ -354,6 +354,8 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm, on
   for(let i=0;i<8;i++){let a=i*Math.PI/4;cylinder(Math.cos(a)*1.35,1.6,.75+Math.sin(a)*1.35,.025,2.2,palette.gold);}
   cylinder(0,.63,.75,.7,.24,palette.white);
   picture(0,1.55,.85,1.13,1.13,logoTexture);
+  const hubHit=new T.Mesh(new T.BoxGeometry(1.45,1.45,.65),new T.MeshBasicMaterial({visible:false}));
+  hubHit.position.set(0,1.55,1.0);hubHit.userData.contact=true;scene.add(hubHit);colliders.push(hubHit);
   box(0,1.55,.79,1.23,1.23,.08,palette.white);
   cylinder(0,1,.8,.035,.8,palette.gold);
   // Footbridges follow explicit curves, with repeated timber treads and handrails.
@@ -555,6 +557,7 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm, on
     if(start.distanceTo(new T.Vector2(e.clientX,e.clientY))>6)return;
     const r=renderer.domElement.getBoundingClientRect();mouse.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);
     ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(colliders,false)[0];
+    if(hit?.object.userData.contact){onContact?.();return;}
     if(hit?.object.userData.film){onFilm?.();return;}
     if(hit?.object.userData.works){onWorks?.();return;}
     if(hit){const id=hit.object.userData.course;selected=id;onSelect(id);focus(id);}
