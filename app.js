@@ -1,5 +1,5 @@
 import { scheduleMarkup } from './schedule.js?v=20261114-closed';
-import { featured, works, deck } from './works.js?v=20261116-works';
+import { featured, works, deck } from './works.js?v=20261116-note';
 import { recordVisit, recordUse } from './counter.js?v=20261116-count';
 const $ = s => document.querySelector(s);
 const modal = $('#modal'), toastEl = $('#toast');
@@ -48,7 +48,7 @@ function worksMarkup(){
   return `<div class="dialog-copy works-lead"><p>這些網頁由 AI 代理人寫程式、自我檢查、發佈上線；建築師負責出題、審閱與驗收。每一件都附上研究過程：需求是什麼、怎麼做、做出什麼。</p></div>
   <article class="work-feature"><img src="./assets/works/${f.thumb}.jpg" alt="${f.title}：線上 3D 場景鳥瞰" width="960" height="600"><div class="work-feature-body"><span class="work-tag">${f.tag}</span><h3>${f.title}</h3><p>${f.summary}</p><div class="work-stats">${f.stats.map(([b,s])=>`<span><b>${b}</b>${s}</span>`).join('')}</div><div class="schedule-action"><button class="primary" data-modal="deck" data-deck-page="0">翻閱研究簡報・${deck.pages} 頁 <span>↗</span></button><a class="secondary" data-work="${f.id}" href="${f.url}" target="_blank" rel="noopener noreferrer">走進 3D 場景 ↗</a></div>${processMarkup(f)}</div></article>
   <div class="work-grid">${works.map(card).join('')}</div>
-  <p class="source-note">網頁內容與數字以各網頁現況為準；會員專用的試算工具與名片庫僅展示畫面，不提供連結。</p>`;
+  <p class="source-note">網頁內容與數字以各網頁現況為準；部分作品僅展示研究成果畫面。</p>`;
 }
 function deckMarkup(){
   deckPage=Math.max(0,Math.min(deck.pages-1,deckPage));
