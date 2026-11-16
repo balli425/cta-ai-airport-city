@@ -1,5 +1,5 @@
 import { scheduleMarkup } from './schedule.js?v=20261114-closed';
-import { featured, works, decks, categories } from './works.js?v=20261116-stage1';
+import { featured, works, decks, categories } from './works.js?v=20261116-stage2';
 import { recordVisit, recordUse } from './counter.js?v=20261116-count';
 const $ = s => document.querySelector(s);
 const modal = $('#modal'), toastEl = $('#toast');

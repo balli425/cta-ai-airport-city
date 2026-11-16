@@ -22,6 +22,12 @@ decks.conch={
   ]
 };
 
+decks.theatre={
+  title:'《燈火未熄》創作紀實',
+  pages:11,
+  dir:'./assets/works/theatre-deck'
+};
+
 export const featured={
   id:'conch',cat:'3d',deck:'conch',thumb:'conch-museum',tag:'3D 場景・研究簡報',
   title:'築匠海洋館｜從 AI 生成圖到走得進去的 3D 場景',
@@ -137,5 +143,56 @@ export const works=[
    result:[
      '舊資料庫 389 筆全數轉入；一次掃描 177 張，新增 154 筆、更新 14 筆',
      '雲端主檔超過 560 筆；搜尋、分組、分類篩選、一鍵撥號、匯出 vCard'
+   ]},
+  {id:'cafe',cat:'media',thumb:'midnight-cafe',tag:'動畫系列',title:'建築師深夜咖啡館小劇場｜奶茶麻吉',
+   summary:'把建築實務裡的責任、合作與職場處境，改編成紙雕風格的直式短片，由貓「奶茶」與狗「麻吉」演出；已在 YouTube、Facebook、Instagram、TikTok 公開 8 集。',
+   period:'2026-07-18 起，持續製作中',
+   need:'把建築人的日常與職場課題，轉成大眾看得懂、帶點幽默的短片；角色與畫風要固定，能逐集穩定製作。',
+   method:[
+     '改編自建築師本人的深夜隨筆，每集拆成約 20～30 段分鏡',
+     'AI 生成紙雕風格畫面與動畫，配上固定聲線配音、AI 配樂與中英雙語字幕',
+     '每一張畫面、每一段動畫都逐格檢查角色是否一致'
+   ],
+   result:[
+     '已公開 8 集（MM000～MM007），每集 20 秒到 3 分鐘',
+     '四個平台同步上線，全部附中英字幕'
+   ],
+   series:[
+     {yt:'M04hgvshJeE',title:'MM000 麻吉奶茶自我介紹'},
+     {yt:'prIkFCtYx28',title:'MM001 長長清單與剛剛好的家'},
+     {yt:'QeFV87ikP8o',title:'MM002 小鮮肝與老肝'},
+     {yt:'8Gi9hjXZeWA',title:'MM003 大家的事務所'},
+     {yt:'Qq5XFlqALYg',title:'MM004 還沒決定，就先蓋嗎？'},
+     {yt:'8x-db3xgLYE',title:'MM005 努力掃就對了'},
+     {yt:'yRPDEdgLSfs',title:'MM006 模型很準，答案不一定'},
+     {yt:'aPPyRcDFIdk',title:'MM007 證照不是終點線'}
+   ]},
+  {id:'sloth',cat:'media',thumb:'sloth-taichi',tag:'AI 動畫',title:'樹懶打太極｜動作轉移動畫',
+   video:{src:'./assets/works/video/sloth-taichi.mp4',portrait:true,label:'播放影片・2 分 20 秒'},
+   summary:'把一整套太極示範動作，轉給自創的卡通樹懶角色，做成 2 分 20 秒的直式短片。',
+   period:'2026-08-21～2026-08-24',
+   need:'讓自創角色完整演出一整套太極，長度與動作節奏和示範一致，畫面固定、構圖從容。',
+   method:[
+     '從示範動作抽出骨架，驅動樹懶角色逐段生成，再放大為直式 1080p',
+     '補畫竹林場景並對齊角色比例，讓角色始終留在畫面中',
+     '長時間生成以自動監看與檢查穩定跑完全片'
+   ],
+   result:[
+     '2 分 20 秒直式成片，附片名字卡與 AI 配樂',
+     '比較三種技術路線的取捨，整理成後續動畫製作的準則'
+   ]},
+  {id:'theatre',cat:'media',thumb:'theatre-trailer',tag:'AI 動畫・預告片',title:'舞台劇預告《燈火未熄》',deck:'theatre',
+   video:{src:'./assets/works/video/theatre-trailer.mp4',label:'播放預告・45 秒'},
+   summary:'把一組 AI 舞台劇場景圖，做成具電影預告張力的 45 秒宣傳片，保留台口、布景與追光的舞台質感。',
+   period:'2026-08-04（單日完成）',
+   need:'讓靜態的舞台場景動起來，做成有故事節奏的預告片，同時保留舞台劇的質感。',
+   method:[
+     '依故事起承轉合把場景拆成 7 段，每段只生成一次動畫，不重複、不倒播',
+     '四段材質文字動畫作為章節重擊，搭配 AI 配樂與快慢交替的剪輯',
+     '從第 1 版修到第 6 版：延長片頭、淘汰後製假光、重建聲畫節奏'
+   ],
+   result:[
+     '45 秒 1080p 正式預告片',
+     '11 頁創作紀實簡報'
    ]}
 ];
