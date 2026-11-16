@@ -1,4 +1,4 @@
-import { scheduleMarkup } from './schedule.js?v=20261114-closed';
+import { scheduleMarkup } from './schedule.js?v=20261116-seats';
 import { featured, works, decks, categories } from './works.js?v=20261116-stage5';
 import { recordVisit, recordUse } from './counter.js?v=20261116-count';
 const $ = s => document.querySelector(s);
@@ -156,9 +156,9 @@ motionLabel();
 $('#daynight').addEventListener('click',()=>{night=!night;document.body.classList.toggle('night',night);$('#daynight').setAttribute('aria-pressed',String(night));$('#daynight').innerHTML=night?'☾ <span>夜間</span>':'☼ <span>日間</span>';world?.setNight(night);});
 $('#motion').addEventListener('click',()=>{paused=!paused;motionLabel();world?.setPaused(paused);});
 try{
-  const resources=await Promise.all(['./courses.json?v=20261116-1129','./summaries.json','./summary-pages.json'].map(async url=>{const response=await fetch(url);if(!response.ok)throw Error('課程資料載入失敗');return response.json()}));
+  const resources=await Promise.all(['./courses.json?v=20261116-seats','./summaries.json','./summary-pages.json'].map(async url=>{const response=await fetch(url);if(!response.ok)throw Error('課程資料載入失敗');return response.json()}));
   [data,summaries,pageManifest]=resources;select('foundation');
-  const {createWorld}=await import('./world.js?v=20261116-stage5');
+  const {createWorld}=await import('./world.js?v=20261116-label-fix');
   world=createWorld($('#scene'),$('#labels'),data.courses,id=>openSummary(id,false),()=>showModal('video'),()=>showModal('works'),allWorks().map(w=>[w.thumb,w.title.split('｜')[0],w.tag]));
   world.setPaused(paused);$('#loading').hidden=true;
 }catch(error){

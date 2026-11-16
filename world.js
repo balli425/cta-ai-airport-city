@@ -627,8 +627,11 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm, on
       }
       l.element.style.left=x+'px';l.element.style.top=y+'px';
       // The film and works labels only make sense beside their screens; when the HUD covers them, the HUD buttons take over.
-      l.element.hidden=p.z>1||p.x<-1.1||p.x>1.1||p.y<-1.1||p.y>1.1||((l.id==='film'||l.id==='works')&&blocked);
-      if(!l.element.hidden)placed.push({left:sceneRect.left+x-lw/2,right:sceneRect.left+x+lw/2,top:sceneRect.top+y-lh/2,bottom:sceneRect.top+y+lh/2});
+      // Preserve layout dimensions while hidden; display:none makes the next frame
+      // measure a fallback size and can repeatedly toggle labels at collisions.
+      const isHidden=p.z>1||p.x<-1.1||p.x>1.1||p.y<-1.1||p.y>1.1||((l.id==='film'||l.id==='works')&&blocked);
+      l.element.style.visibility=isHidden?'hidden':'visible';
+      if(!isHidden)placed.push({left:sceneRect.left+x-lw/2,right:sceneRect.left+x+lw/2,top:sceneRect.top+y-lh/2,bottom:sceneRect.top+y+lh/2});
     });
     renderer.render(scene,camera);
   }

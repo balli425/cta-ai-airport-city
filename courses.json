@@ -119,7 +119,13 @@
         "registrationStatus": "open",
         "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLSde83yWzdtj3lmo8RIHecMEgGlmlrSdYGM2BPdr6CC1TIxykQ/viewform",
         "registrationNote": "滿 10 人開課，最多 20 人；完成匯款及填表後，經主辦核款與錄取確認始完成報名。",
-        "feeNote": "一般學費 5,000 元；銘傳大學校友、在校生及目前 K 圖會學員，提供有效證明可享 4,500 元。未開班或超額未錄取者全額退費；其他退費規定請詳閱表單。"
+        "feeNote": "一般學費 5,000 元；銘傳大學校友、在校生及目前 K 圖會學員，提供有效證明可享 4,500 元。未開班或超額未錄取者全額退費；其他退費規定請詳閱表單。",
+        "availability": {
+          "capacity": 20,
+          "responses": 0,
+          "reservedSeats": 0,
+          "checkedAt": "2026-11-16T20:35:13+08:00"
+        }
       },
       {
         "date": "2026-11-15",
