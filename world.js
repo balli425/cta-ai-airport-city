@@ -4,7 +4,7 @@ import * as T from 'three';
 import { createCityLife } from './city-life.js?v=20261023-6';
 import { OrbitControls } from './vendor/OrbitControls.js';
 
-export function createWorld(container, labelLayer, courses, onSelect, onFilm) {
+export function createWorld(container, labelLayer, courses, onSelect, onFilm, onWorks) {
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobile=innerWidth<761;
   const scene=new T.Scene();
@@ -458,6 +458,72 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm) {
     b.innerHTML='<span class="number">▶</span><span class="label-name">課程影片・4 分鐘</span>';
     labelLayer.append(b);labels.push({element:b,at:new T.Vector3(x,fy+fh/2+.55,z),id:'film'});
   }
+  // Research gallery on the south-east waterfront: a long white wall on pilotis showing the AI-agent web works.
+  const gallery={x:6.75,z:8.75};
+  const galleryWorks=[
+    ['conch-museum','築匠海洋館 3D 場景','一天建成・50 頁研究簡報'],
+    ['miaoli-teardown','苗栗透天宅結構拆解','3D 互動・逐層拆解'],
+    ['gem-dashboard','築匠 AI 助理','139 個 Gem 前後對比'],
+    ['exam-practice','建築師考古題模擬','歷年題庫・即時計分'],
+    ['permit-fee','建照掛件費用計算','依酬金標準自動試算'],
+    ['cost-app','建照造價查詢 App','手機查詢・即時試算'],
+    ['interior-fee','室內裝修審查費計算','自動計算・繳費明細'],
+    ['namecards','CTA 名片庫','名片辨識・手機查詢']
+  ];
+  const galleryImages=galleryWorks.map(([file])=>{const im=new Image();im.src='./assets/works/'+file+'.jpg';return im;});
+  const galleryCanvas=document.createElement('canvas');galleryCanvas.width=2048;galleryCanvas.height=640;
+  const galleryTexture=new T.CanvasTexture(galleryCanvas);galleryTexture.colorSpace=T.SRGBColorSpace;galleryTexture.anisotropy=4;
+  const gallerySets=Math.ceil(galleryWorks.length/3);let gallerySet=0,galleryClock=0;
+  function drawGallery(s){
+    const ctx=galleryCanvas.getContext('2d'),w=2048,h=640,blue='#00A1E9',deep='#0088C8',ink='#1F3442';
+    ctx.fillStyle='#FDFEFF';ctx.fillRect(0,0,w,h);
+    ctx.strokeStyle='rgba(0,161,233,.08)';ctx.lineWidth=1;
+    for(let gx=0;gx<w;gx+=32){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,h);ctx.stroke();}
+    for(let gy=0;gy<h;gy+=32){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(w,gy);ctx.stroke();}
+    ctx.textBaseline='middle';ctx.textAlign='left';
+    for(let k=0;k<3;k++){
+      const n=(s*3+k)%galleryWorks.length,[,title,sub]=galleryWorks[n],im=galleryImages[n],x=44+k*668,y=34,iw=624,ih=390;
+      ctx.fillStyle='#E9F6FD';ctx.fillRect(x,y,iw,ih);
+      if(im.complete&&im.naturalWidth)ctx.drawImage(im,x,y,iw,ih);
+      ctx.strokeStyle=blue;ctx.lineWidth=6;ctx.strokeRect(x,y,iw,ih);
+      ctx.fillStyle=ink;ctx.font='700 48px '+filmFont;ctx.fillText(title,x,y+ih+62);
+      ctx.fillStyle=deep;ctx.font='700 34px '+filmFont;ctx.fillText(sub,x,y+ih+122);
+    }
+    for(let k=0;k<gallerySets;k++){ctx.fillStyle=k===s?blue:'#DDF0FA';ctx.fillRect(w-60-(gallerySets-k)*58,h-26,46,8);}
+    galleryTexture.needsUpdate=true;
+  }
+  drawGallery(0);
+  Promise.all(galleryImages.map(im=>im.decode?.().catch(()=>{}))).then(()=>drawGallery(gallerySet));
+  if(document.fonts?.ready)document.fonts.ready.then(()=>drawGallery(gallerySet));
+  const signTexture=canvasTexture((ctx,w,h)=>{
+    ctx.fillStyle='#00A1E9';ctx.fillRect(0,0,w,h);ctx.fillStyle='#FFFFFF';ctx.textBaseline='middle';
+    ctx.font='700 64px '+filmFont;ctx.textAlign='left';ctx.fillText('研究成果館',40,h/2);
+    ctx.font='700 34px '+filmFont;ctx.textAlign='right';ctx.fillText('AI AGENT LAB · CTArch',w-40,h/2);
+  },1024,128);
+  {
+    const {x,z}=gallery,ww=3.5,wh=1.55,wy=1.62,bottom=wy-wh/2;
+    // A timber pier reaches from the quay into the water, so the gallery reads as a waterfront pavilion.
+    box(x,.46,z+.3,3.9,.1,1.9,palette.wood);
+    for(let i=0;i<9;i++)box(x-1.8+i*.45,.52,z+.3,.03,.02,1.88,palette.sand);
+    for(const dx of [-1.75,-.6,.6,1.75])for(const dz of [.5,1.15])cylinder(x+dx,-.15,z+dz,.06,1.15,palette.dark);
+    for(const dx of [-1.9,1.9])box(x+dx,.68,z+.75,.04,.32,1.0,palette.white);
+    for(const dx of [-1.5,-.5,.5,1.5])cylinder(x+dx,(.52+bottom)/2,z-.02,.06,bottom-.52,palette.white);
+    box(x,wy,z,ww,wh,.18,palette.white);
+    box(x,wy-.07,z+.07,ww-.14,(ww-.14)*640/2048+.08,.04,palette.dark);
+    picture(x,wy-.07,z+.1,ww-.2,(ww-.2)*640/2048,galleryTexture).material.toneMapped=false;
+    picture(x-.15,wy+wh/2-.17,z+.1,1.8,.225,signTexture).material.toneMapped=false;
+    box(x,wy+wh/2+.07,z+.22,ww+.4,.09,.75,palette.white);
+    box(x-ww/2-.14,wy+.12,z+.06,.2,wh+.75,.38,BRAND);
+    box(x+ww/2+.06,1.0,z+.9,.07,.9,.07,palette.gold);
+    for(const dx of [-1.2,0,1.2])bench(x+dx,z+.78);
+    const hit=new T.Mesh(new T.BoxGeometry(ww+.5,wh+1.4,1.3),new T.MeshBasicMaterial({visible:false}));
+    hit.position.set(x,wy-.3,z+.35);hit.userData.works=true;scene.add(hit);colliders.push(hit);
+    nightLighting.pool(x,z+.9,1.5);
+    const b=document.createElement('button');b.className='island-label film-label works-label';b.dataset.modal='works';
+    b.style.setProperty('--island-color','#00A1E9');b.setAttribute('aria-label','開啟研究成果：用 AI 代理人做出來的網頁與研究過程');
+    b.innerHTML='<span class="number">◆</span><span class="label-name">研究成果・'+galleryWorks.length+' 件</span>';
+    labelLayer.append(b);labels.push({element:b,at:new T.Vector3(x-3.4,.7,z+.9),id:'works'});
+  }
   const cityLife=createCityLife(scene,palette);
   // A few off-shore islets, reed beds and small boats complete the waterfront.
   for(const [x,z,r] of []){
@@ -494,6 +560,7 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm) {
     const r=renderer.domElement.getBoundingClientRect();mouse.set((e.clientX-r.left)/r.width*2-1,-(e.clientY-r.top)/r.height*2+1);
     ray.setFromCamera(mouse,camera);const hit=ray.intersectObjects(colliders,false)[0];
     if(hit?.object.userData.film){onFilm?.();return;}
+    if(hit?.object.userData.works){onWorks?.();return;}
     if(hit){const id=hit.object.userData.course;selected=id;onSelect(id);focus(id);}
   });
   renderer.domElement.addEventListener('pointermove',e=>{
@@ -544,6 +611,7 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm) {
     nightLighting.update(nightBlend);
     cityLife.update(time);
     if(!paused){filmClock+=delta;if(filmClock>3.4){filmClock=0;filmSlide=(filmSlide+1)%filmSlides;drawFilm(filmSlide);}}
+    if(!paused){galleryClock+=delta;if(galleryClock>4.2){galleryClock=0;gallerySet=(gallerySet+1)%gallerySets;drawGallery(gallerySet);}}
     boats.forEach(b=>{b.group.position.y=-.45+Math.sin(time*1.5+b.phase)*.025;b.group.rotation.y=b.phase+Math.sin(time*.1)*.2;b.group.position.x=b.x+Math.sin(time*.12+b.phase)*.3;});
     connections.forEach(c=>c.dot.position.copy(c.path.getPoint((time*.08+c.offset)%1)));
     const w=container.clientWidth,h=container.clientHeight;
@@ -562,8 +630,8 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm) {
         }
       }
       l.element.style.left=x+'px';l.element.style.top=y+'px';
-      // The film label only makes sense beside its screen; when the HUD covers it, the HUD buttons take over.
-      l.element.hidden=p.z>1||p.x<-1.1||p.x>1.1||p.y<-1.1||p.y>1.1||(l.id==='film'&&blocked);
+      // The film and works labels only make sense beside their screens; when the HUD covers them, the HUD buttons take over.
+      l.element.hidden=p.z>1||p.x<-1.1||p.x>1.1||p.y<-1.1||p.y>1.1||((l.id==='film'||l.id==='works')&&blocked);
       if(!l.element.hidden)placed.push({left:sceneRect.left+x-lw/2,right:sceneRect.left+x+lw/2,top:sceneRect.top+y-lh/2,bottom:sceneRect.top+y+lh/2});
     });
     renderer.render(scene,camera);

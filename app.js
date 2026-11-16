@@ -1,8 +1,10 @@
 import { scheduleMarkup } from './schedule.js?v=20261114-closed';
+import { featured, works, deck } from './works.js?v=20261116-works';
+import { recordVisit, recordUse } from './counter.js?v=20261116-count';
 const $ = s => document.querySelector(s);
 const modal = $('#modal'), toastEl = $('#toast');
 let data, summaries, pageManifest, world, current = 'foundation', toastTimer;
-let summaryView='guide', summaryPage=0, scheduleFilter='all';
+let summaryView='guide', summaryPage=0, scheduleFilter='all', deckPage=0;
 const sizeSelector=document.querySelector('#text-size');
 try { const saved=localStorage.getItem('cta-text-size'); if(['1','1.15','1.3'].includes(saved)) sizeSelector.value=saved; } catch {}
 document.documentElement.style.setProperty('--ui-scale',sizeSelector.value);
@@ -39,13 +41,35 @@ function renderSummary() {
   $('#modal-body').innerHTML=navigation+content;
 }
 
+const processMarkup=w=>`<details class="work-process"><summary>研究過程</summary><dl><dt>需求</dt><dd>${w.need}</dd><dt>做法</dt><dd><ul>${w.method.map(t=>`<li>${t}</li>`).join('')}</ul></dd><dt>成果</dt><dd><ul>${w.result.map(t=>`<li>${t}</li>`).join('')}</ul></dd></dl>${w.period?`<p class="work-period">製作期間：${w.period}</p>`:''}</details>`;
+function worksMarkup(){
+  const f=featured;
+  const card=w=>`<article class="work-card"><div class="work-shot${w.url?'':' is-shot'}"><img src="./assets/works/${w.thumb}.jpg" alt="${w.title}的網頁畫面" width="960" height="600" loading="lazy">${w.url?'':'<span>畫面展示</span>'}</div><div class="work-body"><span class="work-tag">${w.tag}</span><h3>${w.title}</h3><p>${w.summary}</p>${processMarkup(w)}${w.url?`<a class="work-link" data-work="${w.id}" href="${w.url}" target="_blank" rel="noopener noreferrer">開啟網頁 ↗</a>`:`<p class="work-note">${w.note}</p>`}</div></article>`;
+  return `<div class="dialog-copy works-lead"><p>這些網頁由 AI 代理人寫程式、自我檢查、發佈上線；建築師負責出題、審閱與驗收。每一件都附上研究過程：需求是什麼、怎麼做、做出什麼。</p></div>
+  <article class="work-feature"><img src="./assets/works/${f.thumb}.jpg" alt="${f.title}：線上 3D 場景鳥瞰" width="960" height="600"><div class="work-feature-body"><span class="work-tag">${f.tag}</span><h3>${f.title}</h3><p>${f.summary}</p><div class="work-stats">${f.stats.map(([b,s])=>`<span><b>${b}</b>${s}</span>`).join('')}</div><div class="schedule-action"><button class="primary" data-modal="deck" data-deck-page="0">翻閱研究簡報・${deck.pages} 頁 <span>↗</span></button><a class="secondary" data-work="${f.id}" href="${f.url}" target="_blank" rel="noopener noreferrer">走進 3D 場景 ↗</a></div>${processMarkup(f)}</div></article>
+  <div class="work-grid">${works.map(card).join('')}</div>
+  <p class="source-note">網頁內容與數字以各網頁現況為準；會員專用的試算工具與名片庫僅展示畫面，不提供連結。</p>`;
+}
+function deckMarkup(){
+  deckPage=Math.max(0,Math.min(deck.pages-1,deckPage));
+  const n=String(deckPage+1).padStart(2,'0'),chapter=[...deck.chapters].reverse().find(c=>deckPage+1>=c.page);
+  return `<div class="page-toolbar deck-toolbar"><span class="page-counter">${deckPage+1} / ${deck.pages} 頁</span><button data-deck-step="-1" ${deckPage===0?'disabled':''} aria-label="上一頁簡報">← 上一頁</button><button data-deck-step="1" ${deckPage===deck.pages-1?'disabled':''} aria-label="下一頁簡報">下一頁 →</button><a href="${deck.pdf}" target="_blank" rel="noopener noreferrer">下載 PDF（${deck.pdfSize}）</a><button data-modal="works">回研究成果</button></div><div class="page-jumps" aria-label="簡報章節">${deck.chapters.map(c=>`<button data-deck-page="${c.page-1}" aria-current="${c===chapter}">${c.title}</button>`).join('')}</div><div class="deck-page"><img src="${deck.dir}/p${n}.jpg" alt="${deck.title}第 ${deckPage+1} 頁（${chapter?.title||''}）" width="1600" height="900"></div><p class="video-note">鍵盤左右鍵翻頁；手機可橫放閱讀。</p>`;
+}
+function renderDeck(){
+  $('#modal-body').innerHTML=deckMarkup();
+  for(const k of [1,2]){const i=deckPage+k;if(i<deck.pages){const im=new Image();im.src=`${deck.dir}/p${String(i+1).padStart(2,'0')}.jpg`;}}
+}
 function showModal(type) {
   if(type==='detail')type='summary';
-  modal.dataset.kind=type;
+  modal.dataset.kind=type;recordUse(type);
   const c=data.courses.find(c=>c.id===current), body=$('#modal-body');
-  $('#modal-eyebrow').textContent={video:'COURSE FILM · 約 4 分鐘',courses:'THREE WAYS TO BEGIN',schedule:'COURSES & REGISTRATION',about:'ABOUT CTARCH',summary:c.english+' / CLASS NOTES',detail:c.english,history:'LEARNING RECORDS',help:'HOW TO EXPLORE'}[type]||'';
-  $('#modal-title').textContent={video:'4 分鐘，看懂三堂課在學什麼。',courses:'選一棟建築，開始你的課程。',schedule:'下一堂，一起動手做。',about:'把專業，帶進 AI 的可能。',summary:c.name+' · 上課摘要',detail:c.name+' · 課程介紹',history:'一路動手做，一起累積。',help:'用自己的步調，探索空港城。'}[type]||'';
-  if(type==='video'){
+  $('#modal-eyebrow').textContent={works:'AI AGENT LAB · 研究成果',deck:'RESEARCH DECK · '+deck.pages+' 頁',video:'COURSE FILM · 約 4 分鐘',courses:'THREE WAYS TO BEGIN',schedule:'COURSES & REGISTRATION',about:'ABOUT CTARCH',summary:c.english+' / CLASS NOTES',detail:c.english,history:'LEARNING RECORDS',help:'HOW TO EXPLORE'}[type]||'';
+  $('#modal-title').textContent={works:'用 AI 代理人做出來的網頁。',deck:deck.title,video:'4 分鐘，看懂三堂課在學什麼。',courses:'選一棟建築，開始你的課程。',schedule:'下一堂，一起動手做。',about:'把專業，帶進 AI 的可能。',summary:c.name+' · 上課摘要',detail:c.name+' · 課程介紹',history:'一路動手做，一起累積。',help:'用自己的步調，探索空港城。'}[type]||'';
+  if(type==='works'){
+    body.innerHTML=worksMarkup();
+  }else if(type==='deck'){
+    renderDeck();
+  }else if(type==='video'){
     body.innerHTML=`<div class="video-frame"><iframe src="./assets/course-intro-film.html?v=20261114" title="築匠 AI 課程介紹影片：基礎班、動畫班、AI 代理人班與三個實務案例" allow="autoplay; fullscreen" allowfullscreen loading="eager"></iframe></div><p class="video-note">點畫面開始播放（有旁白，請開聲音）。下方可暫停、跳段、全螢幕；鍵盤空白鍵播放／暫停、左右鍵換段。</p><div class="video-chapters"><span>基礎班 · 會用 AI</span><span>動畫班 · 做出作品</span><span>AI 代理人班 · 完成工作</span><span>三個建築實務案例</span></div><div class="schedule-action"><button class="primary" data-modal="courses">看三堂課的內容 <span>↗</span></button><button class="secondary" data-modal="schedule">查看班次與地點</button></div>`;
   }else if(type==='courses'){
     body.innerHTML=`<button class="video-banner" data-modal="video"><i aria-hidden="true"></i><span><b>先看 4 分鐘課程影片</b><small>三堂課學什麼、可以帶走什麼、三個實務案例</small></span><em>播放 ↗</em></button><div class="course-grid">${data.courses.map(c=>`<article class="course-card" style="--card-color:${c.color}"><span class="big-num">${c.number}</span><h3>${c.name}</h3><p>${c.description}</p><button data-select="${c.id}">閱讀上課摘要 ↗</button></article>`).join('')}</div><div class="course-outcomes"><article><h3>一張圖，打開設計方向</h3><p>帶手繪或模型截圖，練習描述與修改，把想像變成可以討論的畫面。</p></article><article><h3>一個空間，說成一段故事</h3><p>用分鏡、運鏡、配樂與剪接，讓設計的情境與節奏被看見。</p></article><article><h3>一件工作，做成自己的工具</h3><p>帶真實題目來，練習整理依據、交代需求和逐項驗收。</p></article></div><p class="source-note">三大課程可依需求選擇；每次開班的範圍、時數與自備設備，以該班招生說明為準。</p>`;
@@ -65,6 +89,7 @@ function showModal(type) {
 }
 document.addEventListener('click',async e=>{
   const b=e.target.closest('button,a');if(!b)return;
+  if(b.dataset.work)recordUse('out_'+b.dataset.work);
   if(b.dataset.course){openSummary(b.dataset.course,true);return}
   if(b.dataset.island){openSummary(b.dataset.island,true);return}
   if(b.dataset.select){openSummary(b.dataset.select,true);return}
@@ -73,6 +98,8 @@ document.addEventListener('click',async e=>{
   if(b.dataset.summaryPage!==undefined){summaryPage=Number(b.dataset.summaryPage);renderSummary();return}
   if(b.dataset.pageStep){summaryPage+=Number(b.dataset.pageStep);renderSummary();return}
   if(b.dataset.scheduleFilter){scheduleFilter=b.dataset.scheduleFilter;showModal('schedule');return}
+  if(b.dataset.deckStep){deckPage+=Number(b.dataset.deckStep);renderDeck();return}
+  if(b.dataset.deckPage!==undefined){deckPage=Number(b.dataset.deckPage);if(modal.dataset.kind==='deck'&&modal.open){renderDeck();return}}
   if(b.dataset.modal){e.preventDefault();if(b.dataset.modal==='schedule')scheduleFilter=b.dataset.scheduleCourse||'all';showModal(b.dataset.modal);return}
   if(b.classList.contains('close'))modal.close();
   if(b.id==='copy-link'){try{await navigator.clipboard.writeText(data.enrollment.formUrl);toast('已複製報名連結。');}catch{toast('可使用「課程報名表」開啟連結。');}}
@@ -85,10 +112,12 @@ $('#course-tabs').addEventListener('keydown',e=>{
   select(list[n].id,true);$('#tab-'+list[n].id).focus();
 });
 modal.addEventListener('close',()=>{modal.querySelector('.video-frame iframe')?.remove();});
+modal.addEventListener('keydown',e=>{if(modal.dataset.kind!=='deck'||!['ArrowLeft','ArrowRight'].includes(e.key)||e.target.closest('input,select,textarea'))return;e.preventDefault();const next=deckPage+(e.key==='ArrowRight'?1:-1);if(next<0||next>=deck.pages)return;deckPage=next;renderDeck();});
 modal.addEventListener('click',e=>{if(e.target===modal){const r=modal.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)modal.close();}});
 $('#sound').addEventListener('click',()=>showModal('help'));
 $('#reset').addEventListener('click',()=>{world?.reset();$('#roam').setAttribute('aria-pressed','false');});
 $('#roam').addEventListener('click',()=>{const active=$('#roam').getAttribute('aria-pressed')!=='true';$('#roam').setAttribute('aria-pressed',String(active));world?.setRoaming(active);if(active)toast('WASD 移動・拖曳滑鼠轉向・Q/E 升降・Shift 加速・Esc 回全景');else world?.reset();});
+recordVisit().then(values=>['cnt-today','cnt-month','cnt-year','cnt-total'].forEach((id,i)=>{const el=document.getElementById(id);if(el)el.textContent=values[i]===null?'—':values[i].toLocaleString('zh-TW');}));
 let night=false,paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function motionLabel(){const b=$('#motion');b.setAttribute('aria-pressed',String(paused));b.innerHTML=paused?'▷ <span>播放</span>':'Ⅱ <span>暫停</span>';}
 motionLabel();
@@ -97,8 +126,8 @@ $('#motion').addEventListener('click',()=>{paused=!paused;motionLabel();world?.s
 try{
   const resources=await Promise.all(['./courses.json?v=20261114-closed','./summaries.json','./summary-pages.json'].map(async url=>{const response=await fetch(url);if(!response.ok)throw Error('課程資料載入失敗');return response.json()}));
   [data,summaries,pageManifest]=resources;select('foundation');
-  const {createWorld}=await import('./world.js?v=20261114-film2');
-  world=createWorld($('#scene'),$('#labels'),data.courses,id=>openSummary(id,false),()=>showModal('video'));
+  const {createWorld}=await import('./world.js?v=20261116-works');
+  world=createWorld($('#scene'),$('#labels'),data.courses,id=>openSummary(id,false),()=>showModal('video'),()=>showModal('works'));
   world.setPaused(paused);$('#loading').hidden=true;
 }catch(error){
   console.error('空港城初始化失敗',error);$('#loading').hidden=true;$('#scene-error').hidden=false;

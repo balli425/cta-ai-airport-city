@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>築匠 AI 空港城｜使用狀況</title>
+<style>
+:root{--brand:#00A1E9;--deep:#174e75;--ink:#172d3d;--line:#c9dbe3;--soft:#EAF6FD}
+*{box-sizing:border-box}
+body{margin:0;background:#fbf8ef;color:var(--ink);font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;line-height:1.6}
+main{max-width:980px;margin:0 auto;padding:28px 16px 48px}
+header{border-left:6px solid var(--brand);padding-left:14px;margin-bottom:22px}
+header small{font-weight:800;letter-spacing:1.5px;color:#0077B6}
+h1{margin:4px 0 2px;font-size:28px;color:var(--deep)}
+header p{margin:0;font-size:15px}
+h2{font-size:19px;color:var(--deep);margin:30px 0 10px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.card span{font-size:14px;font-weight:700}
+.card b{display:block;font-size:30px;color:#0088C8;line-height:1.2}
+.chart{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 12px 8px}
+.bars{display:flex;align-items:flex-end;gap:3px;height:180px;border-bottom:1.5px solid var(--deep)}
+.bar{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;min-width:0}
+.bar i{display:block;width:100%;background:var(--brand);border-radius:3px 3px 0 0;min-height:2px}
+.bar em{font-style:normal;font-size:11px;font-weight:700;color:var(--deep)}
+.axis{display:flex;gap:3px;margin-top:4px}
+.axis span{flex:1;font-size:10.5px;text-align:center;min-width:0;white-space:nowrap;overflow:hidden}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:15px}
+th,td{border:1px solid #1f3442;padding:8px 10px;text-align:left}
+th{background:#fff;color:var(--deep)}
+td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+.note{font-size:14px;background:var(--soft);border-left:3px solid var(--brand);padding:8px 12px;margin-top:22px}
+a{color:#0077B6;font-weight:700}
+@media(max-width:640px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}h1{font-size:23px}.bar em{display:none}.axis span:nth-child(odd){visibility:hidden}}
+</style>
+</head>
+<body>
+<main>
+  <header><small>CTArch · AI AIRPORT CITY</small><h1>築匠 AI 空港城｜使用狀況</h1><p id="updated">讀取中…</p></header>
+  <section class="cards" aria-label="網站使用人次">
+    <div class="card"><span>今日</span><b id="today">…</b></div>
+    <div class="card"><span>本月</span><b id="month">…</b></div>
+    <div class="card"><span>年度</span><b id="year">…</b></div>
+    <div class="card"><span>總計</span><b id="total">…</b></div>
+  </section>
+  <h2>最近 30 天每日人次</h2>
+  <div class="chart"><div class="bars" id="bars"></div><div class="axis" id="axis"></div></div>
+  <h2>功能使用人次</h2>
+  <table><thead><tr><th>功能</th><th>本月</th><th>累計</th></tr></thead><tbody id="uses"></tbody></table>
+  <h2>作品網頁點擊人次（研究成果）</h2>
+  <table><thead><tr><th>作品</th><th>本月</th><th>累計</th></tr></thead><tbody id="outs"></tbody></table>
+  <p class="note">統計自 2026-11-16 起，日期以台灣時間計。同一位訪客在同一次瀏覽（關閉分頁前）只記一次；每項功能也只記一次。回到 <a href="./">築匠 AI 空港城</a>。</p>
+</main>
+<script type="module">
+import { COUNTER_API, taipeiDate } from './counter.js?v=20261116-count';
+const read=key=>fetch(COUNTER_API+key).then(r=>r.ok?r.text():'0').then(v=>parseInt(v)||0).catch(()=>0);
+const fmt=n=>n.toLocaleString('zh-TW');
+const today=taipeiDate(),month=today.slice(0,7),year=today.slice(0,4);
+const set=(id,v)=>document.getElementById(id).textContent=fmt(v);
+Promise.all(['dy_'+today,'mo_'+month,'yr_'+year,'total'].map(read)).then(([d,m,y,t])=>{set('today',d);set('month',m);set('year',y);set('total',t);});
+const days=[...Array(30)].map((_,i)=>taipeiDate(new Date(Date.now()-(29-i)*864e5)));
+Promise.all(days.map(d=>read('dy_'+d))).then(values=>{
+  const max=Math.max(1,...values);
+  document.getElementById('bars').innerHTML=values.map((v,i)=>`<div class="bar" title="${days[i]}：${v} 人次"><em>${v||''}</em><i style="height:${v/max*88}%"></i></div>`).join('');
+  document.getElementById('axis').innerHTML=days.map(d=>`<span>${Number(d.slice(5,7))}/${Number(d.slice(8))}</span>`).join('');
+});
+const row=async([key,label])=>{const [m,t]=await Promise.all([read(key+'_mo_'+month),read(key+'_total')]);return `<tr><td>${label}</td><td class="n">${fmt(m)}</td><td class="n">${fmt(t)}</td></tr>`;};
+const uses=[['use_video','課程影片'],['use_works','研究成果'],['use_deck','海洋館研究簡報'],['use_summary','上課摘要'],['use_courses','課程一覽'],['use_schedule','課程與班次'],['use_history','學習紀錄'],['use_about','關於築匠'],['use_help','操作說明']];
+const outs=[['use_out_conch','築匠海洋館 3D 場景'],['use_out_miaoli','苗栗透天宅結構拆解'],['use_out_gem','築匠 AI 助理'],['use_out_exam','建築師考古題模擬系統']];
+Promise.all(uses.map(row)).then(r=>document.getElementById('uses').innerHTML=r.join(''));
+Promise.all(outs.map(row)).then(r=>document.getElementById('outs').innerHTML=r.join(''));
+document.getElementById('updated').textContent='資料讀取時間：'+new Date().toLocaleString('zh-TW',{timeZone:'Asia/Taipei',hour12:false});
+</script>
+</body>
+</html>
