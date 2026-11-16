@@ -4,7 +4,7 @@ import * as T from 'three';
 import { createCityLife } from './city-life.js?v=20261023-6';
 import { OrbitControls } from './vendor/OrbitControls.js';
 
-export function createWorld(container, labelLayer, courses, onSelect, onFilm, onWorks) {
+export function createWorld(container, labelLayer, courses, onSelect, onFilm, onWorks, worksList) {
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   const mobile=innerWidth<761;
   const scene=new T.Scene();
@@ -457,7 +457,7 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm, on
   }
   // Research gallery on the south-east waterfront: a long white wall on pilotis showing the AI-agent web works.
   const gallery={x:6.75,z:8.75};
-  const galleryWorks=[
+  const galleryWorks=worksList?.length?worksList:[
     ['conch-museum','築匠海洋館 3D 場景','一天建成・50 頁研究簡報'],
     ['miaoli-teardown','苗栗透天宅結構拆解','3D 互動・逐層拆解'],
     ['gem-dashboard','築匠 AI 助理','139 個 Gem 前後對比'],

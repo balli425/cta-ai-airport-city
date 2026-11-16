@@ -1,5 +1,5 @@
 import { scheduleMarkup } from './schedule.js?v=20261114-closed';
-import { featured, works, decks, categories } from './works.js?v=20261116-stage3';
+import { featured, works, decks, categories } from './works.js?v=20261116-stage5';
 import { recordVisit, recordUse } from './counter.js?v=20261116-count';
 const $ = s => document.querySelector(s);
 const modal = $('#modal'), toastEl = $('#toast');
@@ -52,7 +52,7 @@ function shotMarkup(w){
 const seriesMarkup=w=>w.series?`<div class="work-series" aria-label="${w.title}：影片列表">${w.series.map(v=>`<button class="work-episode" data-yt="${v.yt}" data-work-id="${w.id}"><img src="https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360"><span>${v.title}</span></button>`).join('')}</div>`:'';
 const actionsMarkup=w=>{
   const d=w.deck&&decks[w.deck];
-  const btns=[d?`<button class="work-link" data-deck="${w.deck}">翻閱簡報・${d.pages} 頁</button>`:'',w.url?`<a class="work-link" data-work="${w.id}" href="${w.url}" target="_blank" rel="noopener noreferrer">${w.urlLabel||'開啟網頁'} ↗</a>`:''].join('');
+  const btns=[d?`<button class="work-link" data-deck="${w.deck}">翻閱簡報・${d.pages} 頁</button>`:'',...(w.moreDecks||[]).map(id=>`<button class="work-link" data-deck="${id}">${decks[id].label||'簡報'}・${decks[id].pages} 頁</button>`),w.url?`<a class="work-link" data-work="${w.id}" href="${w.url}" target="_blank" rel="noopener noreferrer">${w.urlLabel||'開啟網頁'} ↗</a>`:''].join('');
   return btns?`<div class="work-actions">${btns}</div>`:'';
 };
 function worksMarkup(){
@@ -62,7 +62,7 @@ function worksMarkup(){
   const card=w=>`<article class="work-card" data-card="${w.id}">${shotMarkup(w)}<div class="work-body"><span class="work-tag">${w.tag}</span><h3>${w.title}</h3>${w.disclaimer?`<p class="work-disclaimer">※ ${w.disclaimer}</p>`:''}<p>${w.summary}</p>${seriesMarkup(w)}${processMarkup(w)}${actionsMarkup(w)}</div></article>`;
   const fd=decks[f.deck];
   const tabs=`<div class="work-tabs" role="tablist" aria-label="研究成果分類"><button role="tab" data-work-cat="all" aria-selected="${worksCat==='all'}">全部 <small>${allWorks().length}</small></button>${used.map(c=>`<button role="tab" data-work-cat="${c.id}" aria-selected="${worksCat===c.id}">${c.label} <small>${allWorks().filter(w=>w.cat===c.id).length}</small></button>`).join('')}</div>`;
-  const feature=inCat(f)?`<article class="work-feature"><img src="./assets/works/${f.thumb}.jpg" alt="${f.title}：線上 3D 場景鳥瞰" width="960" height="600"><div class="work-feature-body"><span class="work-tag">${f.tag}</span><h3>${f.title}</h3><p>${f.summary}</p><div class="work-stats">${f.stats.map(([b,s])=>`<span><b>${b}</b>${s}</span>`).join('')}</div><div class="schedule-action"><button class="primary" data-deck="${f.deck}">翻閱研究簡報・${fd.pages} 頁 <span>↗</span></button><a class="secondary" data-work="${f.id}" href="${f.url}" target="_blank" rel="noopener noreferrer">走進 3D 場景 ↗</a></div>${processMarkup(f)}</div></article>`:'';
+  const feature=inCat(f)?`<article class="work-feature"><img src="./assets/works/${f.thumb}.jpg" alt="${f.title}：線上 3D 場景鳥瞰" width="960" height="600"><div class="work-feature-body"><span class="work-tag">${f.tag}</span><h3>${f.title}</h3><p>${f.summary}</p><div class="work-stats">${f.stats.map(([b,s])=>`<span><b>${b}</b>${s}</span>`).join('')}</div><div class="schedule-action"><button class="primary" data-deck="${f.deck}">翻閱研究簡報・${fd.pages} 頁 <span>↗</span></button>${(f.moreDecks||[]).map(id=>`<button class="secondary" data-deck="${id}">${decks[id].label||'簡報'}・${decks[id].pages} 頁</button>`).join('')}<a class="secondary" data-work="${f.id}" href="${f.url}" target="_blank" rel="noopener noreferrer">走進 3D 場景 ↗</a></div>${processMarkup(f)}</div></article>`:'';
   return `<div class="dialog-copy works-lead"><p>這些研究由 AI 代理人實際執行、自我檢查並發佈；建築師負責出題、審閱與驗收。每一件都附上研究過程：需求是什麼、怎麼做、做出什麼。</p></div>${tabs}${feature}<div class="work-grid">${works.filter(inCat).map(card).join('')}</div><p class="source-note">內容與數字以各作品現況為準；部分作品僅展示研究成果畫面。</p>`;
 }
 const deckOf=()=>decks[deckId]||decks.conch;
@@ -70,7 +70,7 @@ function deckMarkup(){
   const deck=deckOf();
   deckPage=Math.max(0,Math.min(deck.pages-1,deckPage));
   const n=String(deckPage+1).padStart(2,'0'),chapter=[...(deck.chapters||[])].reverse().find(c=>deckPage+1>=c.page);
-  return `<div class="page-toolbar deck-toolbar"><span class="page-counter">${deckPage+1} / ${deck.pages} 頁</span><button data-deck-step="-1" ${deckPage===0?'disabled':''} aria-label="上一頁簡報">← 上一頁</button><button data-deck-step="1" ${deckPage===deck.pages-1?'disabled':''} aria-label="下一頁簡報">下一頁 →</button>${deck.pdf?`<a href="${deck.pdf}" target="_blank" rel="noopener noreferrer">下載 PDF（${deck.pdfSize}）</a>`:''}<button data-modal="works">回研究成果</button></div>${deck.chapters?`<div class="page-jumps" aria-label="簡報章節">${deck.chapters.map(c=>`<button data-deck-page="${c.page-1}" aria-current="${c===chapter}">${c.title}</button>`).join('')}</div>`:''}<div class="deck-page"><img src="${deck.dir}/p${n}.jpg" alt="${deck.title}第 ${deckPage+1} 頁${chapter?`（${chapter.title}）`:''}" width="1600" height="900"></div><p class="video-note">鍵盤左右鍵翻頁；手機可橫放閱讀。</p>`;
+  return `<div class="page-toolbar deck-toolbar"><span class="page-counter">${deckPage+1} / ${deck.pages} 頁</span><button data-deck-step="-1" ${deckPage===0?'disabled':''} aria-label="上一頁簡報">← 上一頁</button><button data-deck-step="1" ${deckPage===deck.pages-1?'disabled':''} aria-label="下一頁簡報">下一頁 →</button>${deck.pdf?`<a href="${deck.pdf}" target="_blank" rel="noopener noreferrer">下載 PDF（${deck.pdfSize}）</a>`:''}<a href="${deck.dir}/p${n}.jpg" target="_blank" rel="noopener noreferrer">放大閱讀 ↗</a><button data-modal="works">回研究成果</button></div>${deck.chapters?`<div class="page-jumps" aria-label="簡報章節">${deck.chapters.map(c=>`<button data-deck-page="${c.page-1}" aria-current="${c===chapter}">${c.title}</button>`).join('')}</div>`:''}<div class="deck-page${deck.portrait?' is-portrait':''}"><img src="${deck.dir}/p${n}.jpg" alt="${deck.title}第 ${deckPage+1} 頁${chapter?`（${chapter.title}）`:''}" width="${deck.portrait?1100:1600}" height="${deck.portrait?1556:900}"></div><p class="video-note">鍵盤左右鍵翻頁${deck.portrait?'':'；手機可橫放閱讀'}。</p>`;
 }
 function renderDeck(){
   const deck=deckOf();
@@ -158,8 +158,8 @@ $('#motion').addEventListener('click',()=>{paused=!paused;motionLabel();world?.s
 try{
   const resources=await Promise.all(['./courses.json?v=20261114-closed','./summaries.json','./summary-pages.json'].map(async url=>{const response=await fetch(url);if(!response.ok)throw Error('課程資料載入失敗');return response.json()}));
   [data,summaries,pageManifest]=resources;select('foundation');
-  const {createWorld}=await import('./world.js?v=20261116-flicker');
-  world=createWorld($('#scene'),$('#labels'),data.courses,id=>openSummary(id,false),()=>showModal('video'),()=>showModal('works'));
+  const {createWorld}=await import('./world.js?v=20261116-stage5');
+  world=createWorld($('#scene'),$('#labels'),data.courses,id=>openSummary(id,false),()=>showModal('video'),()=>showModal('works'),allWorks().map(w=>[w.thumb,w.title.split('｜')[0],w.tag]));
   world.setPaused(paused);$('#loading').hidden=true;
 }catch(error){
   console.error('空港城初始化失敗',error);$('#loading').hidden=true;$('#scene-error').hidden=false;

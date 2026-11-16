@@ -28,8 +28,13 @@ decks.theatre={
   dir:'./assets/works/theatre-deck'
 };
 
+decks.miaoli={title:'苗栗透天宅｜九階段精華簡報',pages:10,dir:'./assets/works/miaoli-deck'};
+decks.indigenous={title:'原住民族教育推廣中心｜競圖研究成果簡報（練習案）',pages:16,dir:'./assets/works/indigenous-deck'};
+decks.argon={title:'Argon 測試檢討',pages:10,dir:'./assets/works/argon-deck'};
+decks.conchreport={title:'築匠海洋館｜階段性結案報告',label:'階段報告',pages:96,dir:'./assets/works/conchreport-deck',portrait:true};
+
 export const featured={
-  id:'conch',cat:'3d',deck:'conch',thumb:'conch-museum',tag:'3D 場景・研究簡報',
+  id:'conch',cat:'3d',deck:'conch',moreDecks:['conchreport'],thumb:'conch-museum',tag:'3D 場景・研究簡報',
   title:'築匠海洋館｜從 AI 生成圖到走得進去的 3D 場景',
   url:'https://balli425.github.io/cta-conch-museum-3d/',
   summary:'只有九張 AI 生成的概念圖、沒有任何尺寸，一天之內判讀出尺度、造型、材質與光線，建成可以飛行、步行、上下樓的線上 3D 場景，並與原圖同角度對照。',
@@ -50,7 +55,7 @@ export const featured={
 };
 
 export const works=[
-  {id:'miaoli',cat:'3d',thumb:'miaoli-teardown',tag:'3D 互動・結構',title:'苗栗透天宅｜結構拆解 3D 互動頁',url:'https://balli425.github.io/cta-miaoli-house-teardown/',
+  {id:'miaoli',cat:'3d',thumb:'miaoli-teardown',video:{src:'./assets/works/video/teardown-demo.mp4',label:'播放示範・1 分鐘'},tag:'3D 互動・結構',title:'苗栗透天宅｜結構拆解 3D 互動頁',url:'https://balli425.github.io/cta-miaoli-house-teardown/',
    summary:'錯層中庭透天住宅，外皮、牆、樓板與梁、柱、基礎可以一層層拆開再組回，逐層透視並顯示構件尺寸與數量。',
    period:'2026-11-07（單日完成）',
    need:'簡報時用可以操作的 3D 頁面說明結構：由外皮、牆、柱到基礎逐層拆解與組裝；單一檔案即可開啟，手機也能看。',
@@ -223,5 +228,32 @@ export const works=[
      '單日完成六個版本並公開上線',
      '城市裡有 70 個人物、10 輛車、1 架直升機，日夜兩種時段',
      '陸續加入課程影片、影片放映場、研究成果館與使用人次統計'
-   ]}
+   ]},
+  {id:'miaoli9',cat:'3d',thumb:'miaoli-nine',tag:'建築設計協作',title:'苗栗透天宅｜一張手稿，13 天一整套建築',deck:'miaoli',
+   summary:'從建築師 2015 年的 A3 手稿出發，AI 協作在 13 天內完成九個階段：建模、建照圖、數量預算、細部設計、三個設計方案，到定案全套圖說。',
+   period:'2026-10-01～2026-10-13',
+   need:'只有一份 3 頁手繪草稿，要在短時間內做到可以送審、可以發包的整套設計。',
+   method:[
+     'AI 判讀手稿、校正比例，以程式操作 Revit 建出 4 層樓模型',
+     '圖面、數量與預算都從同一個模型產生',
+     '另提出三個截然不同的方案供選擇，定案後全套重做'
+   ],
+   result:['全套圖說 93 張、構造大樣 28 個、法規檢討 22 項','定案後一週內重做 47 張圖','10 頁精華簡報']},
+  {id:'indigenous',cat:'3d',thumb:'indigenous',tag:'競圖研究・練習案',title:'原住民族教育推廣中心｜AI 協助競圖研究',deck:'indigenous',
+   disclaimer:'練習案：以民國 105 年公開招標為研究題目',
+   summary:'以一件公共建築競圖為題，研究 AI 怎麼協助從評估、法規量體、多方案模擬，一路做到完整設計與服務建議書。',
+   period:'2026-10-15～2026-10-16',
+   need:'遇到公共建築競圖，要能快速判斷值不值得投，投的話要快速做出完整設計。',
+   method:[
+     '查證相關法規，建立可量化的評估方式',
+     '以生成式圖像工具模擬六輪外觀，融入泰雅織紋與竹格柵',
+     '依定案以 Revit 重建模型，完成整套圖說'
+   ],
+   result:['總樓地板 1,165.9 ㎡','Revit 圖紙 11 張','16 頁成果簡報']},
+  {id:'argon',cat:'method',thumb:'argon',tag:'方法研究',title:'Argon 測試｜AI 說完成了，真的完成了嗎？',deck:'argon',
+   summary:'要求 AI 依一張建築圖做出可以編修的模型，逐輪比對七個版本，檢討 AI「宣稱完成」與實際成果之間的落差。',
+   period:'2026-10-15（單日）',
+   need:'要求 AI 依圖片做出可以編修的模型，並判斷它說「完成」的時候是否真的完成。',
+   method:['001 到 007 共七輪建模與真實化，逐輪並排比對','逐輪整理「宣稱」與「實際」的差距'],
+   result:['歸納三條驗收標準：同視角並排比對、關鍵構件核對、可編修模型驗收','10 頁檢討簡報']}
 ];

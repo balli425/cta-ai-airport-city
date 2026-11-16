@@ -151,3 +151,5 @@ body.night .visit-counter{color:#e8f2f7}body.night .visit-counter span:first-chi
 .work-episode.is-playing{grid-column:1/-1;padding:0;cursor:auto}
 .work-episode.is-playing iframe{width:100%;aspect-ratio:9/16;max-height:70dvh;border:0;display:block}
 @media(max-width:760px){.work-tabs{gap:6px}.work-tabs button{padding:5px 10px;font-size:calc(13px * var(--ui-scale))}.work-series{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.deck-page.is-portrait img{max-width:min(100%,860px)}
+.work-feature .schedule-action .secondary{white-space:nowrap}
