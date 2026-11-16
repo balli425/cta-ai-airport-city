@@ -17,9 +17,9 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm, on
   renderer.domElement.setAttribute('role','img');
   container.prepend(renderer.domElement);
   let camera=new T.OrthographicCamera(-15,15,8,-8,.1,180);
-  const homeTarget=new T.Vector3(0,1.2,-.4),homePosition=new T.Vector3(16,20,27).add(homeTarget);
+  const homeTarget=mobile?new T.Vector3(0,1.2,-.4):new T.Vector3(-5.2,1.7,2.0),homePosition=new T.Vector3(16,20,27).add(homeTarget);
   camera.position.copy(homePosition);
-  if(mobile)camera.zoom=1.08;
+  camera.zoom=mobile?1.08:.76;
   const controls=new OrbitControls(camera,renderer.domElement);
   controls.target.copy(homeTarget);controls.enableDamping=!reduced;controls.dampingFactor=.065;
   controls.enablePan=true;controls.enableRotate=true;controls.screenSpacePanning=false;controls.mouseButtons.LEFT=T.MOUSE.PAN;controls.mouseButtons.MIDDLE=T.MOUSE.ROTATE;controls.mouseButtons.RIGHT=T.MOUSE.PAN;controls.minPolarAngle=.3;controls.maxPolarAngle=1.25;controls.minZoom=.7;controls.maxZoom=3.4;
@@ -385,7 +385,7 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm, on
     const dot=new T.Mesh(new T.SphereGeometry(.055,8,6),new T.MeshBasicMaterial({color:[0x789966,0xcf9a75,0x8a9fab][i]}));scene.add(dot);connections.push({path,dot,offset:i/3});
   });
   // Open-air course-film cinema on the southern waterfront: a pilotis screen, tiered seats and a timber deck.
-  const BRAND=0x00a1e9,film={x:2.5,z:6.9};
+  const BRAND=0x00a1e9,film={x:6,z:-5.5};
   const filmFont='"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif';
   const filmCanvas=document.createElement('canvas');filmCanvas.width=1024;filmCanvas.height=576;
   const filmTexture=new T.CanvasTexture(filmCanvas);filmTexture.colorSpace=T.SRGBColorSpace;filmTexture.anisotropy=4;
@@ -458,7 +458,7 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm, on
     labelLayer.append(b);labels.push({element:b,at:new T.Vector3(x,fy+fh/2+.55,z),id:'film'});
   }
   // Research gallery on the south-east waterfront: a long white wall on pilotis showing the AI-agent web works.
-  const gallery={x:6.75,z:8.75};
+  const gallery={x:-5.8,z:-5.7};
   const galleryWorks=worksList?.length?worksList:[
     ['conch-museum','築匠海洋館 3D 場景','一天建成・50 頁研究簡報'],
     ['miaoli-teardown','苗栗透天宅結構拆解','3D 互動・逐層拆解'],
@@ -520,7 +520,7 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm, on
     const b=document.createElement('button');b.className='island-label film-label works-label';b.dataset.modal='works';
     b.style.setProperty('--island-color','#00A1E9');b.setAttribute('aria-label','開啟研究成果：用 AI 代理人做出來的網頁與研究過程');
     b.innerHTML='<span class="number">◆</span><span class="label-name">研究成果・'+galleryWorks.length+' 件</span>';
-    labelLayer.append(b);labels.push({element:b,at:new T.Vector3(x-3.4,.7,z+.9),id:'works'});
+    labelLayer.append(b);labels.push({element:b,at:new T.Vector3(x,.65,z+1.4),id:'works'});
   }
   const cityLife=createCityLife(scene,palette);
   // A few off-shore islets, reed beds and small boats complete the waterfront.
@@ -587,7 +587,7 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm, on
     const target=c.clone().add(new T.Vector3(0,1.0,.1));
     move(target,target.clone().add(new T.Vector3(10,14,22)),innerWidth<761?1.8:1.65);
   }
-  function reset(){if(flight.active)setRoaming(false);selected='';move(homeTarget.clone(),homePosition.clone(),innerWidth<761?1.08:1);}
+  function reset(){if(flight.active)setRoaming(false);selected='';move(homeTarget.clone(),homePosition.clone(),innerWidth<761?1.08:.76);}
   const dayHemi=new T.Color(0xfffae9),nightHemi=new T.Color(0xb4c7ef);
   let nightBlend=0;
   function animate(now){
