@@ -156,7 +156,7 @@ motionLabel();
 $('#daynight').addEventListener('click',()=>{night=!night;document.body.classList.toggle('night',night);$('#daynight').setAttribute('aria-pressed',String(night));$('#daynight').innerHTML=night?'☾ <span>夜間</span>':'☼ <span>日間</span>';world?.setNight(night);});
 $('#motion').addEventListener('click',()=>{paused=!paused;motionLabel();world?.setPaused(paused);});
 try{
-  const resources=await Promise.all(['./courses.json?v=20261114-closed','./summaries.json','./summary-pages.json'].map(async url=>{const response=await fetch(url);if(!response.ok)throw Error('課程資料載入失敗');return response.json()}));
+  const resources=await Promise.all(['./courses.json?v=20261116-1129','./summaries.json','./summary-pages.json'].map(async url=>{const response=await fetch(url);if(!response.ok)throw Error('課程資料載入失敗');return response.json()}));
   [data,summaries,pageManifest]=resources;select('foundation');
   const {createWorld}=await import('./world.js?v=20261116-stage5');
   world=createWorld($('#scene'),$('#labels'),data.courses,id=>openSummary(id,false),()=>showModal('video'),()=>showModal('works'),allWorks().map(w=>[w.thumb,w.title.split('｜')[0],w.tag]));
