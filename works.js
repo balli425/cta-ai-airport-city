@@ -102,7 +102,7 @@ export const works=[
      '內建 13 項構造單價表，造價標準更新日期標示在頁首',
      '3 個版次，附使用手冊'
    ]},
-  {id:'interior',thumb:'interior-fee',tag:'試算工具・畫面展示',title:'室內裝修審查費計算系統',url:null,note:'展示研究成果畫面',
+  {id:'interior',thumb:'interior-fee',tag:'試算工具',title:'室內裝修審查費計算系統',url:'https://balli425.github.io/Hsinchu-County-Architects-Association/',
    summary:'依室內裝修審查收費標準，分圖說審查與竣工查驗兩階段累進計算，並產生繳費明細單 PDF。',
    period:'2026-04-13～2026-09-28（v1.0～v1.1）',
    need:'室內裝修案申請時，依面積自動算出兩階段審查費，並產生繳費明細單。',
