@@ -92,7 +92,7 @@ function showModal(type) {
   modal.dataset.kind=type;recordUse(type);
   const c=data.courses.find(c=>c.id===current), body=$('#modal-body');
   $('#modal-eyebrow').textContent={works:'AI AGENT LAB · 研究成果',deck:'RESEARCH DECK · '+deckOf().pages+' 頁',video:'COURSE FILM · 約 4 分鐘',courses:'THREE WAYS TO BEGIN',schedule:'COURSES & REGISTRATION',about:'ABOUT CTARCH',contact:'CONTACT CTARCH',summary:c.english+' / CLASS NOTES',detail:c.english,history:'LEARNING RECORDS',help:'HOW TO EXPLORE'}[type]||'';
-  $('#modal-title').textContent={works:'用 AI 代理人做出來的研究成果。',deck:deckOf().title,video:'4 分鐘，看懂三堂課在學什麼。',courses:'選一棟建築，開始你的課程。',schedule:'下一堂，一起動手做。',about:'把專業，帶進 AI 的可能。',contact:'聯絡築匠建築師事務所',summary:c.name+' · 上課摘要',detail:c.name+' · 課程介紹',history:'一路動手做，一起累積。',help:'用自己的步調，探索空港城。'}[type]||'';
+  $('#modal-title').textContent={works:'用 AI 代理人做出來的研究成果。',deck:deckOf().title,video:'4 分鐘，看懂三堂課在學什麼。',courses:'選一棟建築，開始你的課程。',schedule:'下一堂，一起動手做。',about:'把專業，帶進 AI 的可能。',contact:'聯絡我們',summary:c.name+' · 上課摘要',detail:c.name+' · 課程介紹',history:'一路動手做，一起累積。',help:'用自己的步調，探索空港城。'}[type]||'';
   if(type==='works'){
     body.innerHTML=worksMarkup();
   }else if(type==='deck'){
