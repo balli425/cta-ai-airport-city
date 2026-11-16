@@ -1,5 +1,5 @@
 import { scheduleMarkup } from './schedule.js?v=20261114-closed';
-import { featured, works, deck } from './works.js?v=20261116-link';
+import { featured, works, deck } from './works.js?v=20261116-clean';
 import { recordVisit, recordUse } from './counter.js?v=20261116-count';
 const $ = s => document.querySelector(s);
 const modal = $('#modal'), toastEl = $('#toast');
@@ -44,7 +44,7 @@ function renderSummary() {
 const processMarkup=w=>`<details class="work-process"><summary>研究過程</summary><dl><dt>需求</dt><dd>${w.need}</dd><dt>做法</dt><dd><ul>${w.method.map(t=>`<li>${t}</li>`).join('')}</ul></dd><dt>成果</dt><dd><ul>${w.result.map(t=>`<li>${t}</li>`).join('')}</ul></dd></dl>${w.period?`<p class="work-period">製作期間：${w.period}</p>`:''}</details>`;
 function worksMarkup(){
   const f=featured;
-  const card=w=>`<article class="work-card"><div class="work-shot${w.url?'':' is-shot'}"><img src="./assets/works/${w.thumb}.jpg" alt="${w.title}的網頁畫面" width="960" height="600" loading="lazy">${w.url?'':'<span>畫面展示</span>'}</div><div class="work-body"><span class="work-tag">${w.tag}</span><h3>${w.title}</h3><p>${w.summary}</p>${processMarkup(w)}${w.url?`<a class="work-link" data-work="${w.id}" href="${w.url}" target="_blank" rel="noopener noreferrer">開啟網頁 ↗</a>`:`<p class="work-note">${w.note}</p>`}</div></article>`;
+  const card=w=>`<article class="work-card"><div class="work-shot${w.url?'':' is-shot'}"><img src="./assets/works/${w.thumb}.jpg" alt="${w.title}的網頁畫面" width="960" height="600" loading="lazy"></div><div class="work-body"><span class="work-tag">${w.tag}</span><h3>${w.title}</h3><p>${w.summary}</p>${processMarkup(w)}${w.url?`<a class="work-link" data-work="${w.id}" href="${w.url}" target="_blank" rel="noopener noreferrer">開啟網頁 ↗</a>`:''}</div></article>`;
   return `<div class="dialog-copy works-lead"><p>這些網頁由 AI 代理人寫程式、自我檢查、發佈上線；建築師負責出題、審閱與驗收。每一件都附上研究過程：需求是什麼、怎麼做、做出什麼。</p></div>
   <article class="work-feature"><img src="./assets/works/${f.thumb}.jpg" alt="${f.title}：線上 3D 場景鳥瞰" width="960" height="600"><div class="work-feature-body"><span class="work-tag">${f.tag}</span><h3>${f.title}</h3><p>${f.summary}</p><div class="work-stats">${f.stats.map(([b,s])=>`<span><b>${b}</b>${s}</span>`).join('')}</div><div class="schedule-action"><button class="primary" data-modal="deck" data-deck-page="0">翻閱研究簡報・${deck.pages} 頁 <span>↗</span></button><a class="secondary" data-work="${f.id}" href="${f.url}" target="_blank" rel="noopener noreferrer">走進 3D 場景 ↗</a></div>${processMarkup(f)}</div></article>
   <div class="work-grid">${works.map(card).join('')}</div>

@@ -75,7 +75,7 @@ export const works=[
      '圖文並茂版：110～114 年',
      '兩種介面共用同一份題庫'
    ]},
-  {id:'permit',thumb:'permit-fee',tag:'試算工具・畫面展示',title:'建照申請掛件費用計算系統',url:null,note:'展示研究成果畫面',
+  {id:'permit',thumb:'permit-fee',tag:'試算工具',title:'建照申請掛件費用計算系統',url:null,
    summary:'依建築師酬金標準表、法定工程造價與協檢作業收費標準，自動計算建照掛件與領照應繳的各項費用，並輸出 PDF 明細。',
    period:'2026-05-18～2026-08-05（V1～V4.4）',
    need:'建築師掛件、領照時，一次算出應繳的各項費用並輸出明細，本縣與外縣市建築師都能使用。',
@@ -89,7 +89,7 @@ export const works=[
      '計算設計費（掛件 70%／領照 30%／一次繳清）、事業費、協檢費、行政作業費、外縣市補助費與協審費、合作設計比例',
      '多頁 PDF 明細輸出'
    ]},
-  {id:'cost',thumb:'cost-app',tag:'手機 App・畫面展示',title:'建照造價與費用查詢 App',url:null,note:'展示研究成果畫面',
+  {id:'cost',thumb:'cost-app',tag:'手機 App',title:'建照造價與費用查詢 App',url:null,
    summary:'可加到手機主畫面的查詢工具：選建築物類別、構造與面積，即時算出法定工程造價與應繳費用，離線也能用。',
    period:'2026-08-05～2026-09-28（v1.0～v1.2）',
    need:'讓建築師在手機上快速試算建照掛件、領照費用，加到主畫面即可使用，沒有網路也能查。',
@@ -115,7 +115,7 @@ export const works=[
      '輸入面積即得總額與明細單',
      '版面與計算架構成為後續其他縣市版本與建照費用系統的參考'
    ]},
-  {id:'namecards',thumb:'namecards',tag:'資料庫・畫面展示',title:'CTA 名片庫｜手機查詢',url:null,note:'展示研究成果畫面',
+  {id:'namecards',thumb:'namecards',tag:'資料庫',title:'CTA 名片庫｜手機查詢',url:null,
    summary:'名片拍照或掃描後由 AI 辨識、歸檔到雲端試算表，手機登入即可依人員或公司查詢；名片資料不放在網頁裡。',
    period:'2026-11-11 上線',
    need:'把累積的名片整理成單一主檔，在手機上查詢、撥號、匯出聯絡人；收到新名片當天就能辨識、歸檔、同步。',
