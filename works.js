@@ -1,5 +1,16 @@
 // 研究成果：用 AI 代理人做出來的網頁。對外文字只寫需求、做法、成果，不寫人名與內部用語。
-export const deck={
+// 分類：研究成果彈窗的頁籤，沒有作品的分類不顯示。
+export const categories=[
+  {id:'3d',label:'3D 與建築'},
+  {id:'method',label:'方法研究'},
+  {id:'tools',label:'實務工具'},
+  {id:'media',label:'影像創作'},
+  {id:'site',label:'本站製作'}
+];
+
+// 簡報：每本一組頁面圖（1600×900，p01.jpg 起），可附 PDF。
+export const decks={};
+decks.conch={
   title:'築匠海洋館｜虛實整合研究簡報',
   pages:50,
   dir:'./assets/works/conch-deck',
@@ -12,7 +23,7 @@ export const deck={
 };
 
 export const featured={
-  id:'conch',thumb:'conch-museum',tag:'3D 場景・研究簡報',
+  id:'conch',cat:'3d',deck:'conch',thumb:'conch-museum',tag:'3D 場景・研究簡報',
   title:'築匠海洋館｜從 AI 生成圖到走得進去的 3D 場景',
   url:'https://balli425.github.io/cta-conch-museum-3d/',
   summary:'只有九張 AI 生成的概念圖、沒有任何尺寸，一天之內判讀出尺度、造型、材質與光線，建成可以飛行、步行、上下樓的線上 3D 場景，並與原圖同角度對照。',
@@ -33,7 +44,7 @@ export const featured={
 };
 
 export const works=[
-  {id:'miaoli',thumb:'miaoli-teardown',tag:'3D 互動・結構',title:'苗栗透天宅｜結構拆解 3D 互動頁',url:'https://balli425.github.io/cta-miaoli-house-teardown/',
+  {id:'miaoli',cat:'3d',thumb:'miaoli-teardown',tag:'3D 互動・結構',title:'苗栗透天宅｜結構拆解 3D 互動頁',url:'https://balli425.github.io/cta-miaoli-house-teardown/',
    summary:'錯層中庭透天住宅，外皮、牆、樓板與梁、柱、基礎可以一層層拆開再組回，逐層透視並顯示構件尺寸與數量。',
    period:'2026-11-07（單日完成）',
    need:'簡報時用可以操作的 3D 頁面說明結構：由外皮、牆、柱到基礎逐層拆解與組裝；單一檔案即可開啟，手機也能看。',
@@ -46,7 +57,7 @@ export const works=[
      '結構資訊：RC 柱 30×80 公分 8 支、11 個樓板高程、前後棟錯開半層 1.6 公尺',
      '版本由 V1 演進到 V3.1（手機版與手機手勢），附自動導覽示範影片'
    ]},
-  {id:'gem',thumb:'gem-dashboard',tag:'AI 助理整合',title:'築匠 AI 助理｜Gem 前後對比整合頁',url:'https://balli425.github.io/CTA-GEM-Dashboard/',
+  {id:'gem',cat:'tools',thumb:'gem-dashboard',tag:'AI 助理整合',title:'築匠 AI 助理｜Gem 前後對比整合頁',url:'https://balli425.github.io/CTA-GEM-Dashboard/',
    summary:'事務所建置的建築專用 AI 助理（Gem）集中在同一頁，每一個都以實際產出圖做 Before／After 對比，點了直接開啟使用。',
    period:'2026-04-18～2026-09-17（V1～V6）',
    need:'把分散在 Gemini 上的建築專用 Gem 集中展示，每個附上實例對比，讓使用者一眼看出用途並直接開啟。',
@@ -60,7 +71,7 @@ export const works=[
      '六次改版，累計數量 71 → 107 → 124 → 139',
      'V4 上線檢查：216 個圖片路徑缺檔 0'
    ]},
-  {id:'exam',thumb:'exam-practice',tag:'學習工具',title:'建築師考古題模擬系統',url:'https://balli425.github.io/CTA-Web-page/',
+  {id:'exam',cat:'tools',thumb:'exam-practice',tag:'學習工具',title:'建築師考古題模擬系統',url:'https://balli425.github.io/CTA-Web-page/',
    summary:'歷屆建築師考試選擇題的線上模擬：標準版與圖文並茂版共用同一份題庫，作答即時計分，列出答錯題目。',
    period:'2026-04-14～2026-09-28',
    need:'考生不必對著紙本 PDF 練習，可以線上模擬作答，答完立即計分並檢討錯題。',
@@ -74,7 +85,7 @@ export const works=[
      '圖文並茂版：110～114 年',
      '兩種介面共用同一份題庫'
    ]},
-  {id:'permit',thumb:'permit-fee',tag:'試算工具',title:'建照申請掛件費用計算系統',url:'https://balli425.github.io/hsinchu-building-permit-calculator/',disclaimer:'研究用，非正式掛件使用',
+  {id:'permit',cat:'tools',thumb:'permit-fee',tag:'試算工具',title:'建照申請掛件費用計算系統',url:'https://balli425.github.io/hsinchu-building-permit-calculator/',disclaimer:'研究用，非正式掛件使用',
    summary:'依建築師酬金標準表、法定工程造價與協檢作業收費標準，自動計算建照掛件與領照應繳的各項費用，並輸出 PDF 明細。',
    period:'2026-05-18～2026-08-05（V1～V4.4）',
    need:'建築師掛件、領照時，一次算出應繳的各項費用並輸出明細，本縣與外縣市建築師都能使用。',
@@ -88,7 +99,7 @@ export const works=[
      '計算設計費（掛件 70%／領照 30%／一次繳清）、事業費、協檢費、行政作業費、外縣市補助費與協審費、合作設計比例',
      '多頁 PDF 明細輸出'
    ]},
-  {id:'cost',thumb:'cost-app',tag:'手機 App',title:'建照造價與費用查詢 App',url:null,
+  {id:'cost',cat:'tools',thumb:'cost-app',tag:'手機 App',title:'建照造價與費用查詢 App',url:null,
    summary:'可加到手機主畫面的查詢工具：選建築物類別、構造與面積，即時算出法定工程造價與應繳費用，離線也能用。',
    period:'2026-08-05～2026-09-28（v1.0～v1.2）',
    need:'讓建築師在手機上快速試算建照掛件、領照費用，加到主畫面即可使用，沒有網路也能查。',
@@ -101,7 +112,7 @@ export const works=[
      '內建 13 項構造單價表，造價標準更新日期標示在頁首',
      '3 個版次，附使用手冊'
    ]},
-  {id:'interior',thumb:'interior-fee',tag:'試算工具',title:'室內裝修審查費計算系統',url:'https://balli425.github.io/Hsinchu-County-Architects-Association/',
+  {id:'interior',cat:'tools',thumb:'interior-fee',tag:'試算工具',title:'室內裝修審查費計算系統',url:'https://balli425.github.io/Hsinchu-County-Architects-Association/',
    summary:'依室內裝修審查收費標準，分圖說審查與竣工查驗兩階段累進計算，並產生繳費明細單 PDF。',
    period:'2026-04-13～2026-09-28（v1.0～v1.1）',
    need:'室內裝修案申請時，依面積自動算出兩階段審查費，並產生繳費明細單。',
@@ -114,7 +125,7 @@ export const works=[
      '輸入面積即得總額與明細單',
      '版面與計算架構成為後續其他縣市版本與建照費用系統的參考'
    ]},
-  {id:'namecards',thumb:'namecards',tag:'資料庫',title:'CTA 名片庫｜手機查詢',url:null,
+  {id:'namecards',cat:'tools',thumb:'namecards',tag:'資料庫',title:'CTA 名片庫｜手機查詢',url:null,
    summary:'名片拍照或掃描後由 AI 辨識、歸檔到雲端試算表，手機登入即可依人員或公司查詢；名片資料不放在網頁裡。',
    period:'2026-11-11 上線',
    need:'把累積的名片整理成單一主檔，在手機上查詢、撥號、匯出聯絡人；收到新名片當天就能辨識、歸檔、同步。',

@@ -129,3 +129,25 @@ body.night .intro-works{color:#9AD8F7;border-bottom-color:#9AD8F7}
 body.night .visit-counter{color:#e8f2f7}body.night .visit-counter span:first-child,body.night .visit-counter b,body.night .visit-counter a{color:#9AD8F7}
 @media(max-width:760px){.visit-counter{font-size:calc(11.5px * var(--ui-scale));gap:2px 8px;margin-top:8px}}
 .work-card p.work-disclaimer{align-self:flex-start;margin:0 0 10px;font-size:calc(14px * var(--ui-scale));font-weight:800;color:#8A4B12;background:#FFF2CC;border-radius:4px;padding:3px 10px}
+/* 2026/11/16 研究成果第一階段：分類頁籤、多本簡報、影片點了才載入 */
+.work-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px;position:sticky;top:-1px;z-index:3;background:#fffdf4f5;padding:8px 0;border-bottom:1px solid #d5e3e8}
+.work-tabs button{font-family:inherit;font-size:calc(14.5px * var(--ui-scale));font-weight:800;color:#174e75;background:#fff;border:1.5px solid #9fd5f0;border-radius:20px;padding:6px 14px;cursor:pointer}
+.work-tabs button small{font-size:.85em;color:#0077B6;margin-left:2px}
+.work-tabs button[aria-selected=true]{background:#174e75;border-color:#174e75;color:#fff}
+.work-tabs button[aria-selected=true] small{color:#BFE3F5}
+.work-actions{margin-top:auto;display:flex;flex-wrap:wrap;gap:8px}
+.work-actions .work-link{margin-top:0;border:0;font-family:inherit;cursor:pointer}
+.work-shot.is-portrait{aspect-ratio:16/10;background:#14263a}
+.work-shot video{width:100%;height:100%;display:block;background:#000;object-fit:contain}
+.work-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(0deg,#0d2a4066,#0d2a4000 60%);border:0;cursor:pointer;color:#fff;font-family:inherit;font-weight:800;font-size:calc(15px * var(--ui-scale))}
+.work-play i{width:56px;height:56px;border-radius:50%;background:#00A1E9;position:relative;box-shadow:0 4px 16px #0006}
+.work-play i:after{content:"";position:absolute;left:22px;top:17px;border-left:17px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent}
+.work-play span{background:#174e75e6;border-radius:4px;padding:4px 10px}
+.work-play:hover i,.work-play:focus-visible i{background:#0088C8}
+.work-series{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin:2px 0 12px}
+.work-episode{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid #bccbd0;border-radius:6px;padding:0 0 6px;overflow:hidden;cursor:pointer;font-family:inherit;text-align:left}
+.work-episode img{width:100%;aspect-ratio:9/12;object-fit:cover;display:block}
+.work-episode span{font-size:calc(12.5px * var(--ui-scale));font-weight:700;color:#172d3d;padding:0 6px;line-height:1.4}
+.work-episode.is-playing{grid-column:1/-1;padding:0;cursor:auto}
+.work-episode.is-playing iframe{width:100%;aspect-ratio:9/16;max-height:70dvh;border:0;display:block}
+@media(max-width:760px){.work-tabs{gap:6px}.work-tabs button{padding:5px 10px;font-size:calc(13px * var(--ui-scale))}.work-series{grid-template-columns:repeat(2,minmax(0,1fr))}}

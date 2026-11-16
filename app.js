@@ -1,10 +1,10 @@
 import { scheduleMarkup } from './schedule.js?v=20261114-closed';
-import { featured, works, deck } from './works.js?v=20261116-protect';
+import { featured, works, decks, categories } from './works.js?v=20261116-stage1';
 import { recordVisit, recordUse } from './counter.js?v=20261116-count';
 const $ = s => document.querySelector(s);
 const modal = $('#modal'), toastEl = $('#toast');
 let data, summaries, pageManifest, world, current = 'foundation', toastTimer;
-let summaryView='guide', summaryPage=0, scheduleFilter='all', deckPage=0;
+let summaryView='guide', summaryPage=0, scheduleFilter='all', deckPage=0, deckId='conch', worksCat='all';
 const sizeSelector=document.querySelector('#text-size');
 try { const saved=localStorage.getItem('cta-text-size'); if(['1','1.15','1.3'].includes(saved)) sizeSelector.value=saved; } catch {}
 document.documentElement.style.setProperty('--ui-scale',sizeSelector.value);
@@ -42,29 +42,56 @@ function renderSummary() {
 }
 
 const processMarkup=w=>`<details class="work-process"><summary>研究過程</summary><dl><dt>需求</dt><dd>${w.need}</dd><dt>做法</dt><dd><ul>${w.method.map(t=>`<li>${t}</li>`).join('')}</ul></dd><dt>成果</dt><dd><ul>${w.result.map(t=>`<li>${t}</li>`).join('')}</ul></dd></dl>${w.period?`<p class="work-period">製作期間：${w.period}</p>`:''}</details>`;
-function worksMarkup(){
-  const f=featured;
-  const card=w=>`<article class="work-card"><div class="work-shot${w.url?'':' is-shot'}"><img src="./assets/works/${w.thumb}.jpg" alt="${w.title}的網頁畫面" width="960" height="600" loading="lazy"></div><div class="work-body"><span class="work-tag">${w.tag}</span><h3>${w.title}</h3>${w.disclaimer?`<p class="work-disclaimer">※ ${w.disclaimer}</p>`:''}<p>${w.summary}</p>${processMarkup(w)}${w.url?`<a class="work-link" data-work="${w.id}" href="${w.url}" target="_blank" rel="noopener noreferrer">開啟網頁 ↗</a>`:''}</div></article>`;
-  return `<div class="dialog-copy works-lead"><p>這些網頁由 AI 代理人寫程式、自我檢查、發佈上線；建築師負責出題、審閱與驗收。每一件都附上研究過程：需求是什麼、怎麼做、做出什麼。</p></div>
-  <article class="work-feature"><img src="./assets/works/${f.thumb}.jpg" alt="${f.title}：線上 3D 場景鳥瞰" width="960" height="600"><div class="work-feature-body"><span class="work-tag">${f.tag}</span><h3>${f.title}</h3><p>${f.summary}</p><div class="work-stats">${f.stats.map(([b,s])=>`<span><b>${b}</b>${s}</span>`).join('')}</div><div class="schedule-action"><button class="primary" data-modal="deck" data-deck-page="0">翻閱研究簡報・${deck.pages} 頁 <span>↗</span></button><a class="secondary" data-work="${f.id}" href="${f.url}" target="_blank" rel="noopener noreferrer">走進 3D 場景 ↗</a></div>${processMarkup(f)}</div></article>
-  <div class="work-grid">${works.map(card).join('')}</div>
-  <p class="source-note">網頁內容與數字以各網頁現況為準；部分作品僅展示研究成果畫面。</p>`;
+const allWorks=()=>[featured,...works];
+// 作品媒體：影片與 YouTube 都只放縮圖，點了才載入。
+function shotMarkup(w){
+  const img=`<img src="./assets/works/${w.thumb}.jpg" alt="${w.title}的畫面" width="960" height="600" loading="lazy">`;
+  return `<div class="work-shot${w.video?.portrait?' is-portrait':''}">${img}${w.video?`<button class="work-play" data-play="${w.id}" aria-label="播放影片：${w.title}"><i aria-hidden="true"></i><span>${w.video.label||'播放影片'}</span></button>`:''}</div>`;
 }
+const seriesMarkup=w=>w.series?`<div class="work-series" aria-label="${w.title}：影片列表">${w.series.map(v=>`<button class="work-episode" data-yt="${v.yt}" data-work-id="${w.id}"><img src="https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360"><span>${v.title}</span></button>`).join('')}</div>`:'';
+const actionsMarkup=w=>{
+  const d=w.deck&&decks[w.deck];
+  const btns=[d?`<button class="work-link" data-deck="${w.deck}">翻閱簡報・${d.pages} 頁</button>`:'',w.url?`<a class="work-link" data-work="${w.id}" href="${w.url}" target="_blank" rel="noopener noreferrer">${w.urlLabel||'開啟網頁'} ↗</a>`:''].join('');
+  return btns?`<div class="work-actions">${btns}</div>`:'';
+};
+function worksMarkup(){
+  const f=featured,used=categories.filter(c=>allWorks().some(w=>w.cat===c.id));
+  if(worksCat!=='all'&&!used.some(c=>c.id===worksCat))worksCat='all';
+  const inCat=w=>worksCat==='all'||w.cat===worksCat;
+  const card=w=>`<article class="work-card" data-card="${w.id}">${shotMarkup(w)}<div class="work-body"><span class="work-tag">${w.tag}</span><h3>${w.title}</h3>${w.disclaimer?`<p class="work-disclaimer">※ ${w.disclaimer}</p>`:''}<p>${w.summary}</p>${seriesMarkup(w)}${processMarkup(w)}${actionsMarkup(w)}</div></article>`;
+  const fd=decks[f.deck];
+  const tabs=`<div class="work-tabs" role="tablist" aria-label="研究成果分類"><button role="tab" data-work-cat="all" aria-selected="${worksCat==='all'}">全部 <small>${allWorks().length}</small></button>${used.map(c=>`<button role="tab" data-work-cat="${c.id}" aria-selected="${worksCat===c.id}">${c.label} <small>${allWorks().filter(w=>w.cat===c.id).length}</small></button>`).join('')}</div>`;
+  const feature=inCat(f)?`<article class="work-feature"><img src="./assets/works/${f.thumb}.jpg" alt="${f.title}：線上 3D 場景鳥瞰" width="960" height="600"><div class="work-feature-body"><span class="work-tag">${f.tag}</span><h3>${f.title}</h3><p>${f.summary}</p><div class="work-stats">${f.stats.map(([b,s])=>`<span><b>${b}</b>${s}</span>`).join('')}</div><div class="schedule-action"><button class="primary" data-deck="${f.deck}">翻閱研究簡報・${fd.pages} 頁 <span>↗</span></button><a class="secondary" data-work="${f.id}" href="${f.url}" target="_blank" rel="noopener noreferrer">走進 3D 場景 ↗</a></div>${processMarkup(f)}</div></article>`:'';
+  return `<div class="dialog-copy works-lead"><p>這些研究由 AI 代理人實際執行、自我檢查並發佈；建築師負責出題、審閱與驗收。每一件都附上研究過程：需求是什麼、怎麼做、做出什麼。</p></div>${tabs}${feature}<div class="work-grid">${works.filter(inCat).map(card).join('')}</div><p class="source-note">內容與數字以各作品現況為準；部分作品僅展示研究成果畫面。</p>`;
+}
+const deckOf=()=>decks[deckId]||decks.conch;
 function deckMarkup(){
+  const deck=deckOf();
   deckPage=Math.max(0,Math.min(deck.pages-1,deckPage));
-  const n=String(deckPage+1).padStart(2,'0'),chapter=[...deck.chapters].reverse().find(c=>deckPage+1>=c.page);
-  return `<div class="page-toolbar deck-toolbar"><span class="page-counter">${deckPage+1} / ${deck.pages} 頁</span><button data-deck-step="-1" ${deckPage===0?'disabled':''} aria-label="上一頁簡報">← 上一頁</button><button data-deck-step="1" ${deckPage===deck.pages-1?'disabled':''} aria-label="下一頁簡報">下一頁 →</button><a href="${deck.pdf}" target="_blank" rel="noopener noreferrer">下載 PDF（${deck.pdfSize}）</a><button data-modal="works">回研究成果</button></div><div class="page-jumps" aria-label="簡報章節">${deck.chapters.map(c=>`<button data-deck-page="${c.page-1}" aria-current="${c===chapter}">${c.title}</button>`).join('')}</div><div class="deck-page"><img src="${deck.dir}/p${n}.jpg" alt="${deck.title}第 ${deckPage+1} 頁（${chapter?.title||''}）" width="1600" height="900"></div><p class="video-note">鍵盤左右鍵翻頁；手機可橫放閱讀。</p>`;
+  const n=String(deckPage+1).padStart(2,'0'),chapter=[...(deck.chapters||[])].reverse().find(c=>deckPage+1>=c.page);
+  return `<div class="page-toolbar deck-toolbar"><span class="page-counter">${deckPage+1} / ${deck.pages} 頁</span><button data-deck-step="-1" ${deckPage===0?'disabled':''} aria-label="上一頁簡報">← 上一頁</button><button data-deck-step="1" ${deckPage===deck.pages-1?'disabled':''} aria-label="下一頁簡報">下一頁 →</button>${deck.pdf?`<a href="${deck.pdf}" target="_blank" rel="noopener noreferrer">下載 PDF（${deck.pdfSize}）</a>`:''}<button data-modal="works">回研究成果</button></div>${deck.chapters?`<div class="page-jumps" aria-label="簡報章節">${deck.chapters.map(c=>`<button data-deck-page="${c.page-1}" aria-current="${c===chapter}">${c.title}</button>`).join('')}</div>`:''}<div class="deck-page"><img src="${deck.dir}/p${n}.jpg" alt="${deck.title}第 ${deckPage+1} 頁${chapter?`（${chapter.title}）`:''}" width="1600" height="900"></div><p class="video-note">鍵盤左右鍵翻頁；手機可橫放閱讀。</p>`;
 }
 function renderDeck(){
+  const deck=deckOf();
   $('#modal-body').innerHTML=deckMarkup();
   for(const k of [1,2]){const i=deckPage+k;if(i<deck.pages){const im=new Image();im.src=`${deck.dir}/p${String(i+1).padStart(2,'0')}.jpg`;}}
+}
+function playWork(id){
+  const w=allWorks().find(x=>x.id===id),shot=modal.querySelector(`[data-card="${id}"] .work-shot`);if(!w?.video||!shot)return;
+  shot.innerHTML=`<video src="${w.video.src}" ${w.video.poster?`poster="${w.video.poster}"`:''} controls autoplay playsinline preload="metadata"></video>`;
+  recordUse('play_'+id);
+}
+function playEpisode(btn){
+  const box=document.createElement('div');box.className='work-episode is-playing';
+  box.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${btn.dataset.yt}?autoplay=1&rel=0&playsinline=1" title="${esc(btn.textContent)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+  btn.replaceWith(box);recordUse('yt_'+btn.dataset.workId);
 }
 function showModal(type) {
   if(type==='detail')type='summary';
   modal.dataset.kind=type;recordUse(type);
   const c=data.courses.find(c=>c.id===current), body=$('#modal-body');
-  $('#modal-eyebrow').textContent={works:'AI AGENT LAB · 研究成果',deck:'RESEARCH DECK · '+deck.pages+' 頁',video:'COURSE FILM · 約 4 分鐘',courses:'THREE WAYS TO BEGIN',schedule:'COURSES & REGISTRATION',about:'ABOUT CTARCH',summary:c.english+' / CLASS NOTES',detail:c.english,history:'LEARNING RECORDS',help:'HOW TO EXPLORE'}[type]||'';
-  $('#modal-title').textContent={works:'用 AI 代理人做出來的網頁。',deck:deck.title,video:'4 分鐘，看懂三堂課在學什麼。',courses:'選一棟建築，開始你的課程。',schedule:'下一堂，一起動手做。',about:'把專業，帶進 AI 的可能。',summary:c.name+' · 上課摘要',detail:c.name+' · 課程介紹',history:'一路動手做，一起累積。',help:'用自己的步調，探索空港城。'}[type]||'';
+  $('#modal-eyebrow').textContent={works:'AI AGENT LAB · 研究成果',deck:'RESEARCH DECK · '+deckOf().pages+' 頁',video:'COURSE FILM · 約 4 分鐘',courses:'THREE WAYS TO BEGIN',schedule:'COURSES & REGISTRATION',about:'ABOUT CTARCH',summary:c.english+' / CLASS NOTES',detail:c.english,history:'LEARNING RECORDS',help:'HOW TO EXPLORE'}[type]||'';
+  $('#modal-title').textContent={works:'用 AI 代理人做出來的研究成果。',deck:deckOf().title,video:'4 分鐘，看懂三堂課在學什麼。',courses:'選一棟建築，開始你的課程。',schedule:'下一堂，一起動手做。',about:'把專業，帶進 AI 的可能。',summary:c.name+' · 上課摘要',detail:c.name+' · 課程介紹',history:'一路動手做，一起累積。',help:'用自己的步調，探索空港城。'}[type]||'';
   if(type==='works'){
     body.innerHTML=worksMarkup();
   }else if(type==='deck'){
@@ -98,6 +125,10 @@ document.addEventListener('click',async e=>{
   if(b.dataset.summaryPage!==undefined){summaryPage=Number(b.dataset.summaryPage);renderSummary();return}
   if(b.dataset.pageStep){summaryPage+=Number(b.dataset.pageStep);renderSummary();return}
   if(b.dataset.scheduleFilter){scheduleFilter=b.dataset.scheduleFilter;showModal('schedule');return}
+  if(b.dataset.workCat){worksCat=b.dataset.workCat;$('#modal-body').innerHTML=worksMarkup();return}
+  if(b.dataset.play){playWork(b.dataset.play);return}
+  if(b.dataset.yt){playEpisode(b);return}
+  if(b.dataset.deck){deckId=b.dataset.deck;deckPage=0;showModal('deck');return}
   if(b.dataset.deckStep){deckPage+=Number(b.dataset.deckStep);renderDeck();return}
   if(b.dataset.deckPage!==undefined){deckPage=Number(b.dataset.deckPage);if(modal.dataset.kind==='deck'&&modal.open){renderDeck();return}}
   if(b.dataset.modal){e.preventDefault();if(b.dataset.modal==='schedule')scheduleFilter=b.dataset.scheduleCourse||'all';showModal(b.dataset.modal);return}
@@ -111,8 +142,8 @@ $('#course-tabs').addEventListener('keydown',e=>{
   n=e.key==='Home'?0:e.key==='End'?2:(n+(['ArrowRight','ArrowDown'].includes(e.key)?1:2))%3;
   select(list[n].id,true);$('#tab-'+list[n].id).focus();
 });
-modal.addEventListener('close',()=>{modal.querySelector('.video-frame iframe')?.remove();});
-modal.addEventListener('keydown',e=>{if(modal.dataset.kind!=='deck'||!['ArrowLeft','ArrowRight'].includes(e.key)||e.target.closest('input,select,textarea'))return;e.preventDefault();const next=deckPage+(e.key==='ArrowRight'?1:-1);if(next<0||next>=deck.pages)return;deckPage=next;renderDeck();});
+modal.addEventListener('close',()=>{modal.querySelector('.video-frame iframe')?.remove();modal.querySelectorAll('video').forEach(v=>v.pause());modal.querySelectorAll('.work-episode iframe').forEach(f=>f.remove());});
+document.addEventListener('keydown',e=>{if(!modal.open||modal.dataset.kind!=='deck'||!['ArrowLeft','ArrowRight'].includes(e.key)||e.target.closest('input,select,textarea'))return;e.preventDefault();const next=deckPage+(e.key==='ArrowRight'?1:-1);if(next<0||next>=deckOf().pages)return;deckPage=next;renderDeck();});
 modal.addEventListener('click',e=>{if(e.target===modal){const r=modal.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)modal.close();}});
 $('#sound').addEventListener('click',()=>showModal('help'));
 $('#reset').addEventListener('click',()=>{world?.reset();$('#roam').setAttribute('aria-pressed','false');});
