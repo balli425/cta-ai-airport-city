@@ -1,5 +1,5 @@
 import { scheduleMarkup } from './schedule.js?v=20261114-closed';
-import { featured, works, decks, categories } from './works.js?v=20261116-stage2';
+import { featured, works, decks, categories } from './works.js?v=20261116-stage3';
 import { recordVisit, recordUse } from './counter.js?v=20261116-count';
 const $ = s => document.querySelector(s);
 const modal = $('#modal'), toastEl = $('#toast');
@@ -41,7 +41,8 @@ function renderSummary() {
   $('#modal-body').innerHTML=navigation+content;
 }
 
-const processMarkup=w=>`<details class="work-process"><summary>研究過程</summary><dl><dt>需求</dt><dd>${w.need}</dd><dt>做法</dt><dd><ul>${w.method.map(t=>`<li>${t}</li>`).join('')}</ul></dd><dt>成果</dt><dd><ul>${w.result.map(t=>`<li>${t}</li>`).join('')}</ul></dd></dl>${w.period?`<p class="work-period">製作期間：${w.period}</p>`:''}</details>`;
+const listDd=(label,a)=>a?.length?`<dt>${label}</dt><dd><ul>${a.map(t=>`<li>${t}</li>`).join('')}</ul></dd>`:'';
+const processMarkup=w=>`<details class="work-process"><summary>研究過程</summary><dl>${w.need?`<dt>需求</dt><dd>${w.need}</dd>`:''}${listDd('做法',w.method)}${listDd('成果',w.result)}</dl>${w.period?`<p class="work-period">製作期間：${w.period}</p>`:''}</details>`;
 const allWorks=()=>[featured,...works];
 // 作品媒體：影片與 YouTube 都只放縮圖，點了才載入。
 function shotMarkup(w){
