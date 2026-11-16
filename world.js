@@ -391,9 +391,6 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm, on
   function drawFilm(i){
     const ctx=filmCanvas.getContext('2d'),w=1024,h=576,blue='#00A1E9',deep='#0088C8',ink='#1F3442';
     ctx.fillStyle='#FDFEFF';ctx.fillRect(0,0,w,h);
-    ctx.strokeStyle='rgba(0,161,233,.09)';ctx.lineWidth=1;
-    for(let gx=0;gx<w;gx+=32){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,h);ctx.stroke();}
-    for(let gy=0;gy<h;gy+=32){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(w,gy);ctx.stroke();}
     ctx.strokeStyle=blue;ctx.lineWidth=6;ctx.strokeRect(16,16,w-32,h-32);
     ctx.strokeStyle='#BFE3F5';ctx.lineWidth=2;ctx.strokeRect(30,30,w-60,h-60);
     ctx.fillStyle='#FDFEFF';ctx.fillRect(32,470,w-64,74);
@@ -444,7 +441,7 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm, on
     for(const dx of [-1.55,1.55])cylinder(x+dx,(.55+bottom)/2,z,.07,bottom-.55,palette.white);
     box(x,fy,z,fw,fh,.16,palette.white);
     box(x,fy,z+.06,fw-.22,fh-.22,.08,palette.dark);
-    picture(x,fy,z+.104,fw-.34,(fw-.34)*9/16,filmTexture).material.toneMapped=false;
+    picture(x,fy,z+.13,fw-.34,(fw-.34)*9/16,filmTexture).material.toneMapped=false;
     box(x,bottom-.03,z+.06,fw,.08,.14,BRAND);
     box(x,fy+fh/2+.1,z+.12,fw+.34,.1,.58,palette.white);
     box(x+fw/2+.16,fy+.28,z-.08,.2,fh+.95,.42,BRAND);
@@ -476,10 +473,8 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm, on
   const gallerySets=Math.ceil(galleryWorks.length/3);let gallerySet=0,galleryClock=0;
   function drawGallery(s){
     const ctx=galleryCanvas.getContext('2d'),w=2048,h=640,blue='#00A1E9',deep='#0088C8',ink='#1F3442';
+    // Plain background: fine grid lines shimmer when the board is seen small or in motion.
     ctx.fillStyle='#FDFEFF';ctx.fillRect(0,0,w,h);
-    ctx.strokeStyle='rgba(0,161,233,.08)';ctx.lineWidth=1;
-    for(let gx=0;gx<w;gx+=32){ctx.beginPath();ctx.moveTo(gx,0);ctx.lineTo(gx,h);ctx.stroke();}
-    for(let gy=0;gy<h;gy+=32){ctx.beginPath();ctx.moveTo(0,gy);ctx.lineTo(w,gy);ctx.stroke();}
     ctx.textBaseline='middle';ctx.textAlign='left';
     for(let k=0;k<3;k++){
       const n=(s*3+k)%galleryWorks.length,[,title,sub]=galleryWorks[n],im=galleryImages[n],x=44+k*668,y=34,iw=624,ih=390;
@@ -509,9 +504,10 @@ export function createWorld(container, labelLayer, courses, onSelect, onFilm, on
     for(const dx of [-1.9,1.9])box(x+dx,.68,z+.75,.04,.32,1.0,palette.white);
     for(const dx of [-1.5,-.5,.5,1.5])cylinder(x+dx,(.52+bottom)/2,z-.02,.06,bottom-.52,palette.white);
     box(x,wy,z,ww,wh,.18,palette.white);
-    box(x,wy-.07,z+.07,ww-.14,(ww-.14)*640/2048+.08,.04,palette.dark);
-    picture(x,wy-.07,z+.1,ww-.2,(ww-.2)*640/2048,galleryTexture).material.toneMapped=false;
-    picture(x-.15,wy+wh/2-.17,z+.1,1.8,.225,signTexture).material.toneMapped=false;
+    // Layers stand clearly in front of the wall face (z+.09) so they never z-fight while the camera moves.
+    box(x,wy-.07,z+.12,ww-.14,(ww-.14)*640/2048+.08,.04,palette.dark);
+    picture(x,wy-.07,z+.17,ww-.2,(ww-.2)*640/2048,galleryTexture).material.toneMapped=false;
+    picture(x-.15,wy+wh/2-.17,z+.15,1.8,.225,signTexture).material.toneMapped=false;
     box(x,wy+wh/2+.07,z+.22,ww+.4,.09,.75,palette.white);
     box(x-ww/2-.14,wy+.12,z+.06,.2,wh+.75,.38,BRAND);
     box(x+ww/2+.06,1.0,z+.9,.07,.9,.07,palette.gold);
