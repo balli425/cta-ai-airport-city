@@ -54,21 +54,9 @@ export const featured={
   ]
 };
 
+// 依開案日（opened）由新到舊排列；新增作品插在對應日期的位置。
 export const works=[
-  {id:'namecards',cat:'tools',thumb:'namecards',tag:'資料庫',title:'CTA 名片庫｜手機查詢',url:null,
-   summary:'名片拍照或掃描後由 AI 辨識、歸檔到雲端試算表，手機登入即可依人員或公司查詢；名片資料不放在網頁裡。',
-   period:'2026-11-11 上線',
-   need:'把累積的名片整理成單一主檔，在手機上查詢、撥號、匯出聯絡人；收到新名片當天就能辨識、歸檔、同步。',
-   method:[
-     '名片由 AI 辨識後歸檔，同步到雲端，手機即可查詢',
-     '公開網頁不含任何名片資料，登入後才能查看',
-     '大量掃描時由多個 AI 助手同時辨識，再交叉核對重複'
-   ],
-   result:[
-     '舊資料庫 389 筆全數轉入；一次掃描 177 張，新增 154 筆、更新 14 筆',
-     '雲端主檔超過 560 筆；搜尋、分組、分類篩選、一鍵撥號、匯出 vCard'
-   ]},
-  {id:'miaoli',cat:'3d',thumb:'miaoli-teardown',video:{src:'./assets/works/video/teardown-demo.mp4',label:'播放示範・1 分鐘'},tag:'3D 互動・結構',title:'苗栗透天宅｜結構拆解 3D 互動頁',url:'https://balli425.github.io/cta-miaoli-house-teardown/',
+  {id:'miaoli',opened:'2026-11-07',cat:'3d',thumb:'miaoli-teardown',video:{src:'./assets/works/video/teardown-demo.mp4',label:'播放示範・1 分鐘'},tag:'3D 互動・結構',title:'苗栗透天宅｜結構拆解 3D 互動頁',url:'https://balli425.github.io/cta-miaoli-house-teardown/',
    summary:'錯層中庭透天住宅，外皮、牆、樓板與梁、柱、基礎可以一層層拆開再組回，逐層透視並顯示構件尺寸與數量。',
    period:'2026-11-07（單日完成）',
    need:'簡報時用可以操作的 3D 頁面說明結構：由外皮、牆、柱到基礎逐層拆解與組裝；單一檔案即可開啟，手機也能看。',
@@ -81,7 +69,7 @@ export const works=[
      '結構資訊：RC 柱 30×80 公分 8 支、11 個樓板高程、前後棟錯開半層 1.6 公尺',
      '版本由 V1 演進到 V3.1（手機版與手機手勢），附自動導覽示範影片'
    ]},
-  {id:'housing',cat:'method',thumb:'housing-research',tag:'方法研究',title:'集合住宅平面與法規研究',
+  {id:'housing',opened:'2026-10-30',cat:'method',thumb:'housing-research',tag:'方法研究',title:'集合住宅平面與法規研究',
    summary:'畫集合住宅標準層之前，先把台灣常見的平面做法與相關法規查清楚，寫成畫圖時就能逐條自檢的事務所標準。',
    period:'2026-10-30（一個下午）',
    need:'畫標準層之前，先查清楚常見的平面做法與法規，讓設計一開始就不違規。',
@@ -91,7 +79,7 @@ export const works=[
      '圖面觀察與推論分開標示，討論定案後才寫成標準'
    ],
    result:['事務所設計標準 15 條','標準層自動檢查 14 項','檢討工具表 4 張']},
-  {id:'island',cat:'site',thumb:'airport-city',tag:'本站製作',title:'築匠 AI 空港城｜這個網站怎麼做出來',
+  {id:'island',opened:'2026-10-23',cat:'site',thumb:'airport-city',tag:'本站製作',title:'築匠 AI 空港城｜這個網站怎麼做出來',
    summary:'走進一座 3D 城市，就能看懂三堂 AI 課程；城市全部由程式即時建出，手機也能看，連結就能分享。',
    period:'2026-10-23 起，持續更新',
    need:'讓訪客不必讀長篇介紹，走進城市就能看懂三堂 AI 課程。',
@@ -105,13 +93,13 @@ export const works=[
      '城市裡有 70 個人物、10 輛車、1 架直升機，日夜兩種時段',
      '陸續加入課程影片、影片放映場、研究成果館與使用人次統計'
    ]},
-  {id:'intake',cat:'method',thumb:'site-intake',tag:'方法研究',title:'開案初步結果｜拿到地號 10～15 分鐘',
+  {id:'intake',opened:'2026-10-22',cat:'method',thumb:'site-intake',tag:'方法研究',title:'開案初步結果｜拿到地號 10～15 分鐘',
    summary:'拿到地號，10～15 分鐘要產出初步結果：基本法規分析、面積計算表、報價單。',
    period:'2026-10-22 起',
    need:'拿到地號，10～15 分鐘要產出初步結果。',
    method:[],
    result:['基本法規分析','面積計算表','報價單']},
-  {id:'indigenous',cat:'3d',thumb:'indigenous',tag:'競圖研究・練習案',title:'原住民族教育推廣中心｜AI 協助競圖研究',deck:'indigenous',
+  {id:'indigenous',opened:'2026-10-15',cat:'3d',thumb:'indigenous',tag:'競圖研究・練習案',title:'原住民族教育推廣中心｜AI 協助競圖研究',deck:'indigenous',
    disclaimer:'練習案：以民國 105 年公開招標為研究題目',
    summary:'以一件公共建築競圖為題，研究 AI 怎麼協助從評估、法規量體、多方案模擬，一路做到完整設計與服務建議書。',
    period:'2026-10-15～2026-10-16',
@@ -122,13 +110,13 @@ export const works=[
      '依定案以 Revit 重建模型，完成整套圖說'
    ],
    result:['總樓地板 1,165.9 ㎡','Revit 圖紙 11 張','16 頁成果簡報']},
-  {id:'argon',cat:'method',thumb:'argon',tag:'方法研究',title:'Argon 測試｜AI 說完成了，真的完成了嗎？',deck:'argon',
+  {id:'argon',opened:'2026-10-15',cat:'method',thumb:'argon',tag:'方法研究',title:'Argon 測試｜AI 說完成了，真的完成了嗎？',deck:'argon',
    summary:'要求 AI 依一張建築圖做出可以編修的模型，逐輪比對七個版本，檢討 AI「宣稱完成」與實際成果之間的落差。',
    period:'2026-10-15（單日）',
    need:'要求 AI 依圖片做出可以編修的模型，並判斷它說「完成」的時候是否真的完成。',
    method:['001 到 007 共七輪建模與真實化，逐輪並排比對','逐輪整理「宣稱」與「實際」的差距'],
    result:['歸納三條驗收標準：同視角並排比對、關鍵構件核對、可編修模型驗收','10 頁檢討簡報']},
-  {id:'miaoli9',cat:'3d',thumb:'miaoli-nine',video:{src:'./assets/works/video/miaoli-nine-stages.mp4',label:'播放影片・10 分鐘'},tag:'建築設計協作',title:'苗栗透天宅｜一張手稿，13 天一整套建築',deck:'miaoli',
+  {id:'miaoli9',opened:'2026-10-01',cat:'3d',thumb:'miaoli-nine',video:{src:'./assets/works/video/miaoli-nine-stages.mp4',label:'播放影片・10 分鐘'},tag:'建築設計協作',title:'苗栗透天宅｜一張手稿，13 天一整套建築',deck:'miaoli',
    summary:'從建築師 2015 年的 A3 手稿出發，AI 協作在 13 天內完成九個階段：建模、建照圖、數量預算、細部設計、三個設計方案，到定案全套圖說。',
    period:'2026-10-01～2026-10-13',
    need:'只有一份 3 頁手繪草稿，要在短時間內做到可以送審、可以發包的整套設計。',
@@ -138,7 +126,7 @@ export const works=[
      '另提出三個截然不同的方案供選擇，定案後全套重做'
    ],
    result:['全套圖說 93 張、構造大樣 28 個、法規檢討 22 項','定案後一週內重做 47 張圖','10 頁精華簡報、10 分鐘九階段說明影片']},
-  {id:'sloth',cat:'media',thumb:'sloth-taichi',tag:'AI 動畫',title:'樹懶打太極｜動作轉移動畫',
+  {id:'sloth',opened:'2026-08-21',cat:'media',thumb:'sloth-taichi',tag:'AI 動畫',title:'樹懶打太極｜動作轉移動畫',
    video:{src:'./assets/works/video/sloth-taichi.mp4',portrait:true,label:'播放影片・2 分 20 秒'},
    summary:'把一整套太極示範動作，轉給自創的卡通樹懶角色，做成 2 分 20 秒的直式短片。',
    period:'2026-08-21～2026-08-24',
@@ -152,7 +140,7 @@ export const works=[
      '2 分 20 秒直式成片，附片名字卡與 AI 配樂',
      '比較三種技術路線的取捨，整理成後續動畫製作的準則'
    ]},
-  {id:'cost',cat:'tools',thumb:'cost-app',tag:'手機 App',title:'建照造價與費用查詢 App',url:null,
+  {id:'cost',opened:'2026-08-05',cat:'tools',thumb:'cost-app',tag:'手機 App',title:'建照造價與費用查詢 App',url:null,
    summary:'可加到手機主畫面的查詢工具：選建築物類別、構造與面積，即時算出法定工程造價與應繳費用，離線也能用。',
    period:'2026-08-05～2026-09-28（v1.0～v1.2）',
    need:'讓建築師在手機上快速試算建照掛件、領照費用，加到主畫面即可使用，沒有網路也能查。',
@@ -165,7 +153,7 @@ export const works=[
      '內建 13 項構造單價表，造價標準更新日期標示在頁首',
      '3 個版次，附使用手冊'
    ]},
-  {id:'theatre',cat:'media',thumb:'theatre-trailer',tag:'AI 動畫・預告片',title:'舞台劇預告《燈火未熄》',deck:'theatre',
+  {id:'theatre',opened:'2026-08-04',cat:'media',thumb:'theatre-trailer',tag:'AI 動畫・預告片',title:'舞台劇預告《燈火未熄》',deck:'theatre',
    video:{src:'./assets/works/video/theatre-trailer.mp4',label:'播放預告・45 秒'},
    summary:'把一組 AI 舞台劇場景圖，做成具電影預告張力的 45 秒宣傳片，保留台口、布景與追光的舞台質感。',
    period:'2026-08-04（單日完成）',
@@ -179,7 +167,7 @@ export const works=[
      '45 秒 1080p 正式預告片',
      '11 頁創作紀實簡報'
    ]},
-  {id:'cafe',cat:'media',thumb:'midnight-cafe',tag:'動畫系列',title:'建築師深夜咖啡館小劇場｜奶茶麻吉',
+  {id:'cafe',opened:'2026-07-18',cat:'media',thumb:'midnight-cafe',tag:'動畫系列',title:'建築師深夜咖啡館小劇場｜奶茶麻吉',
    summary:'把建築實務裡的責任、合作與職場處境，改編成紙雕風格的直式短片，由貓「奶茶」與狗「麻吉」演出；已在 YouTube、Facebook、Instagram、TikTok 公開 8 集。',
    period:'2026-07-18 起，持續製作中',
    need:'把建築人的日常與職場課題，轉成大眾看得懂、帶點幽默的短片；角色與畫風要固定，能逐集穩定製作。',
@@ -202,7 +190,7 @@ export const works=[
      {yt:'yRPDEdgLSfs',title:'MM006 模型很準，答案不一定'},
      {yt:'aPPyRcDFIdk',title:'MM007 證照不是終點線'}
    ]},
-  {id:'permit',cat:'tools',thumb:'permit-fee',tag:'試算工具',title:'建照申請掛件費用計算系統',url:'https://balli425.github.io/hsinchu-building-permit-calculator/',disclaimer:'研究用，非正式掛件使用',
+  {id:'permit',opened:'2026-05-18',cat:'tools',thumb:'permit-fee',tag:'試算工具',title:'建照申請掛件費用計算系統',url:'https://balli425.github.io/hsinchu-building-permit-calculator/',disclaimer:'研究用，非正式掛件使用',
    summary:'依建築師酬金標準表、法定工程造價與協檢作業收費標準，自動計算建照掛件與領照應繳的各項費用，並輸出 PDF 明細。',
    period:'2026-05-18～2026-08-05（V1～V4.4）',
    need:'建築師掛件、領照時，一次算出應繳的各項費用並輸出明細，本縣與外縣市建築師都能使用。',
@@ -216,21 +204,20 @@ export const works=[
      '計算設計費（掛件 70%／領照 30%／一次繳清）、事業費、協檢費、行政作業費、外縣市補助費與協審費、合作設計比例',
      '多頁 PDF 明細輸出'
    ]},
-  {id:'gem',cat:'tools',thumb:'gem-dashboard',tag:'AI 助理整合',title:'築匠 AI 助理｜Gem 前後對比整合頁',url:'https://balli425.github.io/CTA-GEM-Dashboard/',
-   summary:'事務所建置的建築專用 AI 助理（Gem）集中在同一頁，每一個都以實際產出圖做 Before／After 對比，點了直接開啟使用。',
-   period:'2026-04-18～2026-09-17（V1～V6）',
-   need:'把分散在 Gemini 上的建築專用 Gem 集中展示，每個附上實例對比，讓使用者一眼看出用途並直接開啟。',
+  {id:'namecards',opened:'2026-05-12',cat:'tools',thumb:'namecards',tag:'資料庫',title:'CTA 名片庫｜手機查詢',url:null,
+   summary:'名片拍照或掃描後由 AI 辨識、歸檔到雲端試算表，手機登入即可依人員或公司查詢；名片資料不放在網頁裡。',
+   period:'2026-05-12～2026-11-11 上線',
+   need:'把累積的名片整理成單一主檔，在手機上查詢、撥號、匯出聯絡人；收到新名片當天就能辨識、歸檔、同步。',
    method:[
-     'AI 代理人協助每週建置新的 Gem，並產生 Before／After 測試圖',
-     '逐一審閱，未達標準的不上架',
-     '圖片統一壓縮，頁面載入更快'
+     '名片由 AI 辨識後歸檔，同步到雲端，手機即可查詢',
+     '公開網頁不含任何名片資料，登入後才能查看',
+     '大量掃描時由多個 AI 助手同時辨識，再交叉核對重複'
    ],
    result:[
-     '139 個 Gem、8 個分類：圖說／分析 39、特別空間改造 31、建築設計 24 等',
-     '六次改版，累計數量 71 → 107 → 124 → 139',
-     'V4 上線檢查：216 個圖片路徑缺檔 0'
+     '舊資料庫 389 筆全數轉入；一次掃描 177 張，新增 154 筆、更新 14 筆',
+     '雲端主檔超過 560 筆；搜尋、分組、分類篩選、一鍵撥號、匯出 vCard'
    ]},
-  {id:'exam',cat:'tools',thumb:'exam-practice',tag:'學習工具',title:'建築師考古題模擬系統',url:'https://balli425.github.io/CTA-Web-page/',
+  {id:'exam',opened:'2026-04-18',cat:'tools',thumb:'exam-practice',tag:'學習工具',title:'建築師考古題模擬系統',url:'https://balli425.github.io/CTA-Web-page/',
    summary:'歷屆建築師考試選擇題的線上模擬：標準版與圖文並茂版共用同一份題庫，作答即時計分，列出答錯題目。',
    period:'2026-04-14～2026-09-28',
    need:'考生不必對著紙本 PDF 練習，可以線上模擬作答，答完立即計分並檢討錯題。',
@@ -244,7 +231,7 @@ export const works=[
      '圖文並茂版：110～114 年',
      '兩種介面共用同一份題庫'
    ]},
-  {id:'interior',cat:'tools',thumb:'interior-fee',tag:'試算工具',title:'室內裝修審查費計算系統',url:'https://balli425.github.io/Hsinchu-County-Architects-Association/',
+  {id:'interior',opened:'2026-04-13',cat:'tools',thumb:'interior-fee',tag:'試算工具',title:'室內裝修審查費計算系統',url:'https://balli425.github.io/Hsinchu-County-Architects-Association/',
    summary:'依室內裝修審查收費標準，分圖說審查與竣工查驗兩階段累進計算，並產生繳費明細單 PDF。',
    period:'2026-04-13～2026-09-28（v1.0～v1.1）',
    need:'室內裝修案申請時，依面積自動算出兩階段審查費，並產生繳費明細單。',
@@ -256,5 +243,19 @@ export const works=[
    result:[
      '輸入面積即得總額與明細單',
      '版面與計算架構成為後續其他縣市版本與建照費用系統的參考'
+   ]},
+  {id:'gem',opened:'2026-04-01',cat:'tools',thumb:'gem-dashboard',tag:'AI 助理整合',title:'築匠 AI 助理｜Gem 前後對比整合頁',url:'https://balli425.github.io/CTA-GEM-Dashboard/',
+   summary:'事務所建置的建築專用 AI 助理（Gem）集中在同一頁，每一個都以實際產出圖做 Before／After 對比，點了直接開啟使用。',
+   period:'2026-04-18～2026-09-17（V1～V6）',
+   need:'把分散在 Gemini 上的建築專用 Gem 集中展示，每個附上實例對比，讓使用者一眼看出用途並直接開啟。',
+   method:[
+     'AI 代理人協助每週建置新的 Gem，並產生 Before／After 測試圖',
+     '逐一審閱，未達標準的不上架',
+     '圖片統一壓縮，頁面載入更快'
+   ],
+   result:[
+     '139 個 Gem、8 個分類：圖說／分析 39、特別空間改造 31、建築設計 24 等',
+     '六次改版，累計數量 71 → 107 → 124 → 139',
+     'V4 上線檢查：216 個圖片路徑缺檔 0'
    ]}
 ];
