@@ -1,5 +1,5 @@
 import { scheduleMarkup } from './schedule.js?v=20261116-contact';
-import { featured, works, decks, categories } from './works.js?v=20261120-opened';
+import { featured, works, decks, categories } from './works.js?v=20261120-conchvideo';
 import { recordVisit, recordUse } from './counter.js?v=20261116-count';
 const $ = s => document.querySelector(s);
 const modal = $('#modal'), toastEl = $('#toast');
@@ -62,7 +62,7 @@ function worksMarkup(){
   const card=w=>`<article class="work-card" data-card="${w.id}">${shotMarkup(w)}<div class="work-body"><span class="work-tag">${w.tag}</span><h3>${w.title}</h3>${w.disclaimer?`<p class="work-disclaimer">※ ${w.disclaimer}</p>`:''}<p>${w.summary}</p>${seriesMarkup(w)}${processMarkup(w)}${actionsMarkup(w)}</div></article>`;
   const fd=decks[f.deck];
   const tabs=`<div class="work-tabs" role="tablist" aria-label="研究成果分類"><button role="tab" data-work-cat="all" aria-selected="${worksCat==='all'}">全部 <small>${allWorks().length}</small></button>${used.map(c=>`<button role="tab" data-work-cat="${c.id}" aria-selected="${worksCat===c.id}">${c.label} <small>${allWorks().filter(w=>w.cat===c.id).length}</small></button>`).join('')}</div>`;
-  const feature=inCat(f)?`<article class="work-feature"><img src="./assets/works/${f.thumb}.jpg" alt="${f.title}：線上 3D 場景鳥瞰" width="960" height="600"><div class="work-feature-body"><span class="work-tag">${f.tag}</span><h3>${f.title}</h3><p>${f.summary}</p><div class="work-stats">${f.stats.map(([b,s])=>`<span><b>${b}</b>${s}</span>`).join('')}</div><div class="schedule-action"><button class="primary" data-deck="${f.deck}">翻閱研究簡報・${fd.pages} 頁 <span>↗</span></button>${(f.moreDecks||[]).map(id=>`<button class="secondary" data-deck="${id}">${decks[id].label||'簡報'}・${decks[id].pages} 頁</button>`).join('')}<a class="secondary" data-work="${f.id}" href="${f.url}" target="_blank" rel="noopener noreferrer">走進 3D 場景 ↗</a></div>${processMarkup(f)}</div></article>`:'';
+  const feature=inCat(f)?`<article class="work-feature" data-card="${f.id}">${f.video?shotMarkup(f).replace('class="work-shot','class="work-shot work-feature-shot'):`<img src="./assets/works/${f.thumb}.jpg" alt="${f.title}：線上 3D 場景鳥瞰" width="960" height="600">`}<div class="work-feature-body"><span class="work-tag">${f.tag}</span><h3>${f.title}</h3><p>${f.summary}</p><div class="work-stats">${f.stats.map(([b,s])=>`<span><b>${b}</b>${s}</span>`).join('')}</div><div class="schedule-action"><button class="primary" data-deck="${f.deck}">翻閱研究簡報・${fd.pages} 頁 <span>↗</span></button>${(f.moreDecks||[]).map(id=>`<button class="secondary" data-deck="${id}">${decks[id].label||'簡報'}・${decks[id].pages} 頁</button>`).join('')}<a class="secondary" data-work="${f.id}" href="${f.url}" target="_blank" rel="noopener noreferrer">走進 3D 場景 ↗</a></div>${processMarkup(f)}</div></article>`:'';
   return `<div class="dialog-copy works-lead"><p>這些研究由 AI 代理人實際執行、自我檢查並發佈；建築師負責出題、審閱與驗收。每一件都附上研究過程：需求是什麼、怎麼做、做出什麼。</p></div>${tabs}${feature}<div class="work-grid">${works.filter(inCat).map(card).join('')}</div><p class="source-note">內容與數字以各作品現況為準；部分作品僅展示研究成果畫面。</p>`;
 }
 const deckOf=()=>decks[deckId]||decks.conch;
