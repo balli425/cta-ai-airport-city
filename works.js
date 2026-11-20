@@ -167,8 +167,8 @@ export const works=[
      '45 秒 1080p 正式預告片',
      '11 頁創作紀實簡報'
    ]},
-  {id:'cafe',opened:'2026-07-18',cat:'media',thumb:'midnight-cafe',tag:'動畫系列',title:'建築師深夜咖啡館小劇場｜奶茶麻吉',
-   summary:'把建築實務裡的責任、合作與職場處境，改編成紙雕風格的直式短片，由貓「奶茶」與狗「麻吉」演出；已在 YouTube、Facebook、Instagram、TikTok 公開 8 集。',
+  {id:'cafe',opened:'2026-07-18',cat:'media',thumb:'midnight-cafe',tag:'動畫系列',title:'建築師深夜咖啡館小劇場｜麻吉奶茶',
+   summary:'把建築實務裡的責任、合作與職場處境，改編成紙雕風格的直式短片，由狗「麻吉」與貓「奶茶」演出；已在 YouTube、Facebook、Instagram、TikTok 公開 8 集。',
    period:'2026-07-18 起',
    need:'把建築人的日常與職場課題，轉成大眾看得懂、帶點幽默的短片；角色與畫風要固定，能逐集穩定製作。',
    method:[

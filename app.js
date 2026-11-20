@@ -1,5 +1,5 @@
 import { scheduleMarkup } from './schedule.js?v=20261116-contact';
-import { featured, works, decks, categories } from './works.js?v=20261120-conchvideo';
+import { featured, works, decks, categories } from './works.js?v=20261120-series3';
 import { recordVisit, recordUse } from './counter.js?v=20261116-count';
 const $ = s => document.querySelector(s);
 const modal = $('#modal'), toastEl = $('#toast');
@@ -49,7 +49,7 @@ function shotMarkup(w){
   const img=`<img src="./assets/works/${w.thumb}.jpg" alt="${w.title}的畫面" width="960" height="600" loading="lazy">`;
   return `<div class="work-shot${w.video?.portrait?' is-portrait':''}">${img}${w.video?`<button class="work-play" data-play="${w.id}" aria-label="播放影片：${w.title}"><i aria-hidden="true"></i><span>${w.video.label||'播放影片'}</span></button>`:''}</div>`;
 }
-const seriesMarkup=w=>w.series?`<div class="work-series" aria-label="${w.title}：影片列表">${w.series.map(v=>`<button class="work-episode" data-yt="${v.yt}" data-work-id="${w.id}"><img src="https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360"><span>${v.title}</span></button>`).join('')}</div>`:'';
+const seriesMarkup=w=>w.series?`<details class="work-process work-series-box"><summary>選集播放・共 ${w.series.length} 集</summary><div class="work-series" aria-label="${w.title}：影片列表">${w.series.map(v=>`<button class="work-episode" data-yt="${v.yt}" data-work-id="${w.id}"><img src="https://i.ytimg.com/vi/${v.yt}/hqdefault.jpg" alt="" loading="lazy" width="480" height="360"><span>${v.title}</span></button>`).join('')}</div></details>`:'';
 const actionsMarkup=w=>{
   const d=w.deck&&decks[w.deck];
   const btns=[d?`<button class="work-link" data-deck="${w.deck}">翻閱簡報・${d.pages} 頁</button>`:'',...(w.moreDecks||[]).map(id=>`<button class="work-link" data-deck="${id}">${decks[id].label||'簡報'}・${decks[id].pages} 頁</button>`),w.url?`<a class="work-link" data-work="${w.id}" href="${w.url}" target="_blank" rel="noopener noreferrer">${w.urlLabel||'開啟網頁'} ↗</a>`:''].join('');
@@ -85,7 +85,7 @@ function playWork(id){
 function playEpisode(btn){
   const box=document.createElement('div');box.className='work-episode is-playing';
   box.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${btn.dataset.yt}?autoplay=1&rel=0&playsinline=1" title="${esc(btn.textContent)}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
-  btn.replaceWith(box);recordUse('yt_'+btn.dataset.workId);
+  const strip=btn.closest('.work-series');strip.parentElement.querySelector('.work-episode.is-playing')?.remove();strip.before(box);recordUse('yt_'+btn.dataset.workId);
 }
 function showModal(type) {
   if(type==='detail')type='summary';
