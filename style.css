@@ -142,7 +142,8 @@ body.night .visit-counter{color:#e8f2f7}body.night .visit-counter span:first-chi
 .work-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(0deg,#0d2a4066,#0d2a4000 60%);border:0;cursor:pointer;color:#fff;font-family:inherit;font-weight:800;font-size:calc(15px * var(--ui-scale))}
 .work-play i{width:56px;height:56px;border-radius:50%;background:#00A1E9;position:relative;box-shadow:0 4px 16px #0006}
 .work-play i:after{content:"";position:absolute;left:22px;top:17px;border-left:17px solid #fff;border-top:11px solid transparent;border-bottom:11px solid transparent}
-.work-play span{background:#174e75e6;border-radius:4px;padding:4px 10px}
+.work-play span{background:#bd4b0b;border:2px solid #a73b00;box-shadow:0 3px 0 #7f2e00;border-radius:5px;padding:6px 14px;font-size:1.08em}
+.work-play:hover span,.work-play:focus-visible span{background:#9f3b07}
 .work-play:hover i,.work-play:focus-visible i{background:#0088C8}
 .work-series{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px;margin:2px 0 12px}
 .work-episode{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid #bccbd0;border-radius:6px;padding:0 0 6px;overflow:hidden;cursor:pointer;font-family:inherit;text-align:left}
