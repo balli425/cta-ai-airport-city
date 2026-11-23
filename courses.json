@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-23",
+  "updated": "2026-11-23",
   "courses": [
     {
       "id": "foundation",
@@ -105,27 +105,28 @@
     }
   ],
   "enrollment": {
-    "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLSde83yWzdtj3lmo8RIHecMEgGlmlrSdYGM2BPdr6CC1TIxykQ/viewform",
+    "formUrl": "",
     "sessions": [
       {
         "date": "2026-11-29",
         "title": "AI 代理人實戰課程 · 台北銘傳班",
         "time": "10:00–17:00",
         "location": "銘傳大學基河校區 J313",
-        "status": "開放報名 · 滿 10 人開課，最多 20 人",
-        "type": "upcoming",
+        "status": "已停止報名",
+        "type": "closed",
         "courseId": "agent",
         "venueId": "taipei",
-        "registrationStatus": "open",
+        "registrationStatus": "closed",
         "formUrl": "https://docs.google.com/forms/d/e/1FAIpQLSde83yWzdtj3lmo8RIHecMEgGlmlrSdYGM2BPdr6CC1TIxykQ/viewform",
-        "registrationNote": "滿 10 人開課，最多 20 人；完成匯款及填表後，經主辦核款與錄取確認始完成報名。",
+        "registrationNote": "本場次已停止報名，後續課程請留意主辦公告。",
         "feeNote": "一般學費 5,000 元；銘傳大學校友、在校生及目前 K 圖會學員，提供有效證明可享 4,500 元。未開班或超額未錄取者全額退費；其他退費規定請詳閱表單。",
         "availability": {
           "capacity": 20,
-          "responses": 0,
+          "responses": 1,
           "reservedSeats": 0,
-          "checkedAt": "2026-11-16T20:35:13+08:00"
-        }
+          "checkedAt": "2026-11-23T09:17:52.686Z"
+        },
+        "closedAt": "2026-11-23"
       },
       {
         "date": "2026-11-15",
@@ -262,3 +263,4 @@
     }
   ]
 }
+

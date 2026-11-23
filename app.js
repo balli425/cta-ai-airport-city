@@ -1,5 +1,5 @@
-import { scheduleMarkup } from './schedule.js?v=20261116-contact';
-import { featured, works, decks, categories } from './works.js?v=20261120-series3';
+import { scheduleMarkup } from './schedule.js?v=20261123-1129-closed';
+import { featured, works, decks, categories } from './works.js?v=20261123-1129-closed';
 import { recordVisit, recordUse } from './counter.js?v=20261116-count';
 const $ = s => document.querySelector(s);
 const modal = $('#modal'), toastEl = $('#toast');
@@ -158,7 +158,7 @@ motionLabel();
 $('#daynight').addEventListener('click',()=>{night=!night;document.body.classList.toggle('night',night);$('#daynight').setAttribute('aria-pressed',String(night));$('#daynight').innerHTML=night?'☾ <span>夜間</span>':'☼ <span>日間</span>';world?.setNight(night);});
 $('#motion').addEventListener('click',()=>{paused=!paused;motionLabel();world?.setPaused(paused);});
 try{
-  const resources=await Promise.all(['./courses.json?v=20261116-seats','./summaries.json','./summary-pages.json'].map(async url=>{const response=await fetch(url);if(!response.ok)throw Error('課程資料載入失敗');return response.json()}));
+  const resources=await Promise.all(['./courses.json?v=20261123-1129-closed','./summaries.json','./summary-pages.json'].map(async url=>{const response=await fetch(url);if(!response.ok)throw Error('課程資料載入失敗');return response.json()}));
   [data,summaries,pageManifest]=resources;select('foundation');
   const {createWorld}=await import('./world.js?v=20261116-spread');
   world=createWorld($('#scene'),$('#labels'),data.courses,id=>openSummary(id,false),()=>showModal('video'),()=>showModal('works'),allWorks().map(w=>[w.thumb,w.title.split('｜')[0],w.tag]),()=>showModal('contact'));
@@ -166,3 +166,4 @@ try{
 }catch(error){
   console.error('空港城初始化失敗',error);$('#loading').hidden=true;$('#scene-error').hidden=false;
 }
+
