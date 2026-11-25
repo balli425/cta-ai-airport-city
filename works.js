@@ -217,7 +217,7 @@ export const works=[
      '舊資料庫 389 筆全數轉入；一次掃描 177 張，新增 154 筆、更新 14 筆',
      '雲端主檔超過 560 筆；搜尋、分組、分類篩選、一鍵撥號、匯出 vCard'
    ]},
-  {id:'exam',opened:'2026-04-18',cat:'tools',thumb:'exam-practice',tag:'學習工具',title:'建築師考古題模擬系統',url:'https://balli425.github.io/CTA-Web-page/',
+  {id:'exam',opened:'2026-04-18',cat:'tools',thumb:'exam-practice',video:{src:'./assets/works/video/exam-making.mp4',label:'播放製作影片・10 分鐘'},tag:'學習工具',title:'建築師考古題模擬系統',url:'https://balli425.github.io/CTA-Web-page/',
    summary:'歷屆建築師考試選擇題的線上模擬：標準版與圖文並茂版共用同一份題庫，作答即時計分，列出答錯題目。',
    period:'2026-04-14～2026-09-28',
    need:'考生不必對著紙本 PDF 練習，可以線上模擬作答，答完立即計分並檢討錯題。',
