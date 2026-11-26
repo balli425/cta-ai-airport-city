@@ -165,6 +165,7 @@ try{
   const {createWorld}=await import('./world.js?v=20261116-spread');
   world=createWorld($('#scene'),$('#labels'),data.courses,id=>openSummary(id,false),()=>showModal('video'),()=>showModal('works'),allWorks().map(w=>[w.thumb,w.title.split('｜')[0],w.tag]),()=>showModal('contact'));
   world.setPaused(paused);$('#loading').hidden=true;
+  const deep=location.hash.slice(1);if(['anatomy','works','video','courses'].includes(deep))showModal(deep);
 }catch(error){
   console.error('空港城初始化失敗',error);$('#loading').hidden=true;$('#scene-error').hidden=false;
 }
