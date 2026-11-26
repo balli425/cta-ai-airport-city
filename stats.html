@@ -66,7 +66,7 @@ Promise.all(days.map(d=>read('dy_'+d))).then(values=>{
   document.getElementById('axis').innerHTML=days.map(d=>`<span>${Number(d.slice(5,7))}/${Number(d.slice(8))}</span>`).join('');
 });
 const row=async([key,label])=>{const [m,t]=await Promise.all([read(key+'_mo_'+month),read(key+'_total')]);return `<tr><td>${label}</td><td class="n">${fmt(m)}</td><td class="n">${fmt(t)}</td></tr>`;};
-const uses=[['use_video','課程影片'],['use_works','研究成果'],['use_deck','海洋館研究簡報'],['use_summary','上課摘要'],['use_courses','課程一覽'],['use_schedule','課程與班次'],['use_history','學習紀錄'],['use_about','關於築匠'],['use_help','操作說明']];
+const uses=[['use_video','課程影片'],['use_works','研究成果'],['use_anatomy','建築解剖學'],['use_deck','海洋館研究簡報'],['use_summary','上課摘要'],['use_courses','課程一覽'],['use_schedule','課程與班次'],['use_history','學習紀錄'],['use_about','關於築匠'],['use_help','操作說明']];
 const outs=[['use_out_conch','築匠海洋館 3D 場景'],['use_out_miaoli','苗栗透天宅結構拆解'],['use_out_gem','築匠 AI 助理'],['use_out_exam','建築師考古題模擬系統'],['use_out_permit','建照申請掛件費用計算系統'],['use_out_interior','室內裝修審查費計算系統']];
 Promise.all(uses.map(row)).then(r=>document.getElementById('uses').innerHTML=r.join(''));
 Promise.all(outs.map(row)).then(r=>document.getElementById('outs').innerHTML=r.join(''));

@@ -91,10 +91,12 @@ function showModal(type) {
   if(type==='detail')type='summary';
   modal.dataset.kind=type;recordUse(type);
   const c=data.courses.find(c=>c.id===current), body=$('#modal-body');
-  $('#modal-eyebrow').textContent={works:'AI AGENT LAB · 研究成果',deck:'RESEARCH DECK · '+deckOf().pages+' 頁',video:'COURSE FILM · 約 4 分鐘',courses:'THREE WAYS TO BEGIN',schedule:'COURSES & REGISTRATION',about:'ABOUT CTARCH',contact:'CONTACT CTARCH',summary:c.english+' / CLASS NOTES',detail:c.english,history:'LEARNING RECORDS',help:'HOW TO EXPLORE'}[type]||'';
-  $('#modal-title').textContent={works:'用 AI 代理人做出來的研究成果。',deck:deckOf().title,video:'4 分鐘，看懂三堂課在學什麼。',courses:'選一棟建築，開始你的課程。',schedule:'下一堂，一起動手做。',about:'把專業，帶進 AI 的可能。',contact:'聯絡我們',summary:c.name+' · 上課摘要',detail:c.name+' · 課程介紹',history:'一路動手做，一起累積。',help:'用自己的步調，探索空港城。'}[type]||'';
+  $('#modal-eyebrow').textContent={works:'AI AGENT LAB · 研究成果',anatomy:'BUILDING ANATOMY · 100 部互動動畫',deck:'RESEARCH DECK · '+deckOf().pages+' 頁',video:'COURSE FILM · 約 4 分鐘',courses:'THREE WAYS TO BEGIN',schedule:'COURSES & REGISTRATION',about:'ABOUT CTARCH',contact:'CONTACT CTARCH',summary:c.english+' / CLASS NOTES',detail:c.english,history:'LEARNING RECORDS',help:'HOW TO EXPLORE'}[type]||'';
+  $('#modal-title').textContent={works:'用 AI 代理人做出來的研究成果。',anatomy:'建築解剖學：把工地裡看不到的步驟，拆開來看。',deck:deckOf().title,video:'4 分鐘，看懂三堂課在學什麼。',courses:'選一棟建築，開始你的課程。',schedule:'下一堂，一起動手做。',about:'把專業，帶進 AI 的可能。',contact:'聯絡我們',summary:c.name+' · 上課摘要',detail:c.name+' · 課程介紹',history:'一路動手做，一起累積。',help:'用自己的步調，探索空港城。'}[type]||'';
   if(type==='works'){
     body.innerHTML=worksMarkup();
+  }else if(type==='anatomy'){
+    body.innerHTML=`<div class="dialog-copy"><p>100 部可以自己拖動時間軸的互動動畫，把建築的施工、構造與設備一步一步拆開：基礎與地下工程、結構施工、構造原理、外牆防水、電梯、消防、給排水空調、施工機具到室內裝修，共九大類。點任何一張就能開啟動畫。</p></div><div class="anatomy-frame"><iframe src="./assets/works/anatomy/index.html?v=20261126b" title="《建築解剖學》100 部互動動畫總覽" loading="eager"></iframe></div><div class="schedule-action"><a class="primary" href="./assets/works/anatomy/index.html" target="_blank" rel="noopener noreferrer">用整個視窗看動畫總覽 <span>↗</span></a></div><p class="source-note">動畫中的尺寸與數值多為示意，實際依設計圖說與相關法規辦理。</p>`;
   }else if(type==='deck'){
     renderDeck();
   }else if(type==='video'){
