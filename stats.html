@@ -50,27 +50,64 @@ a{color:#0077B6;font-weight:700}
   <table><thead><tr><th>功能</th><th>本月</th><th>累計</th></tr></thead><tbody id="uses"></tbody></table>
   <h2>作品網頁點擊人次（研究成果）</h2>
   <table><thead><tr><th>作品</th><th>本月</th><th>累計</th></tr></thead><tbody id="outs"></tbody></table>
-  <p class="note">統計自 2026-11-16 起，日期以台灣時間計。同一位訪客在同一次瀏覽（關閉分頁前）只記一次；每項功能也只記一次。回到 <a href="./">築匠 AI 空港城</a>。</p>
+  <p class="note">統計以台灣時間計，頁面開啟時每 30 秒更新。同一分頁的同一次瀏覽及每項功能各記一次。2026-11-24 至 11-26 無訪問紀錄，11-27 自恢復計數後累計。回到 <a href="./">築匠 AI 空港城</a>。</p>
 </main>
 <script type="module">
-import { COUNTER_API, taipeiDate } from './counter.js?v=20261116-count';
-const read=key=>fetch(COUNTER_API+key).then(r=>r.ok?r.text():'0').then(v=>parseInt(v)||0).catch(()=>0);
-const fmt=n=>n.toLocaleString('zh-TW');
-const today=taipeiDate(),month=today.slice(0,7),year=today.slice(0,4);
-const set=(id,v)=>document.getElementById(id).textContent=fmt(v);
-Promise.all(['dy_'+today,'mo_'+month,'yr_'+year,'total'].map(read)).then(([d,m,y,t])=>{set('today',d);set('month',m);set('year',y);set('total',t);});
-const days=[...Array(30)].map((_,i)=>taipeiDate(new Date(Date.now()-(29-i)*864e5)));
-Promise.all(days.map(d=>read('dy_'+d))).then(values=>{
-  const max=Math.max(1,...values);
-  document.getElementById('bars').innerHTML=values.map((v,i)=>`<div class="bar" title="${days[i]}：${v} 人次"><em>${v||''}</em><i style="height:${v/max*88}%"></i></div>`).join('');
-  document.getElementById('axis').innerHTML=days.map(d=>`<span>${Number(d.slice(5,7))}/${Number(d.slice(8))}</span>`).join('');
+import { watchCounts } from './counter.js?v=20261127-live';
+const fmt = n => n.toLocaleString('zh-TW');
+const timeFormat = new Intl.DateTimeFormat('zh-TW', {
+  timeZone: 'Asia/Taipei', dateStyle: 'short', timeStyle: 'medium', hourCycle: 'h23'
 });
-const row=async([key,label])=>{const [m,t]=await Promise.all([read(key+'_mo_'+month),read(key+'_total')]);return `<tr><td>${label}</td><td class="n">${fmt(m)}</td><td class="n">${fmt(t)}</td></tr>`;};
-const uses=[['use_video','課程影片'],['use_works','研究成果'],['use_anatomy','建築解剖學'],['use_deck','海洋館研究簡報'],['use_summary','上課摘要'],['use_courses','課程一覽'],['use_schedule','課程與班次'],['use_history','學習紀錄'],['use_about','關於築匠'],['use_help','操作說明']];
-const outs=[['use_out_conch','築匠海洋館 3D 場景'],['use_out_miaoli','苗栗透天宅結構拆解'],['use_out_gem','築匠 AI 助理'],['use_out_exam','建築師考古題模擬系統'],['use_out_permit','建照申請掛件費用計算系統'],['use_out_interior','室內裝修審查費計算系統']];
-Promise.all(uses.map(row)).then(r=>document.getElementById('uses').innerHTML=r.join(''));
-Promise.all(outs.map(row)).then(r=>document.getElementById('outs').innerHTML=r.join(''));
-document.getElementById('updated').textContent='資料讀取時間：'+new Date().toLocaleString('zh-TW',{timeZone:'Asia/Taipei',hour12:false});
+const uses=[['video','課程影片'],['works','研究成果'],['anatomy','建築解剖學'],['deck','海洋館研究簡報'],['summary','上課摘要'],['courses','課程一覽'],['schedule','課程與班次'],['history','學習紀錄'],['about','關於築匠'],['help','操作說明']];
+const outs=[['out_conch','築匠海洋館 3D 場景'],['out_miaoli','苗栗透天宅結構拆解'],['out_gem','築匠 AI 助理'],['out_exam','建築師考古題模擬系統'],['out_permit','建照申請掛件費用計算系統'],['out_interior','室內裝修審查費計算系統']];
+const updated = document.getElementById('updated');
+let lastUpdated = '';
+
+function renderRows(id, rows, features) {
+  document.getElementById(id).innerHTML = rows.map(([key, label]) =>
+    '<tr><td>'+label+'</td><td class="n">'+fmt(features.month[key] || 0)+'</td><td class="n">'+fmt(features.total[key] || 0)+'</td></tr>'
+  ).join('');
+}
+
+function renderChart(days) {
+  const max = Math.max(1, ...days.map(({ value }) => value ?? 0));
+  const bars = document.createDocumentFragment();
+  const axis = document.createDocumentFragment();
+  for (const { day, value } of days) {
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    bar.title = day + '：' + (value === null ? '無紀錄' : fmt(value) + ' 人次');
+    if (value !== null) {
+      const count = document.createElement('em');
+      count.textContent = value || '';
+      const height = document.createElement('i');
+      height.style.height = (value / max * 88) + '%';
+      bar.append(count, height);
+    }
+    bars.append(bar);
+
+    const tick = document.createElement('span');
+    tick.textContent = Number(day.slice(5, 7)) + '/' + Number(day.slice(8));
+    axis.append(tick);
+  }
+  document.getElementById('bars').replaceChildren(bars);
+  document.getElementById('axis').replaceChildren(axis);
+}
+
+watchCounts(data => {
+  if (!data) {
+    updated.textContent = lastUpdated ? '暫時無法更新 · 最近更新 ' + lastUpdated : '暫時無法讀取統計資料';
+    return;
+  }
+  for (const key of ['today', 'month', 'year', 'total']) {
+    document.getElementById(key).textContent = fmt(data.counts[key]);
+  }
+  renderChart(data.days);
+  renderRows('uses', uses, data.features);
+  renderRows('outs', outs, data.features);
+  lastUpdated = timeFormat.format(new Date(data.asOf));
+  updated.textContent = '最近更新 ' + lastUpdated + '（台灣時間）';
+}, { details: true });
 </script>
 </body>
 </html>

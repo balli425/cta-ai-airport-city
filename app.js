@@ -1,6 +1,6 @@
 import { scheduleMarkup } from './schedule.js?v=20261123-1129-closed';
-import { featured, works, decks, categories } from './works.js?v=20261126-anatomy';
-import { recordVisit, recordUse } from './counter.js?v=20261116-count';
+import { featured, works, decks, categories } from './works.js?v=20261127-live';
+import { watchCounts, recordUse } from './counter.js?v=20261127-live';
 const $ = s => document.querySelector(s);
 const modal = $('#modal'), toastEl = $('#toast');
 let data, summaries, pageManifest, world, current = 'foundation', toastTimer;
@@ -153,7 +153,20 @@ modal.addEventListener('click',e=>{if(e.target===modal){const r=modal.getBoundin
 $('#sound').addEventListener('click',()=>showModal('help'));
 $('#reset').addEventListener('click',()=>{world?.reset();$('#roam').setAttribute('aria-pressed','false');});
 $('#roam').addEventListener('click',()=>{const active=$('#roam').getAttribute('aria-pressed')!=='true';$('#roam').setAttribute('aria-pressed',String(active));world?.setRoaming(active);if(active)toast('WASD 移動・拖曳滑鼠轉向・Q/E 升降・Shift 加速・Esc 回全景');else world?.reset();});
-recordVisit().then(values=>['cnt-today','cnt-month','cnt-year','cnt-total'].forEach((id,i)=>{const el=document.getElementById(id);if(el)el.textContent=values[i]===null?'—':values[i].toLocaleString('zh-TW');}));
+watchCounts((data, visitFailed) => {
+  const counter = document.querySelector('.visit-counter');
+  if (!data) {
+    counter.title = '使用人次暫時無法更新';
+    for (const el of counter.querySelectorAll('b')) {
+      if (el.textContent === '…') el.textContent = '—';
+    }
+    return;
+  }
+  for (const key of ['today', 'month', 'year', 'total']) {
+    document.getElementById('cnt-' + key).textContent = data.counts[key].toLocaleString('zh-TW');
+  }
+  counter.title = visitFailed ? '已讀取人次，本次瀏覽未確認入計' : '';
+}, { visit: true });
 let night=false,paused=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function motionLabel(){const b=$('#motion');b.setAttribute('aria-pressed',String(paused));b.innerHTML=paused?'▷ <span>播放</span>':'Ⅱ <span>暫停</span>';}
 motionLabel();
