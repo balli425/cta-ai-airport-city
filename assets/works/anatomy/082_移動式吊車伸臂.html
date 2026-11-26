@@ -160,6 +160,9 @@ body{margin:0;background:var(--anatomy-page);color:var(--anatomy-text);font:14px
 .cta-tags{position:absolute;inset:0;pointer-events:none;z-index:1}
 .cta-tag{position:absolute;transform:translate(-50%,0);font:600 11.5px/1 "Noto Sans TC","Microsoft JhengHei",sans-serif;letter-spacing:.04em;padding:4px 8px 5px;border-radius:999px;background:#efebe4;color:#6f675c;box-shadow:0 0 0 1px #d8d1c6;white-space:nowrap;transition:background .25s,color .25s}
 .cta-tag.on{background:#174e75;color:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.cta-tag:not(.on){display:none}.iso .lead:not(.on),.iso .leadDot:not(.on){display:none}
+.cta-tag{font-size:13px;font-weight:700}
+@media (max-width:560px){.iso-plate-corner[data-corner="hint"]{max-width:calc(100% - 150px);white-space:normal;line-height:1.35}}
 .cta-tag.on::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:hsl(8 56% 62%);margin-right:5px;transform:translateY(-1px)}
 @media (max-width:560px){.cta-tag:not(.on){display:none}.iso .lead:not(.on),.iso .leadDot:not(.on){display:none}.cta-tag{font-size:11px}}
 @media (max-width:560px){.iso-stage{padding-top:78px}.iso-plate-corner[data-corner="readout"]{white-space:normal;max-width:100%;left:0;text-align:right;line-height:1.35}.iso-plate-corner[data-corner="hint"]{bottom:52px}}
