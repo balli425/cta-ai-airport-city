@@ -2,6 +2,7 @@
 // 分類：研究成果彈窗的頁籤，沒有作品的分類不顯示。
 export const categories=[
   {id:'3d',label:'3D 與建築'},
+  {id:'anatomy',label:'建築解剖學'},
   {id:'method',label:'方法研究'},
   {id:'tools',label:'實務工具'},
   {id:'media',label:'影像創作'},
@@ -56,6 +57,16 @@ export const featured={
 
 // 依開案日（opened）由新到舊排列；新增作品插在對應日期的位置。
 export const works=[
+  {id:'anatomy',opened:'2026-11-26',cat:'anatomy',thumb:'anatomy',tag:'互動動畫系列',title:'《建築解剖學》｜看懂建築施工、構造與設備',url:'./assets/works/anatomy/index.html',urlLabel:'開啟動畫總覽',
+   summary:'90 部互動動畫，把工地裡看不到的步驟拆開來看：基礎開挖、結構施工、構造原理、外牆防水、電梯消防、空調能源、施工機具到室內裝修，九大類依施工順序一步步演示。',
+   period:'2026-11-26 起',
+   need:'把建築施工、構造與設備的原理，做成不用讀長篇文字、拖一下就看得懂的動畫，上課與說明時直接打開來用。',
+   method:[
+     '每部動畫拆成數個施工步驟，構件依真實順序組裝、受力與運轉',
+     '左右拖動時間、方向鍵快轉、空白鍵暫停，手機也能操作',
+     '依九大類整理成總覽頁，持續增加新的題目'
+   ],
+   result:['互動動畫 90 部、分九大類','單一網頁即可開啟，連結就能分享']},
   {id:'miaoli',opened:'2026-11-07',cat:'3d',thumb:'miaoli-teardown',video:{src:'./assets/works/video/teardown-demo.mp4',label:'播放示範・1 分鐘'},tag:'3D 互動・結構',title:'苗栗透天宅｜結構拆解 3D 互動頁',url:'https://balli425.github.io/cta-miaoli-house-teardown/',
    summary:'錯層中庭透天住宅，外皮、牆、樓板與梁、柱、基礎可以一層層拆開再組回，逐層透視並顯示構件尺寸與數量。',
    period:'2026-11-07',
