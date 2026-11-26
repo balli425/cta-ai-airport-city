@@ -50,10 +50,10 @@ a{color:#0077B6;font-weight:700}
   <table><thead><tr><th>功能</th><th>本月</th><th>累計</th></tr></thead><tbody id="uses"></tbody></table>
   <h2>作品網頁點擊人次（研究成果）</h2>
   <table><thead><tr><th>作品</th><th>本月</th><th>累計</th></tr></thead><tbody id="outs"></tbody></table>
-  <p class="note">統計以台灣時間計，頁面開啟時每 30 秒更新。同一分頁的同一次瀏覽及每項功能各記一次。2026-11-24 至 11-26 無訪問紀錄，11-27 自恢復計數後累計。回到 <a href="./">築匠 AI 空港城</a>。</p>
+  <p class="note">統計以台灣時間計，開啟或重新整理頁面時查詢最新人次。同一分頁的同一次瀏覽及每項功能各記一次。2026-11-24 至 11-26 無訪問紀錄，11-27 自恢復計數後累計。回到 <a href="./">築匠 AI 空港城</a>。</p>
 </main>
 <script type="module">
-import { watchCounts } from './counter.js?v=20261127-live';
+import { loadCounts } from './counter.js?v=20261127-on-open';
 const fmt = n => n.toLocaleString('zh-TW');
 const timeFormat = new Intl.DateTimeFormat('zh-TW', {
   timeZone: 'Asia/Taipei', dateStyle: 'short', timeStyle: 'medium', hourCycle: 'h23'
@@ -61,7 +61,6 @@ const timeFormat = new Intl.DateTimeFormat('zh-TW', {
 const uses=[['video','課程影片'],['works','研究成果'],['anatomy','建築解剖學'],['deck','海洋館研究簡報'],['summary','上課摘要'],['courses','課程一覽'],['schedule','課程與班次'],['history','學習紀錄'],['about','關於築匠'],['help','操作說明']];
 const outs=[['out_conch','築匠海洋館 3D 場景'],['out_miaoli','苗栗透天宅結構拆解'],['out_gem','築匠 AI 助理'],['out_exam','建築師考古題模擬系統'],['out_permit','建照申請掛件費用計算系統'],['out_interior','室內裝修審查費計算系統']];
 const updated = document.getElementById('updated');
-let lastUpdated = '';
 
 function renderRows(id, rows, features) {
   document.getElementById(id).innerHTML = rows.map(([key, label]) =>
@@ -94,9 +93,9 @@ function renderChart(days) {
   document.getElementById('axis').replaceChildren(axis);
 }
 
-watchCounts(data => {
+loadCounts(data => {
   if (!data) {
-    updated.textContent = lastUpdated ? '暫時無法更新 · 最近更新 ' + lastUpdated : '暫時無法讀取統計資料';
+    updated.textContent = '暫時無法讀取統計資料';
     return;
   }
   for (const key of ['today', 'month', 'year', 'total']) {
@@ -105,7 +104,7 @@ watchCounts(data => {
   renderChart(data.days);
   renderRows('uses', uses, data.features);
   renderRows('outs', outs, data.features);
-  lastUpdated = timeFormat.format(new Date(data.asOf));
+  const lastUpdated = timeFormat.format(new Date(data.asOf));
   updated.textContent = '最近更新 ' + lastUpdated + '（台灣時間）';
 }, { details: true });
 </script>

@@ -1,6 +1,6 @@
 import { scheduleMarkup } from './schedule.js?v=20261123-1129-closed';
-import { featured, works, decks, categories } from './works.js?v=20261127-live';
-import { watchCounts, recordUse } from './counter.js?v=20261127-live';
+import { featured, works, decks, categories } from './works.js?v=20261127-on-open';
+import { loadCounts, recordUse } from './counter.js?v=20261127-on-open';
 const $ = s => document.querySelector(s);
 const modal = $('#modal'), toastEl = $('#toast');
 let data, summaries, pageManifest, world, current = 'foundation', toastTimer;
@@ -153,7 +153,7 @@ modal.addEventListener('click',e=>{if(e.target===modal){const r=modal.getBoundin
 $('#sound').addEventListener('click',()=>showModal('help'));
 $('#reset').addEventListener('click',()=>{world?.reset();$('#roam').setAttribute('aria-pressed','false');});
 $('#roam').addEventListener('click',()=>{const active=$('#roam').getAttribute('aria-pressed')!=='true';$('#roam').setAttribute('aria-pressed',String(active));world?.setRoaming(active);if(active)toast('WASD 移動・拖曳滑鼠轉向・Q/E 升降・Shift 加速・Esc 回全景');else world?.reset();});
-watchCounts((data, visitFailed) => {
+loadCounts((data, visitFailed) => {
   const counter = document.querySelector('.visit-counter');
   if (!data) {
     counter.title = '使用人次暫時無法更新';

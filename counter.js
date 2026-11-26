@@ -1,5 +1,4 @@
 const COUNTER_API = 'https://script.google.com/macros/s/AKfycbwU0s_RKlMyfK7WSxKfom27IClw8LRreRStRKMJrcN6u6nPNcV9TVWjR6K_P1fEcOBvHw/exec';
-const REFRESH_MS = 30_000;
 const live = location.origin === 'https://balli425.github.io'
   && location.pathname.startsWith('/cta-ai-airport-city/');
 const recorded = new Set();
@@ -31,7 +30,7 @@ async function recordOnce(kind) {
     body: JSON.stringify({ kind }),
     keepalive: true
   });
-  if (data.ok === true) return true;
+  if (data.ok === true) return;
   // The service confirms a busy lock did not write. A lost response can have
   // committed successfully, so retry only when the service confirms no write.
   if (data.error === 'busy') {
@@ -45,35 +44,12 @@ export function recordUse(kind) {
   if (/^[a-z0-9_-]+$/.test(kind)) recordOnce(kind).catch(() => {});
 }
 
-export function watchCounts(render, { details = false, visit = false } = {}) {
-  let pending = false;
+export async function loadCounts(render, { details = false, visit = false } = {}) {
   let visitFailed = false;
-  async function refresh() {
-    if (pending || document.visibilityState !== 'visible') return;
-    pending = true;
-    try {
-      if (visit) {
-        try {
-          if (await recordOnce('visit')) visitFailed = false;
-        } catch {
-          visitFailed = true;
-        }
-      }
-      const url = new URL(COUNTER_API);
-      if (details) url.searchParams.set('view', 'stats');
-      const data = await request(url);
-      if (data.ok !== true) throw new Error('Counter service unavailable');
-      render(data, visitFailed);
-    } catch {
-      render(null, visitFailed);
-    } finally {
-      pending = false;
-    }
-  }
+  if (visit) await recordOnce('visit').catch(() => { visitFailed = true; });
 
-  document.addEventListener('visibilitychange', refresh);
-  window.addEventListener('pageshow', event => { if (event.persisted) refresh(); });
-  window.addEventListener('online', refresh);
-  window.setInterval(refresh, REFRESH_MS);
-  refresh();
+  const url = new URL(COUNTER_API);
+  if (details) url.searchParams.set('view', 'stats');
+  const data = await request(url).catch(() => null);
+  render(data?.ok === true ? data : null, visitFailed);
 }
