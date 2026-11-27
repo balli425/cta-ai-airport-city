@@ -96,7 +96,7 @@ function showModal(type) {
   if(type==='works'){
     body.innerHTML=worksMarkup();
   }else if(type==='anatomy'){
-    body.innerHTML=`<div class="dialog-copy"><p>160 部可以自己拖動時間軸的互動動畫，把建築的施工、構造與設備一步一步拆開：基礎與地下工程、結構施工、構造原理、外牆防水、電梯、消防、給排水空調、施工機具到室內裝修，再加上工地職業安全衛生（墜落防護、施工架、開挖、模板支撐、吊掛、機具、感電），共十大類。點任何一張就能開啟動畫。</p></div><div class="anatomy-frame"><iframe src="./assets/works/anatomy/index.html?v=20261127" title="《建築解剖學》160 部互動動畫總覽" loading="eager"></iframe></div><div class="schedule-action"><a class="primary" href="./assets/works/anatomy/index.html" target="_blank" rel="noopener noreferrer">用整個視窗看動畫總覽 <span>↗</span></a></div><p class="source-note">動畫中的尺寸與數值多為示意，實際依設計圖說與相關法規辦理。</p>`;
+    body.innerHTML=`<div class="dialog-copy"><p>160 部可以自己拖動時間軸的互動動畫，把建築的施工、構造與設備一步一步拆開：基礎與地下工程、結構施工、構造原理、外牆防水、電梯、消防、給排水空調、施工機具到室內裝修，再加上工地職業安全衛生（墜落防護、施工架、開挖、模板支撐、吊掛、機具、感電），共十大類。點任何一張就能開啟動畫。</p></div><div class="anatomy-frame"><iframe src="./assets/works/anatomy/index.html?v=20261127b" title="《建築解剖學》160 部互動動畫總覽" loading="eager"></iframe></div><div class="schedule-action"><a class="primary" href="./assets/works/anatomy/index.html" target="_blank" rel="noopener noreferrer">用整個視窗看動畫總覽 <span>↗</span></a></div><p class="source-note">動畫中的尺寸與數值多為示意，實際依設計圖說與相關法規辦理。</p>`;
   }else if(type==='deck'){
     renderDeck();
   }else if(type==='video'){
